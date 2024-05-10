@@ -1,13 +1,13 @@
 <?php
 function plus_view_studentrestriction_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
 	$footer_el = footer();
 	if ( is_user_logged_in() && current_user_can('manage_plusgroups')) {
-		require_once(plugin_dir_path(__DIR__)."/pages/plus-view-studentrestriction.php");
+		require_once($CFG->dirroot ."\pages\plus-view-studentrestriction.php");
 		$main_panel_el = plus_view_studentrestriction();
 	}else{
 		$main_panel_el = plus_view_noaccess("/");
@@ -42,4 +42,3 @@ function plus_view_studentrestriction_page(){
 	  <!-- container-scroller -->
 	 ';
 }
-add_shortcode('plus-view-studentrestriction','plus_view_studentrestriction_page');

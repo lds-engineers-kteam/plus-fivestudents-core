@@ -1,8 +1,8 @@
 <?php
 function plus_view_student_scorecard_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-student-scorecard.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-student-scorecard.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -48,4 +48,3 @@ function loggedin_check_plus_view_student_scorecard(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
- add_shortcode('plus-view_student_scorecard','loggedin_check_plus_view_student_scorecard');

@@ -6,7 +6,7 @@ function plus_view_trainings()
     return plus_view_noaccess();
   }
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $searchreq->t = plus_get_request_parameter("t", "");
   $APIRES = $MOODLE->get("Browsetrainings", null, $searchreq);

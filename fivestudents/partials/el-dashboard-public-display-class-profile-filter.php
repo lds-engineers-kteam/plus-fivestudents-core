@@ -1,8 +1,8 @@
 <?php
 function plus_view_classProfileFilter(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-class-profile-filter.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-class-profile-filter.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -47,4 +47,3 @@ function loggedin_check_plus_classProfileFilter(){
 		return plus_redirect(site_url().'/');
 	}
 }
- add_shortcode('plus-class-profile-filter','loggedin_check_plus_classProfileFilter');

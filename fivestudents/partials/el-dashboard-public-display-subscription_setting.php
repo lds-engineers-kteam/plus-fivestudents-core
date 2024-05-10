@@ -1,8 +1,8 @@
 <?php
 function plus_view_subscript_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-subscription_setting.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-subscription_setting.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -48,4 +48,3 @@ function loggedin_check_plus_subscript_users(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
- add_shortcode('plus-view-subscriptionsetting','loggedin_check_plus_subscript_users');

@@ -1,8 +1,8 @@
 <?php
 function plus_view_homework_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-homework.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-homework.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -48,4 +48,3 @@ function loggedin_check_plus_view_homework(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
- add_shortcode('plus-view-homework','loggedin_check_plus_view_homework');

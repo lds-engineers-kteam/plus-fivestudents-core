@@ -1,12 +1,8 @@
 <?php
 function plus_studentProfileFilter(){
   global $wp;
-
   $current_user = wp_get_current_user();
-  // echo "<pre>";
-  // print_r($current_user);
-  // die;
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->categoryids = plus_get_request_parameter("categoryids", array());

@@ -2,7 +2,7 @@
 function plus_classProfile(){
   global $wp;
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->groupid = plus_get_request_parameter("groupid", 0);
   $formdata->homeworkid = plus_get_request_parameter("homeworkid", 0);

@@ -4,8 +4,8 @@ function plus_view_globalusers(){
   if ( !is_user_logged_in() || !current_user_can('view_plusglobalusers')) {
     return plus_view_noaccess();
   }
-  $MOODLE = new MoodleManager();
-
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $searchreq->name = plus_get_request_parameter("groupname", "");
   $APIRES = $MOODLE->get("BrowseGlobalUsers", null, $searchreq);

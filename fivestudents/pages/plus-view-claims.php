@@ -11,7 +11,7 @@ function plus_view_claims(){
   $args = new stdClass();
   $eventstatus = array("none", "started", "cancelled", "completed", "past", "claim", "inprogress");
   $args->status = 5; 
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
 
   $CLAIMEDAPIRES = $MOODLE->get("getCalendarEvents", null, $args);
   $args->status = 6; 

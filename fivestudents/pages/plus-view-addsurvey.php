@@ -4,7 +4,8 @@ function plus_view_addsurvey(){
   if ( !is_user_logged_in() || !current_user_can('view_plusaddsurvey')) {
     return plus_view_noaccess();
   }
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->name = plus_get_request_parameter("surveyname", "");

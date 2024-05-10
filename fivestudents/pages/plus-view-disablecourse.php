@@ -1,7 +1,8 @@
 <?php
 function plus_view_disablecourse(){
   global $wp, $MOODLESESSION;
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->institutionid = plus_get_request_parameter("id", 0);
   $formdata->name = "";

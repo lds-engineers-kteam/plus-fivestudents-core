@@ -1,4 +1,5 @@
 <?php
+
 plus_startMoodleSession();
 function plus_checkerror(){
   $html="";

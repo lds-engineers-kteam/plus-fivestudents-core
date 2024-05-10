@@ -1,7 +1,7 @@
 <?php
 function plus_view_reports_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -60,4 +60,3 @@ function loggedin_check_plus_view_reports(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
- add_shortcode('plus-view-reports','loggedin_check_plus_view_reports');

@@ -4,7 +4,8 @@ function plus_view_calendar(){
   if ( !is_user_logged_in() || !current_user_can('plus_viewcalendar') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
     return plus_view_noaccess();
   }
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->institutionid = plus_get_request_parameter("institutionid", 0);
   $formdata->teacherid = plus_get_request_parameter("teacherid", 0);

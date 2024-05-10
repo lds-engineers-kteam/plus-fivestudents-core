@@ -1,8 +1,8 @@
 <?php
 function plus_view_user_datesubscription_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-studentdatesubscription.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-studentdatesubscription.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -50,5 +50,4 @@ function plus_view_user_datesubscription(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
-add_shortcode('plus-view-user-datesubscription','plus_view_user_datesubscription');
 ?>

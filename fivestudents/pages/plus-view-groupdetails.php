@@ -2,7 +2,7 @@
 function plus_view_groupdetails(){
   global $wp;
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $groupid = plus_get_request_parameter("id", 0);
   $status = plus_get_request_parameter("status", 0);
   $userid = plus_get_request_parameter("userid", 0);

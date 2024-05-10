@@ -1,12 +1,12 @@
 <?php
 function plus_view_verificationcode()
 {
-  global $wp;
+  global $wp, global $MOODLESESSION, $SESSION;
   if (!is_user_logged_in() || !current_user_can('view_plusdevicelist')) {
     return plus_view_noaccess();
   }
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $searchreq->institutionid = plus_get_request_parameter("id", 0);
   $html = '';

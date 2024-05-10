@@ -2,7 +2,7 @@
 function main_dashbaord(){
 	global $MOODLESESSION;
 	
-	require_once __DIR__ . "/partials/includes/moodlesession.php";
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
 	require_once __DIR__ . "/pages/main-panel.php";
 
 	$navbar_el = navbar();
@@ -50,4 +50,3 @@ function loggedin_user_check(){
 		// return '<script> location.href="'. site_url().'/login"; </script>';
 	}
 }
- add_shortcode('dashboard','loggedin_user_check');

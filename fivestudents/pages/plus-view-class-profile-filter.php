@@ -3,7 +3,7 @@ function plus_classProfileFilter(){
   global $wp, $MOODLESESSION, $CLASSPROFILEAVGDATA;
   $CLASSPROFILEAVGDATA = array();
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->schoolyear = plus_get_request_parameter("schoolyear", $MOODLESESSION->currentschoolyear);

@@ -1,7 +1,8 @@
 <?php
 function paymenttrans(){
   global $wp, $DB;
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $fromform = new stdclass();
   $temp = "";
     $APIRES22 = $MOODLE->get("getGroupByInstituteId", null);

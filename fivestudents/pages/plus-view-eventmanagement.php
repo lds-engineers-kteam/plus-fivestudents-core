@@ -5,6 +5,7 @@ function plus_view_eventmanagement(){
     return plus_view_noaccess();
   }
   $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
   $searchreq->eventid = plus_get_request_parameter("eventid", 0);
@@ -19,7 +20,7 @@ function plus_view_eventmanagement(){
     plus_get_string("status_inprogress", "calendar")
   );
   $active = plus_get_request_parameter("active", '');
-  $MOODLE = new MoodleManager();
+  
   if(current_user_can('view_plusclaimedevent')){
     $args->status = 5; 
     $CLAIMEDAPIRES = $MOODLE->get("getCalendarEvents", null, $args);

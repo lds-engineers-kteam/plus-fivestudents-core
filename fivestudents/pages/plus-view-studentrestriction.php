@@ -1,8 +1,8 @@
 <?php
 function plus_view_studentrestriction(){
  global $wp;
-  $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+ $current_user = wp_get_current_user();
+ $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->categoryid = plus_get_request_parameter("categoryid", 0);

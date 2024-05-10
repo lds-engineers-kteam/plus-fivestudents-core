@@ -2,8 +2,8 @@
 function plus_view_subscript(){
   global $wp, $DB;
   $tem='';
-	$current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   if(isset($_REQUEST['cancel'])){
     plus_redirect(home_url()."/users/");

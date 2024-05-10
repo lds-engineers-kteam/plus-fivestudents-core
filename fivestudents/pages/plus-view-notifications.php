@@ -2,7 +2,8 @@
 function plus_view_notifications(){
   global $wp, $MOODLESESSION;
   $current_user = $MOODLESESSION->INSTITUTION->member->userid;
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->teachid = $current_user;
   $formdata->id = plus_get_request_parameter("id", 0);

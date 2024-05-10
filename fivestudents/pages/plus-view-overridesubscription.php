@@ -1,8 +1,8 @@
 <?php
 function plus_override_subscription(){
  global $wp;
-  $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+ $current_user = wp_get_current_user();
+ $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
     plus_redirect(home_url( $wp->request ));

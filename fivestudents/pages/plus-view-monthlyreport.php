@@ -2,7 +2,7 @@
 function plus_view_monthlyreport(){
   global $wp;
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $userid = plus_get_request_parameter("userid", 0);
   $groupid = plus_get_request_parameter("groupid", 0);

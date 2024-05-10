@@ -1,8 +1,8 @@
 <?php
 function plus_view_user_subscription_page(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-studentsubscription.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-studentsubscription.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -50,5 +50,4 @@ function plus_view_user_subscription(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
-add_shortcode('plus-view-user-subscription','plus_view_user_subscription');
 ?>

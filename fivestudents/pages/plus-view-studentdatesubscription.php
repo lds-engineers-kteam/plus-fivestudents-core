@@ -4,7 +4,7 @@ global $wp, $DB;
 $html = '';
 $temp = '';
 $current_user = wp_get_current_user();
-$MOODLE = new MoodleManager();
+$MOODLE = new MoodleManager($current_user);
 $data = new stdClass();
 $data->groupid = plus_get_request_parameter("id", 0);
 $data->userid = plus_get_request_parameter("userid", 0);

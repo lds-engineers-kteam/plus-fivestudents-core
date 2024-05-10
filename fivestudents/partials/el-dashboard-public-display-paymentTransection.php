@@ -1,8 +1,8 @@
 <?php
 function paymentTransection(){
 	global $MOODLESESSION;
-	require_once(plugin_dir_path(__DIR__)."/partials/includes/moodlesession.php");
-	require_once(plugin_dir_path(__DIR__)."/pages/plus-view-paymentTransection.php");
+	require_once($CFG->dirroot ."\partials\includes\moodlesession.php");
+	require_once($CFG->dirroot ."\pages\plus-view-paymentTransection.php");
 	$navbar_el = navbar();
 	$settings_panel_el = settings_panel();
 	$sidebar_el = sidebar();
@@ -49,4 +49,3 @@ function loggedin_check_paymentTr(){
 		// return '<script> location.href="'. site_url().'/"; </script>';
 	}
 }
- add_shortcode('plus-view-payTransection','loggedin_check_paymentTr');

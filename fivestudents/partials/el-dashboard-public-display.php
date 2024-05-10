@@ -154,5 +154,4 @@ function login_form_check(){
 	}
 }
 //Login form Shortcode
-add_shortcode( 'el-login-form', 'login_form_check' );
 

@@ -4,7 +4,8 @@ function plus_view_events(){
   if ( !is_user_logged_in() || !current_user_can('view_plusmanageevents')) {
     return plus_view_noaccess();
   }
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $searchreq->name = plus_get_request_parameter("groupname", "");
   $searchreq->teacher = plus_get_request_parameter("teacher", "");

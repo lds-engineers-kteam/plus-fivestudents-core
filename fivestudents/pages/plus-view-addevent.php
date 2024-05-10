@@ -6,7 +6,8 @@ function plus_view_addevent(){
   }
 
 
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->name = plus_get_request_parameter("title", "");

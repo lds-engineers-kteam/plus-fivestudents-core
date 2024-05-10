@@ -2,7 +2,7 @@
 function plus_view_dashboardstatus_report(){
   global $wp;
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->categoryid = plus_get_request_parameter("categoryid", 0);
   $formdata->groupid = plus_get_request_parameter("groupid", 0);

@@ -1,8 +1,8 @@
 <?php
 function plus_view_users(){
   global $wp;
-	$current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager();
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $generatemonthlyreport = plus_get_request_parameter("generatemonthlyreport", 0);
   $institutionid = plus_get_request_parameter("institutionid", 0);
