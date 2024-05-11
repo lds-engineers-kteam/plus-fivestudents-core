@@ -1,7 +1,8 @@
 <?php
 function settings_panel(){
-  return "";
-/*return '<div class="theme-setting-wrapper">
+  global $CFG;
+  // return "";
+  return '<div class="theme-setting-wrapper">
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
@@ -114,7 +115,7 @@ function settings_panel(){
             </div>
             <ul class="chat-list">
               <li class="list active">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face1.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face1.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Thomas Douglas</p>
                   <p>Available</p>
@@ -122,7 +123,7 @@ function settings_panel(){
                 <small class="text-muted my-auto">19 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
                 <div class="info">
                   <div class="wrapper d-flex">
                     <p>Catherine</p>
@@ -133,7 +134,7 @@ function settings_panel(){
                 <small class="text-muted my-auto">23 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face3.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face3.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Daniel Russell</p>
                   <p>Available</p>
@@ -141,7 +142,7 @@ function settings_panel(){
                 <small class="text-muted my-auto">14 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
                 <div class="info">
                   <p>James Richardson</p>
                   <p>Away</p>
@@ -149,7 +150,7 @@ function settings_panel(){
                 <small class="text-muted my-auto">2 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face5.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face5.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Madeline Kennedy</p>
                   <p>Available</p>
@@ -157,7 +158,7 @@ function settings_panel(){
                 <small class="text-muted my-auto">5 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="'.plugin_dir_url( __FILE__ ) . '../images/faces/face6.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="'.$CFG->wwwroot. '/images/faces/face6.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Sarah Graves</p>
                   <p>Available</p>
@@ -168,5 +169,5 @@ function settings_panel(){
           </div>
           <!-- chat tab ends -->
         </div>
-      </div>';*/
+      </div>';
 }

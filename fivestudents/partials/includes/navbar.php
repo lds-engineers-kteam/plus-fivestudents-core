@@ -4,6 +4,8 @@ function navbar(){
   global $MOODLESESSION;
   $current_user->teachid = $MOODLESESSION->INSTITUTION->member->userid;
   $current_user = (object)$current_user;
+  // echo 111;
+  // die;
   if(is_string($MOODLESESSION)){
     return $MOODLESESSION;
   }
@@ -127,5 +129,5 @@ $html = '<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     </script>
     ';
 
-    return $html;
+    echo $html;
 }

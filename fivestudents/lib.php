@@ -5,15 +5,183 @@ function home_url($optionalparam) {
 	return $CFG->wwwroot . $optionalparam;
 }
 
+
 function wp_set_current_user($user) {
-    $_SESSION['CURRENTUSERSESSION'] = $user;
+	
+	$newUserObj = new stdClass();
+	$newUserObj->token = $user->token; 
+	$newUserObj->privatetoken = $user->privatetoken;
+	$newUserObj->currentinstitution = "";
+	$newUserObj->ID = 888;
+	$newUserObj->INSTITUTION = "TestInstitute";
+	$newUserObj->display_name = "Sourav";
+	$newUserObj->nickname = "";
+	$newUserObj->first_name = "";
+	$newUserObj->last_name = "";
+	$newUserObj->description = "";
+	$newUserObj->user_login = "";
+	$newUserObj->user_pass = "";
+	$newUserObj->user_nicename = "";
+	$newUserObj->user_url = "";
+	$newUserObj->user_registered = "";
+	$newUserObj->user_activation_key = "";
+	$newUserObj->user_status = 0;
+	$newUserObj->roles = "";
+	$newUserObj->allcaps = "";
+	$newUserObj->filter = "";
+
+    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+
 }
+
 
 function wp_get_current_user() {
     global $CURRENTUSERSESSION;
     $CURRENTUSERSESSION = $_SESSION['CURRENTUSERSESSION'];
     return $CURRENTUSERSESSION;
 }
+
+
+function get_user_meta( int $user_id, string $key = "", bool $single = false ) {
+    $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
+    $meta_value = null;
+    if($newUserObj->ID == $user_id) {
+        if (empty($key)) {
+            return $newUserObj;
+        }
+        switch($key) {
+            case 'token':
+                $meta_value = $newUserObj->token;
+                break;
+            case 'privatetoken':
+                $meta_value = $newUserObj->privatetoken;
+                break;
+            case 'currentinstitution':
+                $meta_value = $newUserObj->currentinstitution;
+                break;
+            case 'INSTITUTION':
+                $meta_value = $newUserObj->INSTITUTION;
+                break;
+            case 'display_name':
+                $meta_value = $newUserObj->display_name;
+                break;
+            case 'nickname':
+                $meta_value = $newUserObj->nickname;
+                break;
+            case 'first_name':
+                $meta_value = $newUserObj->first_name;
+                break;
+            case 'last_name':
+                $meta_value = $newUserObj->last_name;
+                break;
+            case 'description':
+                $meta_value = $newUserObj->description;
+                break;
+            case 'user_login':
+                $meta_value = $newUserObj->user_login;
+                break;
+            case 'user_pass':
+                $meta_value = $newUserObj->user_pass;
+                break;
+            case 'user_nicename':
+                $meta_value = $newUserObj->user_nicename;
+                break;
+            case 'user_url':
+                $meta_value = $newUserObj->user_url;
+                break;
+            case 'user_registered':
+                $meta_value = $newUserObj->user_registered;
+                break;
+            case 'user_activation_key':
+                $meta_value = $newUserObj->user_activation_key;
+                break;
+            case 'user_status':
+                $meta_value = $newUserObj->user_status;
+                break;
+            case 'roles':
+                $meta_value = $newUserObj->roles;
+                break;
+            case 'allcaps':
+                $meta_value = $newUserObj->allcaps;
+                break;
+            case 'filter':
+                $meta_value = $newUserObj->filter;
+                break;
+            default:
+                $meta_value = $single ? '' : null;
+                break;
+        }
+    }
+    return $single ? $meta_value : array($meta_value);
+}
+
+function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mixed $prev_value = "") {
+    $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
+    if($newUserObj->ID == $user_id) {
+        switch($meta_key) {
+            case 'token':
+                $newUserObj->token = $meta_value;
+                break;
+            case 'privatetoken':
+                $newUserObj->privatetoken = $meta_value;
+                break;
+            case 'currentinstitution':
+                $newUserObj->currentinstitution = $meta_value;
+                break;
+            case 'INSTITUTION':
+                $newUserObj->INSTITUTION = $meta_value;
+                break;
+            case 'display_name':
+                $newUserObj->display_name = $meta_value;
+                break;
+            case 'nickname':
+                $newUserObj->nickname = $meta_value;
+                break;
+            case 'first_name':
+                $newUserObj->first_name = $meta_value;
+                break;
+            case 'last_name':
+                $newUserObj->last_name = $meta_value;
+                break;
+            case 'description':
+                $newUserObj->description = $meta_value;
+                break;
+            case 'user_login':
+                $newUserObj->user_login = $meta_value;
+                break;
+            case 'user_pass':
+                $newUserObj->user_pass = $meta_value;
+                break;
+            case 'user_nicename':
+                $newUserObj->user_nicename = $meta_value;
+                break;
+            case 'user_url':
+                $newUserObj->user_url = $meta_value;
+                break;
+            case 'user_registered':
+                $newUserObj->user_registered = $meta_value;
+                break;
+            case 'user_activation_key':
+                $newUserObj->user_activation_key = $meta_value;
+                break;
+            case 'user_status':
+                $newUserObj->user_status = $meta_value;
+                break;
+            case 'roles':
+                $newUserObj->roles = $meta_value;
+                break;
+            case 'allcaps':
+                $newUserObj->allcaps = $meta_value;
+                break;
+            case 'filter':
+                $newUserObj->filter = $meta_value;
+                break;
+        }
+    }
+    return $_SESSION['CURRENTUSERSESSION'] = $newUserObj; 
+}
+
+
 
 function authenticate_user_login($args) {
     global $DB, $CFG, $USER;
@@ -275,11 +443,7 @@ function plus_dateToFrench($date, $format = 'd F Y H:i')
     return $finaldate;
 }
 
-function get_user_meta($user, $lang='', $bol=true) {
 
-	return $lang;
-
-}
 
 function plus_setuserlang() {
 	global $USERLANG;

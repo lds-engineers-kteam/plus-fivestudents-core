@@ -28,9 +28,7 @@ function plus_view_users(){
   // if(!is_string($APIRES)){
   //   $APIRES = json_encode($APIRES);
   // }
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
+
   // $html .= '<pre>'.print_r($APIRES, true).'</pre>';
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
@@ -163,6 +161,6 @@ function plus_view_users(){
 ';
   $html .=  '</div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
-  return $html;
+          </div>';
+  echo $html;
 }
