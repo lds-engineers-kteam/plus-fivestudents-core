@@ -432,5 +432,5 @@ function plus_view_trainings()
     });
   </script>
   ';
-  return $html;
+  echo $html;
 }

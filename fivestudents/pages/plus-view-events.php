@@ -98,7 +98,7 @@ function plus_view_events(){
             </div>
           </div>';
 
-  return $html;
+  echo $html;
 }
 
 

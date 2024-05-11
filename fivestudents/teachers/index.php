@@ -1,26 +1,14 @@
 <?php
-  require_once("../config.php");
-  $syncnow = optional_param("syncnow", "");
-  if($syncnow){
-    syncAlluserdata($syncnow);
-    redirect("{$CFG->wwwroot}/teachers/");
-  }
-  require_login();
-  $OUTPUT->loadjquery();
-  echo $OUTPUT->header();
-  $alllocaldatafiles = get_alllocaldata();
-
-$html = '';
-//$html .= '<pre>'.print_r($alllocaldatafiles, true).'</pre>';
-$html .= '<div class="row">
-            <div class="col-12 stretch-card grid-margin">
-              <div class="card">
-                <div class="card-body">
-                <p class="text-center py-4">Teachers Home Page</p>
-               </div>
-              </div>
-            </div>
-          </div>';
-  $html .='';
-  echo $html;
-  echo $OUTPUT->footer();
+require_once(__DIR__ . "/../config.php");
+require_once($CFG->dirroot . '/pages/main-panel.php');
+require_once($CFG->dirroot . '/partials/includes/header.php');
+require_once($CFG->dirroot . '/partials/includes/footer.php');
+require_once($CFG->dirroot . '/pages/plus-view-teachers.php');
+main_header();
+// $navbar_el = navbar();
+// $settings_panel_el = settings_panel();
+// $sidebar_el = sidebar();
+// $main_panel_el = plus_view_noaccess();
+main_panel();
+plus_view_teachers();
+main_footer();

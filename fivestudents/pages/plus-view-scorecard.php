@@ -26,8 +26,8 @@ function plus_view_scorecard(){
   $selctedgrouplevel->group=array();
 // print_r($APIRES);
 // die;
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 ';
 
   $html .=  '<div class="row">
@@ -149,6 +149,6 @@ function plus_view_scorecard(){
 ';
   $html .=  '</div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
-  return $html;
+          </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'. __FILE__ .'/public/../../../js/select2.js"></script>';
+  echo $html;
 }

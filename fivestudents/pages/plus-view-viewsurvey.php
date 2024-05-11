@@ -64,7 +64,7 @@ function plus_view_viewsurvey(){
     </div>
     ';
 
-  return $html;
+  echo $html;
 }
 
 

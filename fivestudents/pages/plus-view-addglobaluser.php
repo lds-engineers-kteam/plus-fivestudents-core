@@ -148,7 +148,7 @@ function plus_view_addglobaluser(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }
 
 

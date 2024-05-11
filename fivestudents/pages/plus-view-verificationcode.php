@@ -55,6 +55,6 @@ function plus_view_verificationcode()
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }
 

@@ -349,7 +349,7 @@ function plus_view_addevent(){
       $("#courseid").trigger("change");
     });
   </script>';
-  return $html;
+  echo $html;
 }
 
 ?>

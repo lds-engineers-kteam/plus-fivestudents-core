@@ -25,8 +25,8 @@ function plus_view_student_scorecard(){
   $APIRESGradeLevel = $MOODLE->get("get_garde_level_data");
   $all_grade_level=array();
   $all_selctedgrouplevel=array();
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 ';
 // echo "<pre>";
 // print_r($APIRES);
@@ -167,7 +167,7 @@ if(empty($searchreq->limit)){$searchreq->limit = $searchreq->total;}
 ';
   $html .=  '</div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
+          </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'. __FILE__ .'/public/../../../js/select2.js"></script>';
 $html.= ' <script> $(function(){
           var all_grade_level = '.json_encode($all_grade_level).';
           var allgroup=new Array();
@@ -195,5 +195,5 @@ $html.= ' <script> $(function(){
            
             });
 });</script>';
-  return $html;
+  echo $html;
 }

@@ -63,5 +63,5 @@ function plus_view_notifications(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }

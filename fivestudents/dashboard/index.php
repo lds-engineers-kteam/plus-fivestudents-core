@@ -3,7 +3,7 @@ require_once(__DIR__ . "/../config.php");
 require_once($CFG->dirroot . '/pages/main-panel.php');
 require_once($CFG->dirroot . '/partials/includes/header.php');
 require_once($CFG->dirroot . '/partials/includes/footer.php');
-
+require_once($CFG->dirroot . '/pages/main-panel.php');
 // echo $CFG->dirroot . '/pages/main-panel.php';
 // echo "<br>";
 // echo $CFG->dirroot . '/partials/includes/header.php';
@@ -19,5 +19,3 @@ main_header();
 // $main_panel_el = plus_view_noaccess();
 main_panel();
 main_footer();
-
-

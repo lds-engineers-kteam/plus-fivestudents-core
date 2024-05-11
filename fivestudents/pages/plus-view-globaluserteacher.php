@@ -98,7 +98,7 @@ $html .=  '<div class="col-lg-12 grid-margin stretch-card">
           </div>
         </div>
       </div>';
-  return $html;
+  echo $html;
 }
 
 

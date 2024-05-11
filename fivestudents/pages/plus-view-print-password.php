@@ -244,5 +244,5 @@ function plus_view_print_password(){
            
             });
 });</script>';
-  return $html;
+ echo $html;
 }

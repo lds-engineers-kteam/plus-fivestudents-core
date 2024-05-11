@@ -205,7 +205,7 @@ $html .= '<div class="col-md-12 grid-margin stretch-card">
     ';
 
 
-  return $html;
+  echo $html;
 
 }
 

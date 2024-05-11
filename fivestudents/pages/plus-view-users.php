@@ -161,6 +161,10 @@ function plus_view_users(){
 ';
   $html .=  '</div>
             </div>
+<<<<<<< HEAD
+          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
+=======
           </div>';
+>>>>>>> e2990e5e187cba81c65e89dbf99116152f83f600
   echo $html;
 }

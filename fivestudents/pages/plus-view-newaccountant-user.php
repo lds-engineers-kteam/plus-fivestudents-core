@@ -129,5 +129,5 @@ function plus_newaccountant_users(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }

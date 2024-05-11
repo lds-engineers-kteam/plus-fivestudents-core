@@ -68,7 +68,7 @@ function plus_view_globalusers(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }
 
 

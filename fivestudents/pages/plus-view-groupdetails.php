@@ -257,5 +257,5 @@ $(document).ready(function(){
     $html.='<div class="alert alert-danger">'.plus_get_string("invalidrequest", "form").'</div>';
 
   } 
-  return $html;
+  echo $html;
 }

@@ -640,5 +640,5 @@ $html .= '<div id="questionViewer" class="modal fade" tabindex="-1">
   
   </script>';
 
-    return $html;
+    echo $html;
   }

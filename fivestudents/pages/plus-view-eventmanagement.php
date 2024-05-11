@@ -404,5 +404,5 @@ function plus_view_eventmanagement(){
     });
   });
   </script>';
-  return $html;
+  echo $html;
 }

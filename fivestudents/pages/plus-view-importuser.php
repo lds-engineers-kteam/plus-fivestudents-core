@@ -96,5 +96,5 @@ function plus_view_importuser(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }

@@ -63,7 +63,7 @@ $(document).on("click", ".preresporce", function(){
 });
 </script>
 ';
-  return $html;
+ echo $html;
 }
 
 

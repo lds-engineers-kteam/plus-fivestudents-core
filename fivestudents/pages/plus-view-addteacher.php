@@ -11,7 +11,7 @@ function plus_add_teacher(){
   $formdata->password = plus_get_request_parameter("password", "");
   $formdata->isadmin = plus_get_request_parameter("isadmin", 0);
   $formdata->subjects = plus_get_request_parameter("subjects", array());
-
+  
   if(isset($_POST['saveteacher'])){
     $user_data = array(
      'user_pass' =>$formdata->password,
@@ -160,5 +160,5 @@ function plus_add_teacher(){
   $html .=  '</div>
             </div>
           </div>';
-  return $html;
+  echo $html;
 }

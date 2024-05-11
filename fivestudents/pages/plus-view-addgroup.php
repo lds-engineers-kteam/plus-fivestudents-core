@@ -1,5 +1,6 @@
 <?php
 function plus_add_group(){
+  require_once("../config.php");
   global $wp;
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -37,6 +38,7 @@ function plus_add_group(){
   }
   $catcourses = '';
   $APIRESgrades = $MOODLE->get("GetGrades", null, array());
+  // var_dump($APIRESgrades);
   $catcourses .= '<div class="form-group row">
                   <label for="groupname" class="col-sm-2 col-form-label">'.plus_get_string("level", "form").' *</label>
                   <div class="col-sm-10"><select name="categoryid" class="form-control" id="categoryid" required="required"><option value=""> '.plus_get_string("select", "form").' '.plus_get_string("level", "form").'</option>';
@@ -161,3 +163,5 @@ $(document).ready(function(){
 </script>';
   return $html;
 }
+
+

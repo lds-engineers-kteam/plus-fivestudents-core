@@ -126,5 +126,5 @@ if(isset($res1->data)){
   $html .=  '</div>
             </div>
           </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
-  return $html;
+  echo $html;
 }

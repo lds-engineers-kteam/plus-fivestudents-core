@@ -13,10 +13,10 @@ $CFG->syncapicount = 5000;
 $CFG->dirroot = $_SERVER['DOCUMENT_ROOT'] . '/plus/fivestudents'; 
 
 // Suppress error reporting and set timezone
-error_reporting(1);
-error_reporting(E_ALL);
-ini_set('display_errors', 'Off');
-ini_set('max_input_vars', 10000);
+// error_reporting(1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 'Off');
+// ini_set('max_input_vars', 10000);
 date_default_timezone_set('Africa/Malabo');
 
 // Check if wwwroot is configured

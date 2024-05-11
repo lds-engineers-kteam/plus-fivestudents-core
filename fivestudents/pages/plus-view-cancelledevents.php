@@ -8,7 +8,7 @@ function plus_view_cancelledevents(){
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
   $html='cancelled events';
-  return $html;
+  echo $html;
 }
 
 

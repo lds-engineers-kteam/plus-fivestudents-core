@@ -620,5 +620,5 @@ function plus_view_calendar(){
     });
     </script>";
 
-  return $html;
+  echo $html;
 }

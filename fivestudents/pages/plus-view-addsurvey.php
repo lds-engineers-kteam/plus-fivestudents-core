@@ -165,7 +165,7 @@ function plus_view_addsurvey(){
 
     });
   </script>';
-  return $html;
+  echo  $html;
 }
 
 

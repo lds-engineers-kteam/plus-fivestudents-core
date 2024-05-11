@@ -206,6 +206,6 @@ function plus_view_claims(){
     });
   });
   </script>';
-  return $html;
+  echo $html;
 }
 

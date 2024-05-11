@@ -828,5 +828,5 @@ if($formdata->showreport){
   });
   </script>';
 
-    return $html;
+    echo $html;
 }
