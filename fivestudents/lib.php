@@ -275,6 +275,12 @@ function plus_dateToFrench($date, $format = 'd F Y H:i')
     return $finaldate;
 }
 
+function get_user_meta($user, $lang='', $bol=true) {
+
+	return $lang;
+
+}
+
 function plus_setuserlang() {
 	global $USERLANG;
 	$current_user = wp_get_current_user();
