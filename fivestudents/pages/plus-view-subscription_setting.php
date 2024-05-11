@@ -1,14 +1,19 @@
 <?php
 function plus_view_subscript(){
-  global $wp, $DB;
+  global $wp, $DB, $CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   $tem='';
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+
   $formdata = new stdClass();
   if(isset($_REQUEST['cancel'])){
     plus_redirect(home_url()."/users/");
     exit;
   }
+
+
   $formdata->grade = plus_get_request_parameter("grade", 0);
   $formdata->institutionid = plus_get_request_parameter("id", 0);
   $formdata->schoolsubscriptamt = plus_get_request_parameter("schoolsubscriptamt", 0);
@@ -20,6 +25,7 @@ function plus_view_subscript(){
     exit;
    
   }
+  
   /*Save ends*/
   /*browse starts*/
 $res1 = $MOODLE->get("getInstituteSubscription",'', $formdata);
@@ -52,17 +58,9 @@ if(isset($res1->data)){
       $allgrades .= '<option value="'.$value->id.'" '.($formdata->grade == $value->id?'selected':'').'>'.$value->name.'</option>';
     }
   }
-// echo "<pre>";
-// print_r($gradesdata);
-  // if(!is_string($APIRES)){
-  //   $APIRES = json_encode($APIRES);
-  // }
 
 
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
-  $html .=  '<div class="row">
+  $html  =  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
   $html .=  '<div class="col-md-12 grid-margin stretch-card">
@@ -125,6 +123,6 @@ if(isset($res1->data)){
 ';
   $html .=  '</div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
+          </div>';
   echo $html;
 }

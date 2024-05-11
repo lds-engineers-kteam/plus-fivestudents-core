@@ -394,12 +394,26 @@ function plus_is_admin_user() {
 
 function plus_startMoodleSession(){
 	global $MOODLESESSION, $ALLROLES;
-	$MOODLE = new MoodleManager();
+	$current_user = wp_get_current_user();
+	$MOODLE = new MoodleManager($current_user);
 	$MOODLESESSION = $MOODLE->get("ConnectionTest");
-	// var_dump($MOODLESESSION);
-	// die;
+	echo "<pre>";
+	print_r($MOODLESESSION);
+	echo "</pre>";
+	die;
 	$ALLROLES = array("internaladmin", "schooladmin", "tutoringcenter", "tutor");
 }
+
+function wp_unslash($value) {
+    if (is_array($value)) {
+        // If $value is an array, recursively unslash each element
+        return array_map('wp_unslash', $value);
+    } else {
+        // If $value is not an array, remove slashes
+        return stripslashes($value);
+    }
+}
+
 
 function plus_get_request_parameter($key, $default = '') {
     // If not request set
@@ -507,6 +521,45 @@ function plus_get_string($key, $page=""){
 	}
 }
 
+
+function wp_update_user( array|object $userdata ) {
+    $newUserObj = $_SESSION['CURRENTUSERSESSION'];
+    if (is_array($userdata)) {
+        $userdata = (object) $userdata;
+    }
+    foreach ($userdata as $key => $value) {
+        if (property_exists($newUserObj, $key)) {
+            $newUserObj->$key = $value;
+        }
+    }
+    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+}
+
+function get_user_by( string $field, int|string $value ) {
+    $newUserObj = $_SESSION['CURRENTUSERSESSION'];
+    if (property_exists($newUserObj, $field) && $newUserObj->$field == $value) {
+        return $newUserObj;
+    } else {
+        return null;
+    }
+}
+
+function wp_insert_user( array|object $userdata ) {
+    $newUserObj = $_SESSION['CURRENTUSERSESSION'];
+    if (is_array($userdata)) {
+        $userdata = (object) $userdata;
+    }
+    foreach ($userdata as $key => $value) {
+        if (property_exists($newUserObj, $key)) {
+            $newUserObj->$key = $value;
+        }
+    }
+    if (property_exists($userdata, 'ID')) {
+        $newUserObj->ID = $userdata->ID;
+    }
+    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+    return $newUserObj->ID;
+}
 
 function plus_login_failed($userid) {
 	global $wpdb;

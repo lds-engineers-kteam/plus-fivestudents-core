@@ -1,6 +1,6 @@
 <?php
 function plus_newaccountant_users(){
-  global $wp;
+  global $CFG;
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -68,10 +68,8 @@ function plus_newaccountant_users(){
     exit;
   }
 
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
-  $html .=  '<div class="row">
+  
+  $html =  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
   $html .=  '<div class="col-md-12 grid-margin stretch-card">

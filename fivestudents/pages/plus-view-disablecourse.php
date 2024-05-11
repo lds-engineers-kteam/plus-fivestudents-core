@@ -1,6 +1,7 @@
 <?php
 function plus_view_disablecourse(){
-  global $wp, $MOODLESESSION;
+  global $CFG, $wp, $MOODLESESSION;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -9,10 +10,15 @@ function plus_view_disablecourse(){
   $formdata->disablecourses = plus_get_request_parameter("courses", array());
   $html ='';
   $Allsubjects = '';
+
+
+
   if(!current_user_can('manage_plususers')){
     plus_redirect(home_url()."/users");
     exit;
   }
+
+
   if(isset($_POST['save'])){
     // echo "<pre>";
     // print_r($formdata);
@@ -23,6 +29,14 @@ function plus_view_disablecourse(){
       exit;
     }
   }
+
+
+
+  echo "<pre>";
+  print_r($formdata);
+  echo "</pre>";
+  die;
+  
   if(!empty($formdata->institutionid)){
     $APIRES = $MOODLE->get("getInstitutionById", null, array("id"=>$formdata->institutionid));
     if($APIRES->code == 200 and $APIRES->data->id == $formdata->institutionid){
@@ -33,6 +47,10 @@ function plus_view_disablecourse(){
     plus_redirect(home_url()."/users");
     exit;
   }
+
+
+
+
 
   $APIRESgrades = $MOODLE->get("GetGrades", null, array());
   if(isset($APIRESgrades) && $APIRESgrades->data && $APIRESgrades->data->grades){
@@ -52,7 +70,7 @@ function plus_view_disablecourse(){
       }
     }
   }
-  $html .=  '<div class="row">
+  $html =  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
   $html .=  '<div class="col-md-12 grid-margin stretch-card">

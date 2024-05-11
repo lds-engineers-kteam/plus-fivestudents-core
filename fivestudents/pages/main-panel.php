@@ -355,9 +355,5 @@ function main_panel(){
     }
   // }
 
-
-          
   echo $html;
-
-  
 }
