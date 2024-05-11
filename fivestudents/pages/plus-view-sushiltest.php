@@ -1,0 +1,895 @@
+<?php
+function plus_view_sushiltest(){
+  global $wp, $MOODLESESSION;
+  $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
+  $formdata = new stdClass();
+  $formdata->id = plus_get_request_parameter("id", 0);
+  $formdata->schoolyear = plus_get_request_parameter("schoolyear", $MOODLESESSION->currentschoolyear);
+  $formdata->categoryid = plus_get_request_parameter("categoryid", 0);
+  $formdata->courseid = plus_get_request_parameter("courseid", 0);
+  $formdata->quiz = plus_get_request_parameter("quiz", "");
+  $formdata->groupid = plus_get_request_parameter("groupid", 0);
+  $formdata->students = plus_get_request_parameter("students", array());
+  $formdata->showreport = plus_get_request_parameter("showreport", "");
+  $formdata->fromdate = plus_get_request_parameter("fromdate", date("Y-m-d\TH:i",$MOODLESESSION->currentYear->startdate?:time()));
+  $formdata->todate = plus_get_request_parameter("todate", date("Y-m-d\TH:i",$MOODLESESSION->currentYear->enddate?:time()));
+
+  $SchoolyearAPI = $MOODLE->get("getAllSchoolyear", null, $formdata);
+  $allschoolyear = array();
+  if($SchoolyearAPI->data){
+    $allschoolyear = $SchoolyearAPI->data;
+    if($MOODLESESSION->currentschoolyear != $formdata->schoolyear){
+      $school_key = array_search($formdata->schoolyear, array_column($allschoolyear, 'id'));
+      if($school_key !== false){
+        if($schoolyear = $allschoolyear[$school_key]){
+          $formdata->fromdate = date("Y-m-d\TH:i",$schoolyear->startdate?:time());
+          $formdata->todate = date("Y-m-d\TH:i",$schoolyear->enddate?:time());
+        }
+      }
+    }
+  }
+  $APIREScompetenciesdata = $MOODLE->get("getclassProfileFilter", null, $formdata);
+  if($formdata->showreport == 'show'){
+    $filtereddata = $MOODLE->get("getclassProfileReport", null, $formdata);
+  }
+  $html ='';
+  // $html .='<pre>'.print_r($formdata, true).'</pre>';
+  // $html .='<pre>'.print_r($filtereddata, true).'</pre>';
+  $allGrades=array();
+  $selectedgrade=null;
+  $selectedGroup=null;
+  $selectedcourse=array();
+  $selectedquiz=array();
+  $selectedStudents=array();
+  foreach($APIREScompetenciesdata->data as $competenciesdata){
+    array_push($allGrades,$competenciesdata);   
+  }
+  $html .= '<style type="text/css">
+  .datareport .smalldot {
+    width: 15px;
+    height: 15px;
+  }
+  table.datareport *{
+    vertical-align: middle;
+}
+</style>';
+  $html .=  '<div class="row">
+            <div class="col-md-12 grid-margin transparent">
+              <div class="row">';
+  $html .=  '<div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">'.plus_get_string("classprofile", "report").'</h4>
+                  <form method="GET" id="classprofilereport" class="forms-sample" autocomplete="off" action="/class-profile-filter">
+                    <div class="form-group row">
+                      <label for="schoolyear" class="col-sm-2 col-form-label">'.plus_get_string("schoolyear", "site").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="schoolyear" id="schoolyear">
+                          ';
+                          foreach($allschoolyear as $schoolyear){
+                            $selected=($formdata->schoolyear == $schoolyear->id)?'selected':'';
+                            $current=$schoolyear->current?'(Current)':'';
+                            $html .='<option value="'.$schoolyear->id.'" '.$selected.'> '.$schoolyear->name.$current.'</option>';
+                          }
+                    $html .= '</select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="categoryid" class="col-sm-2 col-form-label">'.plus_get_string("level", "form").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="categoryid" id="categoryid">
+                          <option value="">'.plus_get_string("select", "form").' '.plus_get_string("level", "form").'</option>
+                          ';
+                          foreach($allGrades as $grades){
+                            $selected='';
+                            if($formdata->categoryid == $grades->categoryid){
+                              $selected='selected';
+                              $selectedgrade = $grades;
+                            }
+                            $html .='<option value="'.$grades->categoryid.'" '.$selected.'> '.$grades->name.'</option>';
+                          }
+                    $html .= '      </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="groupid" class="col-sm-2 col-form-label">'.plus_get_string("group", "form").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="groupid" id="groupid">';
+                          if(isset($selectedgrade) && is_array($selectedgrade->groups)){
+                            foreach($selectedgrade->groups as $group){
+                              $selected='';
+                              if($formdata->groupid == $group->groupid){
+                                $selected='selected';
+                                $selectedGroup = $group;
+                              }
+                              $html .='<option value="'.$group->groupid.'" '.$selected.'> '.$group->name.'</option>';
+                            }
+                          }
+                       $html .=' </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="courseid" class="col-sm-2 col-form-label">'.plus_get_string("matter", "form").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="courseid" id="courseid">';
+                          if(isset($selectedGroup) && is_array($selectedGroup->courses)){
+                            foreach($selectedGroup->courses as $course){
+                              $selected='';
+                              if($formdata->courseid == $course->id){
+                                $selected='selected';
+                                $selectedcourse = $course;
+                              }
+                              $html .='<option value="'.$course->id.'" '.$selected.'> '.$course->fullname.'</option>';
+                            }
+                          }
+                       $html .=' </select>
+                      </div>
+                    </div>
+                      <div class="form-group row">
+                      <label for="quiz" class="col-sm-2 col-form-label">'.plus_get_string("homework", "form").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="quiz" id="quiz">';
+                          if(isset($selectedcourse) && is_array($selectedcourse->quizes)){
+                            $html .='<option value="" '.$selected.'>All</option>';
+                            foreach($selectedcourse->quizes as $quiz){
+                              $selected='';
+                              if($formdata->quiz == $quiz){
+                                $selected='selected';
+                              }
+                              $html .='<option value="'.$quiz.'" '.$selected.'> '.$quiz.'</option>';
+                            }
+                          }
+                       $html .=' </select>
+                      </div>
+                    </div>
+                     <div class="form-group row">
+                      <label for="students" class="col-sm-2 col-form-label">'.plus_get_string("students", "form").'</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" name="students[]" id="students" multiple>';
+                          if(isset($selectedGroup) && is_array($selectedGroup->courses)){
+                            foreach($selectedGroup->group_member as $member){
+                              $selected='';
+                              if(in_array($member->userid, $formdata->students)){
+                                $selected='selected';
+                              }
+                              $html .='<option value="'.$member->userid.'" '.$selected.'> '.$member->firstname.' '.$member->lastname.'</option>';
+                            }
+                          }
+                       $html .=' </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="fromdate" required="required" class="col-sm-2 col-form-label">'.plus_get_string("from", "form").' *</label>
+                      <div class="col-sm-10">
+                        <input type="datetime-local" required="required" name="fromdate" class="form-control" id="fromdate" value="'.$formdata->fromdate.'">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="todate" required="required" class="col-sm-2 col-form-label">'.plus_get_string("to", "form").' *</label>
+                      <div class="col-sm-10">
+                        <input type="datetime-local" required="required" name="todate" class="form-control" id="todate" value="'.$formdata->todate.'">
+                      </div>
+                    </div>
+                    <button type="submit" name="showreport" id="showreport" value="show" class="btn btn-primary mr-2">'.plus_get_string("search", "form").'</button>
+                    <a href="/class-profile-filter" class="btn btn-warning">'.plus_get_string("cancel", "form").'</a>
+                    <a href="'.(empty($formdata->groupid)?'/class-profile':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                  </form>
+                </div>
+              </div>
+            </div>';
+if($formdata->showreport){
+  $html .=  '<br/><hr/><br/>';
+  $averagedata = array();
+  if($filtereddata->data){
+    $html .=  '<br/><hr/><br/>';
+    $html .=  '<div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h4 class="card-title">Report</h4>-->';
+    if(sizeof($filtereddata->data->unitdata) > 0){
+      $html .=          '<div class="row table-scroll">
+                          <table class="datareport">
+                            <tr>
+                              <th>'.plus_get_string("students", "form").'</th>';
+      $subtopichtml ='      <tr><td></td>';
+      $gradehtml ='      <tr><td></td>';
+                            foreach ($filtereddata->data->unitdata as $key => $unitdata) {
+                              if(sizeof($unitdata->subtopic) == 0){continue;}
+                              foreach ($unitdata->subtopic as $key => $subtopic) {
+                                $sbtdata = new stdClass();
+                                $sbtdata->gotscore = array();
+                                $sbtdata->finalpercent = array();
+                                $sbtdata->percentscore = array();
+                                $sbtdata->totalscore = array();
+                                $averagedata[$subtopic->id] = $sbtdata;
+      $subtopichtml .=          '<td colspan="4"><p class="text-center font-weight-bold mb-0" '.($subtopic->lang == 'ar'?'style="direction:rtl;"':'').' >'.($subtopic->name?$subtopic->name:"SubTopic ".$subtopic->section).'</p></td>';
+      $gradehtml .=             '<td ><p class="text-left font-weight-bold mb-0">'.plus_get_string("status_failed", "form").'</p></td>
+                                 <td ><p class="text-left font-weight-bold mb-0">'.plus_get_string("statusbasic", "report").'</p></td>
+                                 <td ><p class="text-left font-weight-bold mb-0">'.plus_get_string("statusgood", "report").'</p></td>
+                                 <td ><p class="text-left font-weight-bold mb-0">'.plus_get_string("statusexcelent", "report").'</p></td>';
+                              }
+      $html .=                '<th colspan="'.(sizeof($unitdata->subtopic) * 4).'"><p class="text-center font-weight-bold mb-0"   '.($unitdata->lang == 'ar'?'style="direction:rtl;"':'').'>'.($unitdata->name?$unitdata->name:"Topic ".$unitdata->section).'</p></th>';
+                            }
+      $html .=              '</tr>';
+      $subtopichtml .=      '</tr>';
+      $gradehtml .=      '</tr>';
+      $html .=              $subtopichtml;
+      $html .=              $gradehtml;
+      $studenthtml = '';
+                            foreach ($filtereddata->data->studentdata as $key => $student) {
+      $studenthtml .=          '<tr><td>'.$student->firstname.' '.$student->lastname.'</td>';
+                              foreach ($filtereddata->data->unitdata as $unitdata) {
+                                if(sizeof($unitdata->subtopic) == 0){continue;}
+                                foreach ($unitdata->subtopic as $subtopic) {
+                                  $topicid = $unitdata->id;
+                                  $subtopicid = $subtopic->id;
+                                  $ques_att = $student->scoredata->$topicid->$subtopicid;
+                                  $ques_att->totalmarks1 = number_format($ques_att->totalmarks, 2);
+                                  $ques_att->totalmaxmarks1 = number_format($ques_att->totalmaxmarks, 2);
+                                  $ques_att->totalmaxfraction1 = number_format($ques_att->totalmaxfraction, 2);
+                                  $ques_att->maxfraction = number_format($filtereddata->data->xpsetting->roundon, 2);
+                                  $ques_att->fraction = (($ques_att->totalattempt > 0)?($ques_att->totalmarks1/$ques_att->totalmaxmarks1)*$ques_att->totalmaxfraction1:0);
+                                  $ques_att->fraction = number_format($ques_att->fraction, 2);
+                                  $ques_att->maxmark = number_format($ques_att->totalmaxmarks, 2);
+                                  $ques_att->percent = ($ques_att->totalmarks1/$ques_att->totalmaxmarks1)*100;
+                                  $colordataposition = 0;
+                                  $color='grey';
+                                  if($ques_att->totalattempt > 0){
+                                    array_push($averagedata[$subtopic->id]->finalpercent, $ques_att->finalpercent);
+                                    array_push($averagedata[$subtopic->id]->gotscore, $ques_att->fraction);
+                                    array_push($averagedata[$subtopic->id]->percentscore, $ques_att->percent);
+                                    array_push($averagedata[$subtopic->id]->totalscore, $ques_att->maxfraction);
+                                    if($ques_att->finalpercent > 8.5){$color = 'blue'; $colordataposition=3;}
+                                    else if($ques_att->finalpercent > 7.0){$color = 'lightgreen';$colordataposition=2;} 
+                                    else if($ques_att->finalpercent > 5.0){$color = 'yellow';$colordataposition=1;} 
+                                    else {$color = 'red';$colordataposition=0;} 
+                                  }
+                                  $colordata = ''.(number_format($ques_att->finalpercent, 2)).'/'.$ques_att->maxfraction.'<br/><span class="smalldot '.$color.'"></span>';//."<br>subtopicid: {$subtopicid},<br>percent: {$ques_att->percent}, <br>fraction: {$ques_att->fraction}<br>maxfraction: {$ques_att->maxfraction}";
+                                  if($subindex != 0){
+                                      $html .= '<tr>';
+                                  }
+      $studenthtml .=             '<td class="text-center 0" >'.(($colordataposition == 0)?$colordata:'').'</td>
+                                  <td class="text-center 1" >'.(($colordataposition == 1)?$colordata:'').'</td>
+                                  <td class="text-center 2" >'.(($colordataposition == 2)?$colordata:'').'</td>
+                                  <td class="text-center 3" >'.(($colordataposition == 3)?$colordata:'').'</td>';
+
+                                }
+                              }
+      $studenthtml .=          '</tr>';
+
+                            }
+      $html .=              $studenthtml;
+      // $html .=              '<pre>'.print_r($averagedata, true).'</pre>';
+      $html .=              '<tr><td>'.plus_get_string("groupaverage", "form").'</td>';
+                            foreach ($filtereddata->data->unitdata as $key => $unitdata) {
+                              if(sizeof($unitdata->subtopic) == 0){continue;}
+                              foreach ($unitdata->subtopic as $key => $subtopic) {
+                                $percentscore = $averagedata[$subtopic->id]->percentscore;
+                                $gotscore = $averagedata[$subtopic->id]->gotscore;
+                                $finalpercent = $averagedata[$subtopic->id]->finalpercent;
+                                $totalscore = $averagedata[$subtopic->id]->totalscore;
+                                $colordataposition = 0;
+                                $color='grey';
+                                $gotscoreaverage = 0;
+                                $percentaverage = 0;
+                                $totalscoreaverage = 0;
+                                if(sizeof($percentscore) > 0){
+                                  $percentaverage = array_sum($finalpercent)/count($finalpercent);
+                                  $gotscoreaverage = array_sum($gotscore)/count($gotscore);
+                                  $totalscoreaverage = array_sum($totalscore)/count($totalscore);
+                                  if($percentaverage > 8.5){$color = 'blue'; $colordataposition=3;}
+                                  else if($percentaverage > 7.0){$color = 'lightgreen';$colordataposition=2;} 
+                                  else if($percentaverage > 5.0){$color = 'yellow';$colordataposition=1;} 
+                                  else {$color = 'red';$colordataposition=0;} 
+                                }
+                                $colordata = ''.number_format($percentaverage,2).'/'.number_format($totalscoreaverage,2).'<br/><span class="smalldot '.$color.'"></span>';
+      $html .=                    '<td class="text-center 0" >'.(($colordataposition == 0)?$colordata:'').'</td>
+                                  <td class="text-center 1" >'.(($colordataposition == 1)?$colordata:'').'</td>
+                                  <td class="text-center 2" >'.(($colordataposition == 2)?$colordata:'').'</td>
+                                  <td class="text-center 3" >'.(($colordataposition == 3)?$colordata:'').'</td>';
+
+                              }
+                            }
+      $html .=              '</tr>';
+
+
+      $html .=          ' </table>
+                        </div>';
+    } else {
+      $html .=              '<div class="alert alert-info">'.plus_get_string('norecordfound','form').'</div>';
+    }
+
+    $html .=  '</div>
+            </div>
+          </div>';
+
+  }
+/*
+  $html .=  '<div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Report</h4>';
+                  
+$html .= '
+      <div class="row table-scroll">
+        <table class="datareport">
+          <tr>
+            <th>Student</th>
+            <th colspan="16" class="text-center font-weight-bold" >Unit1</th>
+            <th colspan="16" class="text-center font-weight-bold" >Unit2</th>
+            <th colspan="16" class="text-center font-weight-bold" >Unit3</th>
+            <th colspan="16" class="text-center font-weight-bold" >Unit4</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u1l1</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u1l2</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u1l3</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u1l4</p></td>
+
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u2l1</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u2l2</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u2l3</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u2l4</p></td>
+
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u3l1</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u3l2</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u3l3</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u3l4</p></td>
+
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u4l1</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u4l2</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u4l3</p></td>
+            <td colspan="4"><p class="text-center font-weight-bold mb-0">u4l4</p></td>
+
+          </tr>
+          <tr>
+            <td></td>
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+            <td ><p class="text-left font-weight-bold mb-0">Not reached</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Minimally Achieved</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Satisfying</p></td>
+            <td ><p class="text-left font-weight-bold mb-0">Excellent</p></td>
+
+          </tr>
+          <tr>
+            <td>Sanjana Dagar</td>
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+          </tr>
+          <tr>
+            <td>Sanjana Dagar</td>
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+          </tr>
+          <tr>
+            <td>Sanjana Dagar</td>
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+          </tr>
+          <tr>
+            <td>Sanjana Dagar</td>
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+            <td class="text-center"><span class="smalldot red"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot yellow"></span></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span></td>
+            <td class="text-center"></td>
+            
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"><span class="smalldot blue"></span></td>
+            
+
+          </tr>
+          <!--<tr>
+            <td class="font-weight-bold mb-0">Average</td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot lightgreen"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+
+            <td class="text-center"><span class="smalldot blue"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot yellow"></span><p class="font-weight-bold mb-0"></p></td>
+            <td class="text-center"><span class="smalldot red"></span><p class="font-weight-bold mb-0"></p></td>
+          </tr>-->
+        </table>
+      </div>
+ ';   
+
+  $html .=  '
+                </div>
+              </div>
+            </div>';
+
+  // $html .=  '<div class="col-lg-12 grid-margin stretch-card table-responsive">'.$APIRES.'</div>';
+  $html .=  '</div>
+            </div>
+          </div>';
+            */
+}
+
+  $html .=  '
+  <script>
+  $(function(){
+    var allGrades='.json_encode($allGrades).';
+    var selectedgrade=null;
+    var selectedgroup=null;
+    var selectedcourse=null;
+    $("body").on("change","#schoolyear",function(){
+      $("#showreport").val("schoolyearchanged");
+      $("#classprofilereport").trigger("submit");
+    });
+    $("body").on("change","#categoryid",function(){
+      var categoryid=$(this).val();
+      var groupoption="";
+      console.log("categoryid-- ",categoryid);
+      selectedgrade=allGrades?.find(function(gradeitem){
+        return gradeitem.categoryid==categoryid;
+      });
+      if(selectedgrade){
+        selectedgrade.groups?.forEach(function(group){
+          groupoption +=\'<option value="\'+group.groupid+\'">\'+group.name+\'</option>\';
+        });
+      }
+      $("#groupid").html(groupoption);
+      $("#groupid").trigger("change");
+    });
+    $("body").on("change","#groupid",function(){
+      var groupid=$(this).val();
+      var courseoption="";
+      var studentoption="";
+      console.log("groupid-- ",groupid);
+      if(selectedgrade){
+        selectedgroup=selectedgrade?.groups?.find(function(groupitem){
+          return groupitem.groupid==groupid;
+        });
+        if(selectedgroup){
+          selectedgroup.courses?.forEach(function(course){
+            courseoption +=\'<option value="\'+course.id+\'">\'+course.fullname+\'</option>\';
+          });
+          selectedgroup.group_member?.forEach(function(member){
+            studentoption +=\'<option value="\'+member.userid+\'">\'+member.firstname+\' \'+member.lastname+\'</option>\';
+          });
+        }
+      }
+      $("#courseid").html(courseoption);
+      $("#courseid").trigger("change");
+      $("#students").html(studentoption);
+      $("#students").trigger("change");
+    });
+    $("body").on("change","#courseid",function(){
+      var courseid=$(this).val();
+      var quizoption=\'<option value="">'.plus_get_string("all", "site").'</option>\';
+      if(selectedgroup){
+        selectedcourse=selectedgroup?.courses?.find(function(courseitem){
+          return courseitem.id==courseid;
+        });
+        if(selectedcourse){
+          selectedcourse.quizes?.forEach(function(quiz){
+            quizoption +=\'<option value="\'+quiz+\'">\'+quiz+\'</option>\';
+          });
+        }
+      }
+      $("#quiz").html(quizoption);
+    });
+  });
+  </script>';
+
+    echo $html;
+  }

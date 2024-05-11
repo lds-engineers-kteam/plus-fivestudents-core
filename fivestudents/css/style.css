@@ -1,0 +1,468 @@
+/*app progressbars starts here*/
+.appdataprogress {
+    margin-bottom: 25px;
+}
+.appdataprogress .progress {
+    background-color: #969696;
+}
+.appdataprogress .progress .progress-bar{
+    overflow: unset;
+}
+/*app progressbars ends here*/
+.login-form h1 {
+    margin-top: 0;
+    font-size: 36px;
+    color: #003A96;
+    font-weight: 600;
+}
+.userprofile {
+    padding: 0px 10px;
+    text-align: right;
+}
+.onlyprint {
+    display: none;
+}
+.strands_competencies {
+    display: flex;
+    justify-content: center;
+}
+
+.table-scroll{
+    overflow-x: scroll;
+}
+
+
+.table-scroll table tbody>tr:nth-child(odd)>td, table tbody>tr:nth-child(odd)>th{
+    background-color: transparent;
+}
+
+.table-scroll table tbody tr:hover>td, table tbody tr:hover>th{
+    background-color: transparent;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+.dRed{
+    background-color: #ff2525cc !important;
+}
+
+.lYellow{
+    background-color: #fff53b !important;
+}
+
+.lGreen{
+    background-color: #00ff33a6 !important;
+}
+
+.sBlue{
+    background-color: #2196f3 !important;
+}
+[type=button],[type=submit],button {
+    display: inline-block;
+    font-weight: 400;
+    color: #c36;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid #c36;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border-radius: 3px;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s
+}
+
+table {
+    background-color: transparent;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: .9em;
+    border-spacing: 0;
+    border-collapse: collapse
+}
+
+table td,table th {
+    padding: 15px;
+    line-height: 1.5;
+    vertical-align: top;
+    border: 1px solid #ccc
+}
+
+table th {
+    font-weight: 700
+}
+
+table tfoot th,table thead th {
+    font-size: 1em
+}
+
+table caption+thead tr:first-child td,table caption+thead tr:first-child th,table colgroup+thead tr:first-child td,table colgroup+thead tr:first-child th,table thead:first-child tr:first-child td,table thead:first-child tr:first-child th {
+    border-top: 1px solid #ccc
+}
+
+table tbody>tr:nth-child(odd)>td,table tbody>tr:nth-child(odd)>th {
+    background-color: #f7f7f7
+}
+
+table tbody tr:hover>td,table tbody tr:hover>th {
+    background-color: #e9e9e9
+}
+
+table tbody+tbody {
+    border-top: 2px solid #ccc
+}
+
+@media (max-width: 767px) {
+    table table {
+        font-size:.8em
+    }
+
+    table table td,table table th {
+        padding: 7px;
+        line-height: 1.3
+    }
+
+    table table th {
+        font-weight: 400
+    }
+}
+
+dd,dl,dt,li,ol,ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent
+}
+
+.blueform .input-group-text {
+    background-color: #00b0f4;
+    color: #ffffff !important;
+}
+.blueform .input-group .form-control{
+	border-color: #00b0f4;
+    border-left: unset;
+    background: white;
+}
+.dot {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 5px;
+}
+.smalldot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 5px;
+	background-color: #ffebf9;
+}
+.purple{
+	background-color: purple !important;
+}
+.yellow{
+	background-color: #ffbc42 !important;
+	color: #ffffff;
+}
+.green{
+	background-color: #99d78e !important;
+	color: #ffffff;
+}
+.lightgreen{
+	background-color: #00FF33 !important;
+}
+.orange{
+	background-color: orange !important;
+}
+.red{
+	background-color: red !important;
+}
+.blue{
+	background-color: #426bc7 !important;
+	color: #ffffff;
+}
+.lightblue{
+	background-color: #00b0f4 !important;
+	color: #ffffff;
+}
+.gray{
+	background-color: #afabaa !important;
+	color: #ffffff;
+}
+.white{
+	background-color: #ffffff !important;
+}
+.fs-30 {
+    line-height: 1em;
+}
+.fs-20 {
+    font-size: 20px;
+    line-height: 1em;
+
+}
+.fs-40 {
+    font-size: 40px;
+    line-height: 1em;
+
+}
+.homeworkdata .card.notstarted {
+    background-color: #f2f2f2;
+    color: #ff0000;
+}
+.homeworkdata .card.incomplete {
+    background-color: #afabaa;
+    color: #ffffff;
+}
+.homeworkdata .card.completed {
+    background-color: #99d78e;
+}
+.homeworkdata .card.completed .count {
+    color: #ffffff;
+}
+.homeworkdata .card.completed .percent {
+    color: #3e8936;
+}
+.homeworkdata .card.passed {
+    background-color: #426bc7;
+}
+.homeworkdata .card.passed .count {
+    color: #ffffff;
+}
+.homeworkdata .card.notpassed {
+    background-color: #ffbc42;
+    color: #ffffff;
+}
+.btn-dashboardfilter {
+    background-color: #eb739b;
+}
+.homeworkdata .card.passed .count {
+}
+.homeworkdata .card.passed .percent {
+    color: #fadc66;
+}
+.card.tale-bg {
+    background: url('../images/tableau-de-bord.png') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center;
+    background-attachment: fixed !important;
+}
+.blueform .input-group-text {
+    background-color: #00b0f4;
+    color: #ffffff !important;
+}
+.blueform .input-group .form-control{
+    border-color: #00b0f4;
+    border-left: unset;
+    background: white;
+}
+#dashboardfilter {
+    width: 200px;
+}
+.homeworkstatus .card-people {
+    margin: 0px !important;
+}
+.homeworkstatus .filterform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-blue {
+    background-color: #073783 !important;
+    color: #ffffff !important;
+    border-color: blue !important;
+}
+.card-body.haveaction {
+    position: relative;
+}
+.card-body.haveaction>.card-title {
+    min-height: 2em;
+}
+.card-body.haveaction .card-body-action {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    padding: 10px 15px;
+}
+
+
+/*Mobile view*/
+@media only screen and (max-width: 767px) {
+    .btn-group-responsive {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+    }
+    .btn-group-responsive > * {
+        width: 100% !important;
+        border: 1px solid #c36 !important;
+    }
+    .btn-group-responsive > *:not(:first-child) {
+        border-top: 0px !important;
+    }
+    .card-body.haveaction .card-body-action {
+        position: relative;
+        width: 100%;
+        padding: 0px;
+        top: 0px;
+        right: unset;
+    }
+    .card-body.haveaction .card-body-action>*{
+        margin-bottom: 15px;
+    }
+}
+
+/*Calendar starts here*/
+.fc-event {
+    margin-top: -7px !important;
+    margin-bottom: 7px !important;
+}
+.fc-event.status-none, .fc-event.status-past, .fc-event.status-planned {
+    background: darkgray !important;
+    border-left-color: gray !important;
+}
+.fc-event.status-started {
+    background: #fb8334 !important;
+    border-left-color: #fb8334 !important;
+}
+.fc-event.status-completed {
+    background: #4ba33b !important;
+    border-left-color: #4ba33b !important;
+}
+.fc-event.status-cancelled {
+    background: #db3b3b !important;
+    border-left-color: #db3b3b !important;
+}
+.fc-event.status-claim {
+    background: #935ba3 !important;
+    border-left-color: #935ba3 !important;
+}
+.fc-event.status-inprogress {
+    background: #db5383 !important;
+    border-left-color: #db5383 !important;
+}
+.dialogbody {
+    display: flex;
+    flex-direction: column;
+}
+tr.selected, tr.selected td {
+    background-color: #c3e4ff !important;
+}
+
+/*Calendar ends here*/
+
+/*survey starts here*/
+[surveyplayer] {
+    position: relative;
+}
+#apiLoader {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#apiLoader.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/*survey ends here*/
+/*Question viewer starts here*/
+div#questionviewer * {
+    font-size: 18px;
+}
+
+#questionviewer .modal-title {
+    width: 100%;
+}
+div#questionviewer .qtext a, .questionlist a{display:none;}
+#questionviewer .modal-dialog {
+    max-width: 90% !important;
+}
+
+.questionlist {}
+.questionset a, .questionlist a {
+    display: none;
+}
+
+.questionlist.ar, .modal.ar {
+    direction: rtl;
+    text-align: right;
+}
+.modal.ar .modal-footer{
+    justify-content: flex-start;
+}
+
+@media only screen and (min-width: 576px) {
+    #questionviewer .modal-dialog {
+        max-width: 90% !important
+    }
+}
+.questionlist {}
+
+.questionlist.ar {
+    direction: rtl;
+    text-align: right;
+}
+
+.questionlist .questionset {}
+
+.questionlist .questionset {
+    margin-bottom: 25px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.questionlist .questionset .questionhead {
+    padding: 5px;
+    border-bottom: 1px solid lightgray;
+}
+
+.questionlist .questionset .questionhead * {
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
+.questionlist .questionset .questionbody {
+    padding: 5px;
+}
+
+button.btn.btn-lg.viewtask {
+    padding: 8px 25px;
+    margin-left: 20px;
+}
+
+.questionlist .questionset .homeworkquiz {
+    padding: 10px;
+}
+
+.questionanssection {
+    padding: 20px 10px;
+}
+
+.homeworkreport-card {
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+/*Question viewer ends here*/
