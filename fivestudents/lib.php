@@ -7,7 +7,6 @@ function home_url($optionalparam) {
 
 
 function wp_set_current_user($user) {
-	
 	$newUserObj = new stdClass();
 	$newUserObj->token = $user->token; 
 	$newUserObj->privatetoken = $user->privatetoken;
@@ -29,9 +28,8 @@ function wp_set_current_user($user) {
 	$newUserObj->roles = "";
 	$newUserObj->allcaps = "";
 	$newUserObj->filter = "";
-
+	$newUserObj->lang = "FR";
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
-
 }
 
 
@@ -107,6 +105,9 @@ function get_user_meta( int $user_id, string $key = "", bool $single = false ) {
             case 'filter':
                 $meta_value = $newUserObj->filter;
                 break;
+            case 'lang':
+                $meta_value = $newUserObj->filter;
+                break;
             default:
                 $meta_value = $single ? '' : null;
                 break;
@@ -176,12 +177,13 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
             case 'filter':
                 $newUserObj->filter = $meta_value;
                 break;
+            case 'lang':
+                $newUserObj->lang = $meta_value;
+                break;
         }
     }
     return $_SESSION['CURRENTUSERSESSION'] = $newUserObj; 
 }
-
-
 
 function authenticate_user_login($args) {
     global $DB, $CFG, $USER;
@@ -204,24 +206,18 @@ function authenticate_user_login($args) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             $gettoken = curl_exec($ch);
-
             if($gettoken = json_decode($gettoken)) {
                 if($gettoken->token){
-                    // self::validatetoken($gettoken->token);
-                    // $responsedata = new stdClass();
-                    // $responsedata->token = $gettoken->token;
-                    // $responsedata->userDetails = $PARENTUSER;
-                    // $this->sendResponse($responsedata);
+                   wp_set_current_user($gettoken);
+				   redirect("{$CFG->wwwroot}/dashboard/");
                 } else {
-                    // $this->sendError("Login Failed", "Invalid Credentials");
+				   redirect("{$CFG->wwwroot}/login/");
                 }
             } else {
-                // $this->sendError("Login Failed", "Login Failed");       
+				redirect("{$CFG->wwwroot}/login/");
             }
         }
     } 
-    wp_set_current_user($gettoken);
-	redirect("{$CFG->wwwroot}/dashboard/");
 }
 
 function plus_validatetoken($token){
