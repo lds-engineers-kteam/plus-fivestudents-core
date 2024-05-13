@@ -16,7 +16,7 @@ function main_panel(){
   $MOODLE = new MoodleManager($current_user);
   $APIRES = $MOODLE->get("Dashboard", null, $formdata);
   // echo "<pre>";
-  // print_r($APIRES);
+  // print_r($current_user);
   // die;
   $html =  '<div class="row">'.(is_string($APIRES)?$APIRES:json_encode($APIRES)).'</div>';
   $html =  '<div class="row">';

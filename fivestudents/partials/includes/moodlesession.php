@@ -1,6 +1,6 @@
 <?php
 
-plus_startMoodleSession();
+// plus_startMoodleSession();
 function plus_checkerror(){
   $html="";
   global $MOODLESESSION;

@@ -16,6 +16,6 @@ main_header();
 // $settings_panel_el = settings_panel();
 // $sidebar_el = sidebar();
 // $main_panel_el = plus_view_noaccess();
-main_panel();
+// main_panel();
 plus_add_group();
 main_footer();

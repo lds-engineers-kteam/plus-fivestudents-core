@@ -6,30 +6,25 @@ function home_url($optionalparam) {
 }
 
 
-function wp_set_current_user($user) {
-	$newUserObj = new stdClass();
-	$newUserObj->token = $user->token; 
-	$newUserObj->privatetoken = $user->privatetoken;
-	$newUserObj->currentinstitution = "";
-	$newUserObj->ID = 888;
-	$newUserObj->INSTITUTION = "TestInstitute";
-	$newUserObj->display_name = "Sourav";
-	$newUserObj->nickname = "";
-	$newUserObj->first_name = "";
-	$newUserObj->last_name = "";
-	$newUserObj->description = "";
-	$newUserObj->user_login = "";
-	$newUserObj->user_pass = "";
-	$newUserObj->user_nicename = "";
-	$newUserObj->user_url = "";
-	$newUserObj->user_registered = "";
-	$newUserObj->user_activation_key = "";
-	$newUserObj->user_status = 0;
-	$newUserObj->roles = "";
-	$newUserObj->allcaps = "";
-	$newUserObj->filter = "";
+function wp_set_current_user($tokenObj) {
+    global $MOODLESESSION, $WPUSER;
+    plus_startMoodleSession($tokenObj);
+    plus_getUsermeta($tokenObj);
+    $newUserObj = new stdClass();
+    $newUserObj->data = $WPUSER->data;
+	$newUserObj->token = $tokenObj->token; 
+	$newUserObj->privatetoken = $tokenObj->privatetoken;
 	$newUserObj->lang = "FR";
+	$newUserObj->user_status = 0;
+    $newUserObj->ID = $WPUSER->data->ID;
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+
+    // echo "<pre>";
+    // print_r($newUserObj);
+    // echo "</pre>";
+    // die;
+
+    return isset($WPUSER)?true:false;
 }
 
 
@@ -106,7 +101,7 @@ function get_user_meta( int $user_id, string $key = "", bool $single = false ) {
                 $meta_value = $newUserObj->filter;
                 break;
             case 'lang':
-                $meta_value = $newUserObj->filter;
+                $meta_value = $newUserObj->lang;
                 break;
             default:
                 $meta_value = $single ? '' : null;
@@ -187,13 +182,13 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
 
 function authenticate_user_login($args) {
     global $DB, $CFG, $USER;
-    $logintype =  "normal";     
-    $username =  $args['username'];     
-    $password =  $args['password'];     
-    $token =  $args['token'];
+    $logintype = "normal";     
+    $username = $args['username'];     
+    $password = $args['password'];     
     if($logintype == "normal") {
         if(empty($username) || empty($password)) {
-            // $this->sendError("Login Failed", "Username and password is reqired");
+            return "Username and password is reqired";
+            die;
         } else {
             $postDATA = [
                 'username' => $args['username'],
@@ -208,25 +203,23 @@ function authenticate_user_login($args) {
             $gettoken = curl_exec($ch);
             if($gettoken = json_decode($gettoken)) {
                 if($gettoken->token){
-                   wp_set_current_user($gettoken);
-				   redirect("{$CFG->wwwroot}/dashboard/");
+                   if(wp_set_current_user($gettoken)){
+                       redirect("{$CFG->wwwroot}/dashboard/");
+                       die;
+                   } else {
+				    redirect("{$CFG->wwwroot}/login/");
+                    die;
+                   }
                 } else {
-				   redirect("{$CFG->wwwroot}/login/");
+                   redirect("{$CFG->wwwroot}/login/");
+                   die;
                 }
             } else {
 				redirect("{$CFG->wwwroot}/login/");
+                die;
             }
         }
     } 
-}
-
-function plus_validatetoken($token){
-	global $wpdb;
-	$table = $wpdb->prefix."user_logintoken";
-	if($oldtoken=$wpdb->get_row("select * from $table where active=1 and token= '$token' and validuntil > ".time())){
-		$wpdb->update($table,array("lastaccess"=>time(), "validuntil"=>strtotime("+10 minute")), array("token"=>$token));
-        return $oldtoken->userid;
-	}
 }
 
 function current_user_can($string) {
@@ -392,16 +385,17 @@ function plus_is_admin_user() {
     return current_user_can( 'manage_options' );
 }
 
-function plus_startMoodleSession(){
+function plus_startMoodleSession($tokenObj) {
 	global $MOODLESESSION, $ALLROLES;
-	$current_user = wp_get_current_user();
-	$MOODLE = new MoodleManager($current_user);
+	$MOODLE = new MoodleManager($tokenObj);
 	$MOODLESESSION = $MOODLE->get("ConnectionTest");
-	echo "<pre>";
-	print_r($MOODLESESSION);
-	echo "</pre>";
-	die;
 	$ALLROLES = array("internaladmin", "schooladmin", "tutoringcenter", "tutor");
+}
+
+function plus_getUsermeta($tokenObj) {
+    global $WPUSER;
+    $MOODLE = new MoodleManager($tokenObj);
+    $WPUSER = $MOODLE->get("GetUsermeta");
 }
 
 function wp_unslash($value) {
