@@ -1,11 +1,12 @@
 <?php
 function plus_view_addevent(){
-  global $wp, $MOODLESESSION;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   if ( !is_user_logged_in() || !current_user_can('plus_editevents') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
     return plus_view_noaccess();
   }
 
-
+  $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();

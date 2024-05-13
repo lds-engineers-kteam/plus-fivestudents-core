@@ -1,7 +1,8 @@
 <?php
 function main_panel(){
-  global $CFG, $MOODLESESSION;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  $MOODLESESSION = wp_get_moodle_session();
 
   $formdata = new stdClass();
   $formdata->categoryid = plus_get_request_parameter("categoryid", 0);

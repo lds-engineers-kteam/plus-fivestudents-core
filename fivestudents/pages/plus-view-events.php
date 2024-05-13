@@ -1,9 +1,12 @@
 <?php
 function plus_view_events(){
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   if ( !is_user_logged_in() || !current_user_can('view_plusmanageevents')) {
     return plus_view_noaccess();
   }
+  
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();

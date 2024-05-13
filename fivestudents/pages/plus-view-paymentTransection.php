@@ -1,6 +1,8 @@
 <?php
 function paymenttrans(){
-  global $wp, $DB;
+  global $wp, $DB,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $fromform = new stdclass();

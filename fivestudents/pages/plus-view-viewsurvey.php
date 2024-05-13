@@ -1,6 +1,8 @@
 <?php
 function plus_view_viewsurvey(){
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   if ( !is_user_logged_in() || !current_user_can('plus_cansubmitsurvey')) {
     return plus_view_noaccess();
   }

@@ -1,6 +1,8 @@
 <?php 
 function studentdatesubscript() {
-global $wp, $DB;
+global $wp, $DB,$CFG;
+require_once($CFG->dirroot . '/api/moodlecall.php');
+
 $html = '';
 $temp = '';
 $current_user = wp_get_current_user();

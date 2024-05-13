@@ -1,7 +1,8 @@
 <?php
 function plus_add_group(){
-  require_once("../config.php");
-  global $wp;
+
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();

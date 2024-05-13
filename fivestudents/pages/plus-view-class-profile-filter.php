@@ -1,6 +1,9 @@
 <?php
 function plus_classProfileFilter(){
-  global $wp, $MOODLESESSION, $CLASSPROFILEAVGDATA;
+  global $wp,$CLASSPROFILEAVGDATA,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+  $MOODLESESSION = wp_get_moodle_session();
+
   $CLASSPROFILEAVGDATA = array();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);

@@ -1,6 +1,9 @@
 <?php
 function plus_view_notifications(){
-  global $wp, $MOODLESESSION;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+  $MOODLESESSION = wp_get_moodle_session();
+
   $current_user = $MOODLESESSION->INSTITUTION->member->userid;
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
