@@ -1,7 +1,8 @@
 <?php
 function main_panel(){
-  global $CFG, $MOODLESESSION;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  $MOODLESESSION = wp_get_moodle_session();
 
   $formdata = new stdClass();
   $formdata->categoryid = plus_get_request_parameter("categoryid", 0);
@@ -15,9 +16,12 @@ function main_panel(){
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $APIRES = $MOODLE->get("Dashboard", null, $formdata);
+  
   // echo "<pre>";
-  // print_r($current_user);
+  // print_r($MOODLESESSION);
+  // echo "</pre>";
   // die;
+  
   $html =  '<div class="row">'.(is_string($APIRES)?$APIRES:json_encode($APIRES)).'</div>';
   $html =  '<div class="row">';
   $html .=  '<div class="col-md-12 grid-margin">
@@ -62,7 +66,7 @@ function main_panel(){
             </div>
           </div>';
   // $html .= (is_object($APIRES)?json_encode($APIRES):$APIRES);
-  // if(is_object($MOODLESESSION)){
+  if(is_object($MOODLESESSION)){
 
     if(current_user_can('plus_viewsubscriptionkpi')){
       $html .=  '<div class="row">
@@ -301,59 +305,61 @@ function main_panel(){
             </div>
       ';
       $html .='<script>
-  $(document).ready(function(){
-    var selectedgrade = null;    
-    var allgrades = '.json_encode($allgrades).';
-    var allgroups = '.json_encode($allgroup).';
-    $("#categoryid").change(function(){
-      var newoptions  ="<option value=\"0\">'.plus_get_string("all", "site").'</option>";
-      var gradeid = $(this).val();
-      var selectedgrade = allgrades.find(x => x.categoryid === gradeid);
-      console.log("selectedgrade-", selectedgrade);
-      if(selectedgrade && Array.isArray(selectedgrade.allgroup)){
-        allgroups = selectedgrade.allgroup;
-        $.each( selectedgrade.allgroup, function( key, group ) {
-          console.log("group- ", group);
-          newoptions += \'<option value="\'+group.groupid+\'">\'+group.name+\'</option>\'
-        });
-      }
-      console.log(newoptions);
-      $("#groupid").html(newoptions);
-    });
-    $("#groupid").change(function(){
-      var newoptions  ="<option value=\"0\">'.plus_get_string("all", "site").'</option>";
-      var groupid = $(this).val();
-      var selectedgroup = allgroups.find(x => x.groupid === groupid);
-      console.log("selectedgroup-", selectedgroup);
-      if(selectedgroup && Array.isArray(selectedgroup.homeworks)){
-        $.each( selectedgroup.homeworks, function( key, homework ) {
-          console.log("group- ", homework);
-          newoptions += \'<option value="\'+homework.id+\'">\'+homework.name+\'</option>\'
-        });
-      }
-      $("#homeworkid").html(newoptions);
-    });
-    $(".filtertype").click(function(){
-      $(".filtertype").removeClass("active");
-      $(this).addClass("active");
-      var filtertype = $(this).data("filtertype");
-      console.log("filtertype- ", filtertype);
-      $("input[name=\'filtertype\']").val(filtertype);
-      if(filtertype != 4){
-        $("#dashboardfilter").submit();
-      }
-    });
-    $("#customdatefiler .datefilter").change(function(){
-      var datetype = $(this).data("filterdate");
-      var dateval = $(this).val();
-      console.log("datetype- ", datetype);
-      console.log("dateval- ", dateval);
-      $("input[name=\'"+datetype+"\']").val(dateval);
-    });
-  })
-  </script>';
+              setTimeout(function() {
+                $(document).ready(function(){
+                  var selectedgrade = null;    
+                  var allgrades = '.json_encode($allgrades).';
+                  var allgroups = '.json_encode($allgroup).';
+                  $("#categoryid").change(function(){
+                    var newoptions  ="<option value=\"0\">'.plus_get_string("all", "site").'</option>";
+                    var gradeid = $(this).val();
+                    var selectedgrade = allgrades.find(x => x.categoryid === gradeid);
+                    console.log("selectedgrade-", selectedgrade);
+                    if(selectedgrade && Array.isArray(selectedgrade.allgroup)){
+                      allgroups = selectedgrade.allgroup;
+                      $.each( selectedgrade.allgroup, function( key, group ) {
+                        console.log("group- ", group);
+                        newoptions += \'<option value="\'+group.groupid+\'">\'+group.name+\'</option>\'
+                      });
+                    }
+                    console.log(newoptions);
+                    $("#groupid").html(newoptions);
+                  });
+                  $("#groupid").change(function(){
+                    var newoptions  ="<option value=\"0\">'.plus_get_string("all", "site").'</option>";
+                    var groupid = $(this).val();
+                    var selectedgroup = allgroups.find(x => x.groupid === groupid);
+                    console.log("selectedgroup-", selectedgroup);
+                    if(selectedgroup && Array.isArray(selectedgroup.homeworks)){
+                      $.each( selectedgroup.homeworks, function( key, homework ) {
+                        console.log("group- ", homework);
+                        newoptions += \'<option value="\'+homework.id+\'">\'+homework.name+\'</option>\'
+                      });
+                    }
+                    $("#homeworkid").html(newoptions);
+                  });
+                  $(".filtertype").click(function(){
+                    $(".filtertype").removeClass("active");
+                    $(this).addClass("active");
+                    var filtertype = $(this).data("filtertype");
+                    console.log("filtertype- ", filtertype);
+                    $("input[name=\'filtertype\']").val(filtertype);
+                    if(filtertype != 4){
+                      $("#dashboardfilter").submit();
+                    }
+                  });
+                  $("#customdatefiler .datefilter").change(function(){
+                    var datetype = $(this).data("filterdate");
+                    var dateval = $(this).val();
+                    console.log("datetype- ", datetype);
+                    console.log("dateval- ", dateval);
+                    $("input[name=\'"+datetype+"\']").val(dateval);
+                  });
+                })
+              }, 6000);
+           </script>';
     }
-  // }
+  }
 
   echo $html;
 }

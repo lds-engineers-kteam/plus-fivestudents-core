@@ -36,6 +36,6 @@ $errormessage = "";
 require_once(__DIR__."/api/moodlecall.php");
 require_once(__DIR__."/lib.php");
 require_once(__DIR__."/partials/includes/languageselector.php");
-// base_init();
+base_init();
 // require_once("classes/APIManager.php");
 // require_once("classes/FILESManager.php");
