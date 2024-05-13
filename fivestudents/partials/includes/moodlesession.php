@@ -1,9 +1,17 @@
 <?php
 
-// plus_startMoodleSession();
 function plus_checkerror(){
   $html="";
-  global $MOODLESESSION;
+  $current_user = wp_get_current_user();
+  $MOODLESESSION = wp_get_moodle_session();
+  $plus_allUserRoles = plus_allUserRoles($current_user->token);
+  $MOODLESESSION->allmyroles = $plus_allUserRoles;
+
+  // echo "<pre>";
+  // print_r($plus_allUserRoles);
+  // echo "</pre>";
+  // die;
+
   if(is_string($MOODLESESSION)){
     return $MOODLESESSION;
   }
@@ -12,5 +20,5 @@ function plus_checkerror(){
       $html = '<div class="alert alert-danger" role="alert">'.$MOODLESESSION->error->message.'</div>';
     }
   }
-  return $html;
+  echo $html;
 }

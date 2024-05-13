@@ -5,9 +5,18 @@ function home_url($optionalparam) {
 	return $CFG->wwwroot . $optionalparam;
 }
 
+function get_avatar_url($token) {
+    global $CFG;
+    $profileurl = $CFG->wwwroot."/webservice/pluginfile.php/89/user/icon/f1?token=".$token;
+    return $profileurl;
+}
+
+function wp_logout_url() {
+    return "#";
+}
 
 function wp_set_current_user($tokenObj) {
-    global $MOODLESESSION, $WPUSER;
+    global $WPUSER;
     plus_startMoodleSession($tokenObj);
     plus_getUsermeta($tokenObj);
     $newUserObj = new stdClass();
@@ -17,12 +26,9 @@ function wp_set_current_user($tokenObj) {
 	$newUserObj->lang = "FR";
 	$newUserObj->user_status = 0;
     $newUserObj->ID = $WPUSER->data->ID;
-    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+    $newUserObj->display_name = $WPUSER->data->display_name;
 
-    // echo "<pre>";
-    // print_r($newUserObj);
-    // echo "</pre>";
-    // die;
+    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
 
     return isset($WPUSER)?true:false;
 }
@@ -35,150 +41,149 @@ function wp_get_current_user() {
 }
 
 
-function get_user_meta( int $user_id, string $key = "", bool $single = false ) {
-    $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
-    $meta_value = null;
-    if($newUserObj->ID == $user_id) {
-        if (empty($key)) {
-            return $newUserObj;
-        }
-        switch($key) {
-            case 'token':
-                $meta_value = $newUserObj->token;
-                break;
-            case 'privatetoken':
-                $meta_value = $newUserObj->privatetoken;
-                break;
-            case 'currentinstitution':
-                $meta_value = $newUserObj->currentinstitution;
-                break;
-            case 'INSTITUTION':
-                $meta_value = $newUserObj->INSTITUTION;
-                break;
-            case 'display_name':
-                $meta_value = $newUserObj->display_name;
-                break;
-            case 'nickname':
-                $meta_value = $newUserObj->nickname;
-                break;
-            case 'first_name':
-                $meta_value = $newUserObj->first_name;
-                break;
-            case 'last_name':
-                $meta_value = $newUserObj->last_name;
-                break;
-            case 'description':
-                $meta_value = $newUserObj->description;
-                break;
-            case 'user_login':
-                $meta_value = $newUserObj->user_login;
-                break;
-            case 'user_pass':
-                $meta_value = $newUserObj->user_pass;
-                break;
-            case 'user_nicename':
-                $meta_value = $newUserObj->user_nicename;
-                break;
-            case 'user_url':
-                $meta_value = $newUserObj->user_url;
-                break;
-            case 'user_registered':
-                $meta_value = $newUserObj->user_registered;
-                break;
-            case 'user_activation_key':
-                $meta_value = $newUserObj->user_activation_key;
-                break;
-            case 'user_status':
-                $meta_value = $newUserObj->user_status;
-                break;
-            case 'roles':
-                $meta_value = $newUserObj->roles;
-                break;
-            case 'allcaps':
-                $meta_value = $newUserObj->allcaps;
-                break;
-            case 'filter':
-                $meta_value = $newUserObj->filter;
-                break;
-            case 'lang':
-                $meta_value = $newUserObj->lang;
-                break;
-            default:
-                $meta_value = $single ? '' : null;
-                break;
-        }
+function wp_get_moodle_session() {
+    global $MOODLESESSION;
+    $MOODLESESSION = $_SESSION['MOODLESESSION'];
+    return $MOODLESESSION;
+}
+
+
+function get_user_meta(int $user_id, string $key = "", bool $single = false) {
+    if (!isset($_SESSION['CURRENTUSERSESSION'])) {
+        // Session data not available
+        return $single ? null : [];
     }
-    return $single ? $meta_value : array($meta_value);
+
+    $userObj = $_SESSION['CURRENTUSERSESSION'];
+
+    // Check if the provided user ID matches the user object's ID
+    if ($userObj->ID !== $user_id) {
+        // User ID mismatch
+        return $single ? null : [];
+    }
+
+    // Check for valid metadata key
+    switch ($key) {
+        case 'token':
+            return $single ? $userObj->token : [$userObj->token];
+        case 'privatetoken':
+            return $single ? $userObj->privatetoken : [$userObj->privatetoken];
+        case 'currentinstitution':
+            return $single ? $userObj->metadata->currentinstitution : [$userObj->metadata->currentinstitution];
+        case 'INSTITUTION':
+            return $single ? $userObj->metadata->institution : [$userObj->metadata->institution];
+        case 'display_name':
+            return $single ? $userObj->display_name : [$userObj->display_name];
+        case 'nickname':
+            return $single ? $userObj->nickname : [$userObj->nickname];
+        case 'first_name':
+            return $single ? $userObj->metadata->first_name : [$userObj->metadata->first_name];
+        case 'last_name':
+            return $single ? $userObj->metadata->last_name : [$userObj->metadata->last_name];
+        case 'description':
+            return $single ? $userObj->description : [$userObj->description];
+        case 'user_login':
+            return $single ? $userObj->user_login : [$userObj->user_login];
+        case 'user_pass':
+            return $single ? $userObj->user_pass : [$userObj->user_pass];
+        case 'user_nicename':
+            return $single ? $userObj->user_nicename : [$userObj->user_nicename];
+        case 'lang':
+            return $single ? $userObj->lang : [$userObj->lang];
+            break;
+        // Add other cases for metadata keys here
+        default:
+            return $single ? null : [];
+    }
 }
 
 function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mixed $prev_value = "") {
-    $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
-    if($newUserObj->ID == $user_id) {
-        switch($meta_key) {
-            case 'token':
-                $newUserObj->token = $meta_value;
-                break;
-            case 'privatetoken':
-                $newUserObj->privatetoken = $meta_value;
-                break;
-            case 'currentinstitution':
-                $newUserObj->currentinstitution = $meta_value;
-                break;
-            case 'INSTITUTION':
-                $newUserObj->INSTITUTION = $meta_value;
-                break;
-            case 'display_name':
-                $newUserObj->display_name = $meta_value;
-                break;
-            case 'nickname':
-                $newUserObj->nickname = $meta_value;
-                break;
-            case 'first_name':
-                $newUserObj->first_name = $meta_value;
-                break;
-            case 'last_name':
-                $newUserObj->last_name = $meta_value;
-                break;
-            case 'description':
-                $newUserObj->description = $meta_value;
-                break;
-            case 'user_login':
-                $newUserObj->user_login = $meta_value;
-                break;
-            case 'user_pass':
-                $newUserObj->user_pass = $meta_value;
-                break;
-            case 'user_nicename':
-                $newUserObj->user_nicename = $meta_value;
-                break;
-            case 'user_url':
-                $newUserObj->user_url = $meta_value;
-                break;
-            case 'user_registered':
-                $newUserObj->user_registered = $meta_value;
-                break;
-            case 'user_activation_key':
-                $newUserObj->user_activation_key = $meta_value;
-                break;
-            case 'user_status':
-                $newUserObj->user_status = $meta_value;
-                break;
-            case 'roles':
-                $newUserObj->roles = $meta_value;
-                break;
-            case 'allcaps':
-                $newUserObj->allcaps = $meta_value;
-                break;
-            case 'filter':
-                $newUserObj->filter = $meta_value;
-                break;
-            case 'lang':
-                $newUserObj->lang = $meta_value;
-                break;
-        }
+    if (!isset($_SESSION['CURRENTUSERSESSION'])) {
+        // Session data not available
+        return false;
     }
-    return $_SESSION['CURRENTUSERSESSION'] = $newUserObj; 
+
+    $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
+
+    // Check if the provided user ID matches the user object's ID
+    if ($newUserObj->ID !== $user_id) {
+        // User ID mismatch
+        return false;
+    }
+
+    // Update metadata based on the provided key
+    switch($meta_key) {
+        case 'token':
+            $newUserObj->token = $meta_value;
+            break;
+        case 'privatetoken':
+            $newUserObj->privatetoken = $meta_value;
+            break;
+        case 'currentinstitution':
+            $newUserObj->metadata->currentinstitution = $meta_value;
+            break;
+        case 'INSTITUTION':
+            $newUserObj->metadata->institution = $meta_value;
+            break;
+        case 'display_name':
+            $newUserObj->display_name = $meta_value;
+            break;
+        case 'nickname':
+            $newUserObj->nickname = $meta_value;
+            break;
+        case 'first_name':
+            $newUserObj->metadata->first_name = $meta_value;
+            break;
+        case 'last_name':
+            $newUserObj->metadata->last_name = $meta_value;
+            break;
+        case 'description':
+            $newUserObj->description = $meta_value;
+            break;
+        case 'user_login':
+            $newUserObj->user_login = $meta_value;
+            break;
+        case 'user_pass':
+            $newUserObj->user_pass = $meta_value;
+            break;
+        case 'user_nicename':
+            $newUserObj->user_nicename = $meta_value;
+            break;
+        case 'user_url':
+            $newUserObj->user_url = $meta_value;
+            break;
+        case 'user_registered':
+            $newUserObj->user_registered = $meta_value;
+            break;
+        case 'user_activation_key':
+            $newUserObj->user_activation_key = $meta_value;
+            break;
+        case 'user_status':
+            $newUserObj->user_status = $meta_value;
+            break;
+        case 'roles':
+            $newUserObj->roles = $meta_value;
+            break;
+        case 'allcaps':
+            $newUserObj->allcaps = $meta_value;
+            break;
+        case 'filter':
+            $newUserObj->filter = $meta_value;
+            break;
+        case 'lang':
+            $newUserObj->lang = $meta_value;
+            break;
+        default:
+            // Invalid meta key
+            return false;
+    }
+
+    // Update session with the modified user object
+    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
+    
+    return true;
 }
+
 
 function authenticate_user_login($args) {
     global $DB, $CFG, $USER;
@@ -386,16 +391,22 @@ function plus_is_admin_user() {
 }
 
 function plus_startMoodleSession($tokenObj) {
-	global $MOODLESESSION, $ALLROLES;
+	global $MOODLESESSION; 
 	$MOODLE = new MoodleManager($tokenObj);
-	$MOODLESESSION = $MOODLE->get("ConnectionTest");
-	$ALLROLES = array("internaladmin", "schooladmin", "tutoringcenter", "tutor");
+	$MOODLESESSION = $_SESSION['MOODLESESSION'] = $MOODLE->get("ConnectionTest");
 }
 
 function plus_getUsermeta($tokenObj) {
     global $WPUSER;
     $MOODLE = new MoodleManager($tokenObj);
     $WPUSER = $MOODLE->get("GetUsermeta");
+}
+
+function plus_allUserRoles($tokenObj) {
+    global $ALLROLES;
+    if($tokenObj){
+	   return $ALLROLES = array("internaladmin", "schooladmin", "tutoringcenter", "tutor");
+    }
 }
 
 function wp_unslash($value) {
@@ -478,7 +489,7 @@ function plus_getuserlang() {
 
 function plus_generatelangurl($lang){
   global $wp;
-  $pageurl = home_url( $wp->request );
+  $pageurl = home_url($lang);
   $allparams = plus_get_allparameter();
   $allparams['changelang']=$lang; 
   $pageurl = $pageurl.'?'. plus_get_qsparameter($allparams);
@@ -1082,8 +1093,7 @@ function timestamp_to_date($date, $format="d F Y H:i A") {
 }
 
 function base_init() {
-	global $USER, $SESSION;
-	$SESSION = array();
+	global $WPUSER, $MOODLESESSION;
 }
 
 

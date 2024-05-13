@@ -1,7 +1,9 @@
 <?php
 function sidebar(){
-  global $wp, $MOODLESESSION, $ALLROLES;
-  $current_url = home_url( add_query_arg( array(), $wp->request ) );
+  global $wp, $CFG; 
+  $MOODLESESSION = wp_get_moodle_session(); 
+
+  // $current_url = home_url( add_query_arg( array(), $wp->request ) );
   $html = '<nav class="sidebar sidebar-offcanvas" id="sidebar"><ul class="nav">';
   $html .= '<li class="nav-item">
             <a class="nav-link" href="/">
@@ -165,7 +167,7 @@ if(plus_is_admin_user()){
               </a>
             </li>';
   $html .= '<li class="nav-item">
-            <a class="nav-link" href="'.plugin_dir_url( __FILE__ ) . '../../pages/forms/basic_elements.html">
+            <a class="nav-link" href="'. $CFG->wwwroot . '/pages/forms/basic_elements.html">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Documentation</span>
             </a>
@@ -180,5 +182,5 @@ if(plus_is_admin_user()){
 // var_dump(is_admin());
 // die;
   $html .= '</ul></nav>';
-      return $html;
+      echo $html;
     }
