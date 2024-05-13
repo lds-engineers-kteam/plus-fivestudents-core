@@ -1,6 +1,7 @@
 <?php
 function plus_view_subscript(){
   global $wp, $DB, $CFG;
+  
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $tem='';
   $current_user = wp_get_current_user();

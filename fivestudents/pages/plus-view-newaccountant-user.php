@@ -1,6 +1,8 @@
 <?php
 function plus_newaccountant_users(){
-  global $CFG;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();

@@ -1,6 +1,7 @@
 <?php
 function plus_view_addglobaluser(){
-  global $wp;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+  global $wp,$CFG;
   if ( !is_user_logged_in() || !current_user_can('view_plusaddglobaluser')) {
     return plus_view_noaccess();
   }

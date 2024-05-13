@@ -1,7 +1,9 @@
 <?php
 function plus_view_trainings()
 {
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   if (!is_user_logged_in() || !current_user_can('view_plusresources')) {
     return plus_view_noaccess();
   }

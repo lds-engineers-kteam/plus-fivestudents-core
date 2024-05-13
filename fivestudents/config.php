@@ -5,12 +5,12 @@ global $CFG;
 $CFG = new stdClass();
 
 // Set configuration properties
-$CFG->wwwroot = "http://localhost/plus/plus-fivestudents-core/fivestudents";
+$CFG->wwwroot = "http://localhost/plus/fivestudents";
 $CFG->apiroot = "https://portal.fivestudents.com";
 $CFG->wproot = "https://plus.fivestudents.com";
 $CFG->key = 'bRuD5WYw5wd0rdHR9yLlM6wt2vteuiniQBqE70nAuhU=';
 $CFG->syncapicount = 5000;
-$CFG->dirroot = $_SERVER['DOCUMENT_ROOT'] . '/plus/plus-fivestudents-core/fivestudents'; 
+$CFG->dirroot = $_SERVER['DOCUMENT_ROOT'] . '/plus/fivestudents'; 
 
 // Suppress error reporting and set timezone
 // error_reporting(1);

@@ -1,6 +1,8 @@
 <?php
 function plus_view_claims(){
-  global $wp,$API ;
+  global $wp,$API,$CFG ;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   return plus_view_noaccess();
   if ( !is_user_logged_in() || !current_user_can('view_plusclaims')) {
     return plus_view_noaccess();

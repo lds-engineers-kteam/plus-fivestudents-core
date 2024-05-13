@@ -1,6 +1,8 @@
 <?php
 function plus_view_groupdetails(){
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $groupid = plus_get_request_parameter("id", 0);

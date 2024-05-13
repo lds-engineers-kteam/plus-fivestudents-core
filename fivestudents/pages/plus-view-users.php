@@ -1,6 +1,8 @@
 <?php
 function plus_view_users(){
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
@@ -30,6 +32,7 @@ function plus_view_users(){
   // }
 
   // $html .= '<pre>'.print_r($APIRES, true).'</pre>';
+  $html ='';
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
@@ -161,10 +164,6 @@ function plus_view_users(){
 ';
   $html .=  '</div>
             </div>
-<<<<<<< HEAD
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
-=======
-          </div>';
->>>>>>> e2990e5e187cba81c65e89dbf99116152f83f600
+          </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script></div>';
   echo $html;
 }

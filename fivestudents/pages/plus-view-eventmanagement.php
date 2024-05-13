@@ -1,9 +1,12 @@
 <?php
 function plus_view_eventmanagement(){
-  global $wp,$API, $MOODLESESSION;
+  global $wp,$API,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   if ( !is_user_logged_in() || (current_user_can('view_plusclaimedevent') && current_user_can('view_plusinprogressedevent') && current_user_can('view_pluscencllededevent')) || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
     return plus_view_noaccess();
   }
+  $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();

@@ -1,6 +1,8 @@
 <?php
 function plus_override_subscription(){
- global $wp;
+ global $wp,$CFG;
+ require_once($CFG->dirroot . '/api/moodlecall.php');
+
  $current_user = wp_get_current_user();
  $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
@@ -57,8 +59,8 @@ function plus_override_subscription(){
   }
 
 
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 ';
   // $html .= '<div class="table-responsive">'.is_object($APIRESWeeklyData)?json_encode($APIRESWeeklyData):$APIRESWeeklyData.'</div>';
   $html .=  '<div class="row">
@@ -294,7 +296,7 @@ function plus_override_subscription(){
  
   </div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
+          </div><script src="'.__FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script>';
           $html.= ' <script> $(function(){
           var all_grade_level = '.json_encode(@$all_grade_level).';
           var allgroup=new Array();

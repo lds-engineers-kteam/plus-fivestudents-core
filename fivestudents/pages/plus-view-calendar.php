@@ -1,6 +1,7 @@
 <?php
 function plus_view_calendar(){
-  global $wp, $MOODLESESSION;
+  global $wp,$CFG,$MOODLESESSION;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   if ( !is_user_logged_in() || !current_user_can('plus_viewcalendar') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
     return plus_view_noaccess();
   }

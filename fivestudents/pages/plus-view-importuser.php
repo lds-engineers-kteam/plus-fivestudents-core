@@ -1,7 +1,10 @@
 <?php
 function plus_view_importuser(){
-  global $wp;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+
   $current_user = wp_get_current_user();
+  $MOODLESESSION = wp_get_moodle_session();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   $generatemonthlyreport = plus_get_request_parameter("generatemonthlyreport", 0);

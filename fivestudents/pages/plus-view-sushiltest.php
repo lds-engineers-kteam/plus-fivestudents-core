@@ -1,6 +1,8 @@
 <?php
 function plus_view_sushiltest(){
-  global $wp, $MOODLESESSION;
+  global $wp,$CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+  $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();

@@ -8,14 +8,14 @@ require_once($CFG->dirroot . '/partials/includes/footer.php');
 require_once($CFG->dirroot . '/pages/plus-view-disablecourse.php');
 
 
-plus_startMoodleSession();
+// plus_startMoodleSession();
 
-// main_header();
+main_header();
 // // navbar();
 // // settings_panel();
 // // sidebar();
 // // plus_view_noaccess();
-// plus_view_disablecourse();
-// main_footer();
+plus_view_disablecourse();
+main_footer();
 
 
