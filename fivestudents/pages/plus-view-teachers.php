@@ -30,7 +30,7 @@ function plus_view_teachers(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("teachers", "site").'</h4>
-                  '.(current_user_can('plus_addteacher')?'<a class="btn btn-primary card-body-action" href="/add-teacher"><i class="mdi mdi-plus"></i></a>':'').'
+                  '.(current_user_can('plus_addteacher')?'<a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-teacher"><i class="mdi mdi-plus"></i></a>':'').'
                   <form class="forms-sample">
                     <!--<div class="form-group row">
                       <label for="type" class="col-sm-2 col-form-label">Type</label>
@@ -86,7 +86,7 @@ function plus_view_teachers(){
                               <td class="">'.$teacher->lastname.'</td>
                               <td class="">'.$teacher->email.'</td>
                               <td class="">'.plus_dateToFrench($teacher->timecreated, "d F Y h:i A").'</td>
-                              <td class="">'.(current_user_can('plus_addteacher')?'<a href="/add-teacher?id='.$teacher->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('plus_addteacher')?'<a href="'.$CFG->wwwroot.'/add-teacher?id='.$teacher->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
                             </tr>';
                 }
                 $searchreq->total = $APIRES->data->total; 

@@ -117,7 +117,7 @@ function plus_newaccountant_users(){
                     
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <button type="submit" name="savenewaccountant" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/users/" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/users/" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
 
                  

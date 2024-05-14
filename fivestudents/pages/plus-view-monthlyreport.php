@@ -48,8 +48,8 @@ function plus_view_monthlyreport(){
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("heading", "report").'</h4>
                   <div class="card-body-action">
-                    <a class="btn btn-primary" href="/monthly-report/?generatemonthlyreport=1&groupid='.$groupid.'&userid='.$userid.'"> '.plus_get_string("generatemonthlyreport", "form").' </a>
-                    <a class="btn btn-warning" href="/group-details/?id='.$groupid.'"><i class="mdi mdi-keyboard-backspace"></i></a>
+                    <a class="btn btn-primary" href="'.$CFG->wwwroot.'/monthly-report/?generatemonthlyreport=1&groupid='.$groupid.'&userid='.$userid.'"> '.plus_get_string("generatemonthlyreport", "form").' </a>
+                    <a class="btn btn-warning" href="'.$CFG->wwwroot.'/group-details/?id='.$groupid.'"><i class="mdi mdi-keyboard-backspace"></i></a>
                   </div>                  
                 ';
   $html .=        '<div class="table-responsive">

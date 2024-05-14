@@ -191,7 +191,7 @@ function plus_studentProfileFilter(){
                     </div>
                 
                     <button type="submit" name="savehomework" class="btn btn-primary mr-2">'.plus_get_string("filter", "form").'</button>
-                    <a href="'.(empty($formdata->groupid)?'/student-profile':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.(empty($formdata->groupid)?'/student-profile':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

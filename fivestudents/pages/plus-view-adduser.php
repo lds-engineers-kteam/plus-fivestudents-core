@@ -317,7 +317,7 @@ function plus_add_user(){
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <input type="hidden" name="institutionid" value="'.$formdata->institutionid.'"/>
                     <button type="submit" name="saveuser" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

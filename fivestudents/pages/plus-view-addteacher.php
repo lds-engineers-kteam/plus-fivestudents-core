@@ -152,7 +152,7 @@ function plus_add_teacher(){
                     '.$errormessage.'
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <button type="submit" name="saveteacher" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/teachers/" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/teachers/" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

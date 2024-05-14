@@ -41,7 +41,7 @@ function plus_view_groupdetails(){
                 <div class="card">
                   <div class="card-body haveaction">
                     <h4 class="card-title">'.plus_get_string("groupdetails", "form").'</h4>
-                    <a class="btn btn-warning card-body-action" href="/groups"><i class="mdi mdi-keyboard-backspace"></i></a>
+                    <a class="btn btn-warning card-body-action" href="'.$CFG->wwwroot.'/groups"><i class="mdi mdi-keyboard-backspace"></i></a>
                     <div class="row">
                       <div class="col-sm-2 col-xs-4"><strong>'.plus_get_string("name", "form").': </strong></div><div class="col-sm-4  col-xs-8">'.$group->name.'</div>
                       <div class="col-sm-2 col-xs-4"><strong>'.plus_get_string("noofstudent", "form").': </strong></div><div class="col-sm-4 col-xs-8">'.sizeof($group->users).'</div>

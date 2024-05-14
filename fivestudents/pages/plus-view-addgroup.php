@@ -133,7 +133,7 @@ if(!empty($selectedgrade) && is_array($selectedgrade->courses)){
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <input type="hidden" name="groupid" value="'.$formdata->groupid.'"/>
                     <button type="submit" name="savegroup" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/groups" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/groups" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

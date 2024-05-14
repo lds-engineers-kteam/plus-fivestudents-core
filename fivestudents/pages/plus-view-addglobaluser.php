@@ -137,7 +137,7 @@ function plus_view_addglobaluser(){
                     
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <button type="submit" name="saveglobaluser" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/global-users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/global-users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
 
                  

@@ -38,7 +38,7 @@ function plus_view_groups(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("groups", "site").'</h4>
-                  '.(current_user_can('plus_addgroups')?'<a class="btn btn-primary card-body-action" href="/add-group"><i class="mdi mdi-plus"></i></a>':'').'
+                  '.(current_user_can('plus_addgroups')?'<a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-group"><i class="mdi mdi-plus"></i></a>':'').'
                   
                   <form class="forms-sample">
                     <div class="form-group row">
@@ -78,7 +78,7 @@ function plus_view_groups(){
               if(is_object($APIRES) && is_array($APIRES->data->groups)){
                 foreach ($APIRES->data->groups as $key => $group) {
                   $html .=  '<tr>
-                              <td class="p-1 text-center">'.(current_user_can('plus_viewgroupdetails')?'<a href="/group-details?id='.$group->id.'" style="font-size:32px;"><i class="mdi mdi-magnify"></i></a>':'').'</td>
+                              <td class="p-1 text-center">'.(current_user_can('plus_viewgroupdetails')?'<a href="'.$CFG->wwwroot.'/group-details?id='.$group->id.'" style="font-size:32px;"><i class="mdi mdi-magnify"></i></a>':'').'</td>
                               <td class="py-1">'.$group->name.'</td>
                               <td class="py-1">'.$group->grade.'</td>
                               <td class="py-1">'.$group->coursename.'</td>
@@ -88,8 +88,8 @@ function plus_view_groups(){
                               <td class="">
                                 '.(current_user_can('plus_generategrouplink')?'<span data-id="'.$group->id.'" class="btn copyLink"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copylink", "form").'</span> &nbsp; &nbsp;':'').'
                                 '.(current_user_can('plus_generategroupcode')?'<span data-id="'.$group->id.'" class="btn copyCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copycode", "form").'</span> &nbsp; &nbsp;<span data-id="'.$group->id.'" class="btn copyOneTimeCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copyOneTimeCode", "form").'</span> &nbsp; &nbsp; <span data-id="'.$group->id.'" class="btn copyExamCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copyexamcode", "form").'</span> &nbsp; &nbsp;':'').'
-                                '.(current_user_can('plus_addgroups')?'<a href="/add-group?id='.$group->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>&nbsp; &nbsp;':'').'
-                                '.(current_user_can('plus_viewgroupdetails')?'<a href="/group-details?id='.$group->id.'"> '.plus_get_string("details", "form").' </a> &nbsp; &nbsp;':'').'
+                                '.(current_user_can('plus_addgroups')?'<a href="'.$CFG->wwwroot.'/add-group?id='.$group->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>&nbsp; &nbsp;':'').'
+                                '.(current_user_can('plus_viewgroupdetails')?'<a href="'.$CFG->wwwroot.'/group-details?id='.$group->id.'"> '.plus_get_string("details", "form").' </a> &nbsp; &nbsp;':'').'
                                 '.(current_user_can('plus_generatemonthlyreport')?'<a href="/groups/?generatemonthlyreport=1&groupid='.$group->id.'"> '.plus_get_string("generatemonthlyreport", "form").' </a>':'').'
                                 </td>
                               </tr>';

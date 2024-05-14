@@ -29,7 +29,7 @@ function plus_view_surveys(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("surveys", "site").'</h4>
-                  '.(current_user_can('view_pluseditsurvey')?'<a class="btn btn-primary card-body-action" href="/add-survey"><i class="mdi mdi-plus"></i></a>':'').'
+                  '.(current_user_can('view_pluseditsurvey')?'<a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-survey"><i class="mdi mdi-plus"></i></a>':'').'
                   <div class="table-responsive">
                     <table class="table table-striped plus_local_datatable" id="surveys">
                       <thead>
@@ -46,8 +46,8 @@ function plus_view_surveys(){
                   $html .=  '<tr>
                               <td class="py-1">'.$survey->id.'</td>
                               <td class="py-1">'.$survey->name.'</td>
-                              <td class="">'.(current_user_can('view_pluseditsurvey')?'<a href="/add-survey?id='.$survey->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
-                              <td class="">'.(current_user_can('view_pluseditsurvey')?'<a href="/surveys?id='.$survey->id.'&clone=1"><i class="mdi mdi-lead-copy"></i> '.plus_get_string("copy", "form").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('view_pluseditsurvey')?'<a href="'.$CFG->wwwroot.'/add-survey?id='.$survey->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('view_pluseditsurvey')?'<a href="'.$CFG->wwwroot.'/surveys?id='.$survey->id.'&clone=1"><i class="mdi mdi-lead-copy"></i> '.plus_get_string("copy", "form").'</a>':'').'</td>
                               </tr>';
                 }
               }

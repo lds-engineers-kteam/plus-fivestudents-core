@@ -94,7 +94,7 @@ function plus_add_students(){
                    <input type="hidden" name="userid" value="'.$formdata->userid.'"/>
                    
                     <button type="submit" name="saveuser" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/group-details/?id='.$formdata->groupid .'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/group-details/?id='.$formdata->groupid .'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

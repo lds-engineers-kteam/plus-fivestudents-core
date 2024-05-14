@@ -34,8 +34,8 @@ function paymenttrans(){
 // echo "<pre>";
 // print_r($apidatas);
 // echo "</pre>";
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  $html='<link rel="stylesheet" href="'.__FILE__ .'/public/../../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 ';
 $html .=  '<div class="row">
 <div class="col-md-12 grid-margin transparent">

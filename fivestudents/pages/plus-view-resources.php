@@ -46,7 +46,7 @@ function plus_view_resources()
       foreach ($course->alltopics as $key => $topics) {
         if (!empty($topics->name)) {
           $topicshtml .= '<div class="col-sm-3">
-                        <a class="btn resource-preview  btn-secondary" href="/resources?t=' . $topics->id . '"><i class="mdi mdi-folder btn-icon-prepend"></i> ' . $topics->name . ' </a>
+                        <a class="btn resource-preview  btn-secondary" href="'.$CFG->wwwroot.'/resources?t=' . $topics->id . '"><i class="mdi mdi-folder btn-icon-prepend"></i> ' . $topics->name . ' </a>
                       </div>';
           $found = true;
         }
@@ -58,7 +58,7 @@ function plus_view_resources()
         if (!empty($module->name)) {
           $moduleshtml .= '<div class="col-sm-3">
                         <div class="card resource-preview">
-                          <div class="card-img-top"><a class="font-weight-bold" href="/resource-details?id=' . $module->id . '"><i class="mdi mdi-folder"></i></a></div>
+                          <div class="card-img-top"><a class="font-weight-bold" href="'.$CFG->wwwroot.'/resource-details?id=' . $module->id . '"><i class="mdi mdi-folder"></i></a></div>
                           <div class="card-body">
                             <p><a class="font-weight-bold" href="/resource-details?id=' . $module->id . '">' . $module->name . '</a>
                             </p>
@@ -71,7 +71,7 @@ function plus_view_resources()
     }
     if(isset($course->breadcrumbs) && !empty($course->breadcrumbs)){
       foreach ($course->breadcrumbs as $key => $belement) {
-       $breadcrumbs .= '<li class="breadcrumb-item"><a href="/resources?t=' . $belement->id . '">' . $belement->name . '</a></li>';
+       $breadcrumbs .= '<li class="breadcrumb-item"><a href="'.$CFG->wwwroot.'/resources?t=' . $belement->id . '">' . $belement->name . '</a></li>';
       }
     }
   }

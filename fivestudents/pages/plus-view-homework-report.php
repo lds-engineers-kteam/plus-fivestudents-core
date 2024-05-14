@@ -43,9 +43,9 @@ $headoptionshtml = "";
         foreach ($APIRES->data->reportdata->allquestions as $key => $question) {
           $imediatefeedbackbtn = '';
           if($haveimediatefeedback){
-            $imediatefeedbackbtn = '<span class="" title="Stop"><a href="/homework-report/?groupid='.$formdata->groupid.'&homeworkid='.$formdata->homeworkid.'&questionid='.$question->qid.'&blockaccess=1"><i style="font-size: 20px;" class="mdi mdi-play-circle-outline"></i></a></span>';
+            $imediatefeedbackbtn = '<span class="" title="Stop"><a href="'.$CFG->wwwroot.'/homework-report/?groupid='.$formdata->groupid.'&homeworkid='.$formdata->homeworkid.'&questionid='.$question->qid.'&blockaccess=1"><i style="font-size: 20px;" class="mdi mdi-play-circle-outline"></i></a></span>';
             if(in_array($question->qid, $blockedquestions)){
-              $imediatefeedbackbtn = '<span class="" title="Start"><a href="/homework-report/?groupid='.$formdata->groupid.'&homeworkid='.$formdata->homeworkid.'&questionid='.$question->qid.'&blockaccess=0"><i style="font-size: 20px;" class="mdi mdi-pause-circle-outline"></i></a></span>';
+              $imediatefeedbackbtn = '<span class="" title="Start"><a href="'.$CFG->wwwroot.'/homework-report/?groupid='.$formdata->groupid.'&homeworkid='.$formdata->homeworkid.'&questionid='.$question->qid.'&blockaccess=0"><i style="font-size: 20px;" class="mdi mdi-pause-circle-outline"></i></a></span>';
             }
           }
           if($question->type == 'description'){ continue; } $qcountr++;

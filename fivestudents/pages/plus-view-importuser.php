@@ -79,7 +79,7 @@ function plus_view_importuser(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">Upload Bulk User</h4>
-                  <a class="btn btn-primary card-body-action" href="/add-group"><i class="mdi mdi-plus"></i></a>
+                  <a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-group"><i class="mdi mdi-plus"></i></a>
                   <form class="forms-sample" method="POST" enctype="multipart/form-data" >
                     <div class="form-group row">
                       <label for="file" class="col-sm-2 col-form-label">Upload file * : </label>

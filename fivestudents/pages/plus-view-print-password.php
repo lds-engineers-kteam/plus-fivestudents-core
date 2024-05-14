@@ -50,8 +50,8 @@ function plus_view_print_password(){
     }
   }
  //$APIRESWeeklyData=$MOODLE->get("getWeeklySchoolReports",null,$searchreq);
-  $html='<link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="'.__FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 ';
   // $html .= '<div class="table-responsive">'.is_object($APIRESWeeklyData)?json_encode($APIRESWeeklyData):$APIRESWeeklyData.'</div>';
   $html .=  '<div class="row">

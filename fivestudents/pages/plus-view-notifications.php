@@ -52,7 +52,7 @@ function plus_view_notifications(){
                               <td class="py-1">'.plus_get_string("status_{$notification->status}", "calendar").'</td>
                               <td class="py-1">'.$notification->comment.'</td>
                               <td class="py-1">'.plus_dateToFrench($notification->lastupdated).'</td>
-                              <td class="">'.(current_user_can('plus_notification_eventview')?'<a href="/event-management/?eventid='.$notification->eventid.'&active='.$notification->action.'events"> '.plus_get_string("view", "notification").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('plus_notification_eventview')?'<a href="'.$CFG->wwwroot.'/event-management/?eventid='.$notification->eventid.'&active='.$notification->action.'events"> '.plus_get_string("view", "notification").'</a>':'').'</td>
                               </tr>';
                 }
               }

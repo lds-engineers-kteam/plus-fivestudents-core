@@ -330,11 +330,11 @@ function plus_override_subscription(){
                 var groupid=getGroupId();
                 if(institutionid !="" && groupid && groupid !=""){
                   console.log("institutionid and groupo id not empty");
-                   window.location.href=`/override-subscription/?institutionid=${institutionid}&groupid=${groupid}`;
+                   window.location.href=`'.$CFG->wwwroot.'/override-subscription/?institutionid=${institutionid}&groupid=${groupid}`;
                 }
                  else if(institutionid !="" ){
                   console.log("institutionid ",institutionid);
-                  window.location.href=`/override-subscription/?institutionid=${institutionid}`;
+                  window.location.href='.$CFG->wwwroot.'`/override-subscription/?institutionid=${institutionid}`;
                 }
               });
               function getInstituteId(){

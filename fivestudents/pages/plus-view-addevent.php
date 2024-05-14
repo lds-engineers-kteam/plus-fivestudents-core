@@ -267,7 +267,7 @@ function plus_view_addevent(){
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <input type="hidden" name="returnto" value="'.$formdata->returnto.'"/>
                     <button type="submit" name="saveevents" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="'.($formdata->returnto=='calendar'?'/calendar':'/events').'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.($formdata->returnto=='calendar'?'/calendar':'/events').'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

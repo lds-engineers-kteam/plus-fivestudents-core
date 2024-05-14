@@ -274,7 +274,7 @@ $adittionalhomeworks='';
                     <input type="hidden" name="courseid" value="'.$formdata->courseid.'"/>
                     <input type="hidden" name="groupid" value="'.$formdata->groupid.'"/>
                     <button type="submit" name="savehomework" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="'.(empty($formdata->groupid)?'/homework':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.(empty($formdata->groupid)?'/homework':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>
@@ -309,7 +309,7 @@ $adittionalhomeworks='';
                       <td>'.$data->name.'</td>
                       <td> '.$status.'</td>
                       <td>
-                      <a href="./?groupid='.$data->groupid.'&id='.$data->id.'" >Edit</a><br>
+                      <a href="'.$CFG->wwwroot.'./?groupid='.$data->groupid.'&id='.$data->id.'" >Edit</a><br>
                     </td>
                     </tr>';
                   }

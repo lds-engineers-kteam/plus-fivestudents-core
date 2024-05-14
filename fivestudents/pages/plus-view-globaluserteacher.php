@@ -63,7 +63,7 @@ $html .=  '<div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("teachers", "site").'</h4>
-                  <a class="btn btn-warning card-body-action" href="/global-users"><i class="mdi mdi-keyboard-backspace"></i></a>
+                  <a class="btn btn-warning card-body-action" href="'.$CFG->wwwroot.'/global-users"><i class="mdi mdi-keyboard-backspace"></i></a>
                   ';
   $html .=        '<div class="table-responsive">
                     <table class="table table-striped plus_local_datatable">

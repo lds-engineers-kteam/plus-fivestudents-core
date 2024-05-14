@@ -75,7 +75,7 @@ function plus_view_addsurvey(){
                     <input type="hidden" name="deletedquestions" id="deletedquestions" value=""/>
                     <input type="hidden" name="deletedoptions" id="deletedoptions" value=""/>
                     <button type="submit" name="savesurvey" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/surveys" class="btn btn-light">'.plus_get_string("cancel", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/surveys" class="btn btn-light">'.plus_get_string("cancel", "form").'</a>
                   </form>
                 </div>
               </div>

@@ -20,7 +20,7 @@ function plus_view_globalusers(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("globalusers", "site").'</h4>
-                  '.(current_user_can('view_plusaddglobaluser')?'<a class="btn btn-primary card-body-action" href="/add-global-users"><i class="mdi mdi-plus"></i></a>':'').'
+                  '.(current_user_can('view_plusaddglobaluser')?'<a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-global-users"><i class="mdi mdi-plus"></i></a>':'').'
                   <!--<form class="forms-sample">
                     <div class="form-group row">
                       <label for="name" class="col-sm-2 col-form-label">'.plus_get_string("name", "form").'</label>

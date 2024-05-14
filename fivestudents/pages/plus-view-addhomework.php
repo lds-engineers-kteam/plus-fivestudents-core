@@ -315,7 +315,7 @@ if(sizeof($group->relatedGroups) > 0){
                     <input type="hidden" name="categoryid" value="'.$formdata->categoryid.'"/>
                     <input type="hidden" name="groupid" value="'.$formdata->groupid.'"/>
                     <button type="submit" name="savehomework" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="'.(empty($formdata->groupid)?'/homework':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.(empty($formdata->groupid)?'/homework':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

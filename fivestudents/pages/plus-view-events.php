@@ -27,7 +27,7 @@ function plus_view_events(){
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("events", "site").'</h4>
-                  <a class="btn btn-primary card-body-action" href="/add-event"><i class="mdi mdi-plus"></i></a>
+                  <a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-event"><i class="mdi mdi-plus"></i></a>
                   <form class="forms-sample">
                     <div class="form-group row">
                       <label for="name" class="col-sm-2 col-form-label">'.plus_get_string("name", "form").'</label>
@@ -80,7 +80,7 @@ function plus_view_events(){
                               <td class="py-1">'.($event->teacher?:plus_get_string("all", "site")).'</td>
                               <td class="">'.plus_dateToFrench($event->timestart).'</td>
                               <td class="">'.plus_dateToFrench($event->timeend).'</td>
-                              <td class="">'.(current_user_can('view_pluseditevent')?'<a href="/add-event?id='.$event->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('view_pluseditevent')?'<a href="'.$CFG->wwwroot.'/add-event?id='.$event->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').'</td>
                               </tr>';
                 }
                 $searchreq->total = $APIRES->data->total;

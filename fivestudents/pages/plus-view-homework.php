@@ -152,7 +152,7 @@ function plus_view_homework(){
                 foreach ($APIRES->data->homework as $key => $homework) {
                   if(!empty($new_array) && !in_array($homework->courseid, $new_array)){continue;}else{
       $html .=         '<tr>
-                        <td class="p-1 text-center"><a class="p-1 m-1" style="font-size:32px;" href="/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'&schoolyear='.$homework->schoolyear.'"><i class="mdi mdi-library-books"></i>  &nbsp; </a></td>
+                        <td class="p-1 text-center"><a class="p-1 m-1" style="font-size:32px;" href="'.$CFG->wwwroot.'/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'&schoolyear='.$homework->schoolyear.'"><i class="mdi mdi-library-books"></i>  &nbsp; </a></td>
                         <td>'.plus_dateToFrench($homework->duedate).'</td>
                         <td>'.plus_dateToFrench($homework->homeworkdate).'</td>
                         <td>'.$homework->name.'</td><td>'.$homework->grade.'</td>
