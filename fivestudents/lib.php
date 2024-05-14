@@ -206,6 +206,7 @@ function authenticate_user_login($args) {
 }
 
 function current_user_can($string) {
+    
     $permissions = [
         'manage_options',
         'plus_viewdashboardkpi',
@@ -301,8 +302,9 @@ function plus_getpageurl($pageurl = null, $args = null){
 }
 
 function plus_pagination($start, $limit, $total, $page="page", $displayto = true){
-  global $wp;
-  $pageurl = home_url( $wp->request );
+
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+  $pageurl = home_url($current_url);
   $displaycount = ($start+$limit < $total)?$start+$limit:$total;
   $prevcount = ($start-$limit > 0)?$start-$limit:0;
   $allparams = plus_get_allparameter();
@@ -460,26 +462,37 @@ function plus_getuserlang() {
 	return $USERLANG;
 }
 
-function plus_generatelangurl($lang){
-  global $wp;
-  $pageurl = home_url($lang);
+function plus_generatelangurl($lang, $currentpage){
   $allparams = plus_get_allparameter();
-  $allparams['changelang']=$lang; 
-  $pageurl = $pageurl.'?'. plus_get_qsparameter($allparams);
+  $allparams['changelang'] = $lang; 
+  $pageurl = $currentpage.'?'. plus_get_qsparameter($allparams);
   return $pageurl;
 }
 
-function plus_updateuserlang($lang) {
-	global $USERLANG, $wp;
+function plus_updateuserlang($lang, $current_url) {
 	$current_user = wp_get_current_user();
 	if(!empty($lang) && !empty($current_user)){
 		$userlang = get_user_meta( $current_user->ID, 'lang', true);
-		update_user_meta( $current_user->ID, 'lang', $lang, $userlang );		
-		$pageurl = home_url( $wp->request );
+        
+        echo "<pre>";
+        print_r($lang);
+        echo "</pre>";
+        echo "<pre>";
+        print_r($current_url);
+        echo "</pre>";
+
+        echo "<br>lang<br>";
+        echo $userlang;
+        die;
+
+        if(get_user_meta( $current_user->ID, 'lang', true) == null){
+		  update_user_meta( $current_user->ID, 'lang', $lang, $userlang );		
+        }
+
+		$pageurl = home_url();
 		$allparams = plus_get_allparameter();
 		unset($allparams['changelang']);
-		$pageurl = $pageurl.'?'. plus_get_qsparameter($allparams);
-		plus_redirect($pageurl);
+		plus_redirect($current_url);
 	}
 }
 

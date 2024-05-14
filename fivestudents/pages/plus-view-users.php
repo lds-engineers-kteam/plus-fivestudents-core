@@ -1,7 +1,8 @@
 <?php
 function plus_view_users(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -15,9 +16,10 @@ function plus_view_users(){
   }
 
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url( $wp->request ));
+    plus_redirect(home_url($current_url));
     exit;
   }
+
   $searchreq->search = plus_get_request_parameter("search", "");
   $searchreq->username = plus_get_request_parameter("username", "");
   $searchreq->email = plus_get_request_parameter("email", "");
@@ -27,6 +29,7 @@ function plus_view_users(){
   $searchreq->limit = plus_get_request_parameter("limit", 10);
   $searchreq->total = 0;
   $APIRES = $MOODLE->get("BrowseUsers", null, $searchreq);
+  
   // if(!is_string($APIRES)){
   //   $APIRES = json_encode($APIRES);
   // }
@@ -41,8 +44,8 @@ function plus_view_users(){
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("schools", "site").'</h4>
                   <div class="card-body-action">
-                    <a class="btn btn-primary" href="/new-accountant"><i class="mdi mdi-plus mr-2"></i>Add new accountant</a>
-                    <a class="btn btn-warning text-white p-3 ml-3" href="/adduser"><i class="mdi mdi-plus"></i> Add Institute</a>
+                    <a class="btn btn-primary" href="'.$CFG->wwwroot.'/new-accountant"><i class="mdi mdi-plus mr-2"></i>Add new accountant</a>
+                    <a class="btn btn-warning text-white p-3 ml-3" href="'.$CFG->wwwroot.'/adduser"><i class="mdi mdi-plus"></i> Add Institute</a>
                   </div>
                   <form class="forms-sample">
                     <div class="form-group row">
@@ -130,40 +133,28 @@ function plus_view_users(){
                               <td class="">'.$user->contactname.'</td>
                               <td class="">'.$user->jobtitle.'</td>
                               <td class="">'.plus_dateToFrench($user->timecreated, "d F Y h:i A").'</td>
-                              <td class=""><a href="/adduser?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a></td>
-                              <td class=""><a href="/subscription-setting?id='.$user->institutionid.'">'.plus_get_string("title", "subscription").'</a></td>
-                              <td><a href="/users/?generatemonthlyreport=1&institutionid='.$user->institutionid.'"> '.plus_get_string("generatemonthlyreport", "form").' </a></td>
-                              <td><a href="/devices-list/?id='.$user->institutionid.'"> '.plus_get_string("devices", "site").' </a></td>
-                              <td><a href="/disable-courses/?id='.$user->institutionid.'"> '.plus_get_string("title", "disablecourse").' </a></td>
-                              <td><a href="/enable-courses/?id='.$user->institutionid.'"> '.plus_get_string("title", "enablecourse").' </a></td>
+                              <td class=""><a href="'.$CFG->wwwroot.'/adduser?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a></td>
+                              <td class=""><a href="'.$CFG->wwwroot.'/subscription-setting?id='.$user->institutionid.'">'.plus_get_string("title", "subscription").'</a></td>
+                              <td><a href="'.$CFG->wwwroot.'/users/?generatemonthlyreport=1&institutionid='.$user->institutionid.'"> '.plus_get_string("generatemonthlyreport", "form").' </a></td>
+                              <td><a href="'.$CFG->wwwroot.'/devices-list/?id='.$user->institutionid.'"> '.plus_get_string("devices", "site").' </a></td>
+                              <td><a href="'.$CFG->wwwroot.'/disable-courses/?id='.$user->institutionid.'"> '.plus_get_string("title", "disablecourse").' </a></td>
+                              <td><a href="'.$CFG->wwwroot.'/enable-courses/?id='.$user->institutionid.'"> '.plus_get_string("title", "enablecourse").' </a></td>
                             </tr>';
                 }
                 $searchreq->total = $APIRES->data->total; 
                 $searchreq->start = $APIRES->data->start;
                 $searchreq->limit = $APIRES->data->limit;
               }        
-              // $html .=  '<tr>
-              //             <td class="py-1"></td>
-              //             <td>Herman Beck</td>
-              //             <td><div class="progress">
-              //                 <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-              //               </div></td>
-              //             <td>$ 77.99</td>
-              //             <td>May 15, 2015</td>
-              //             <td>May 15, 2015</td>
-              //             <td>May 15, 2015</td>
-              //             <td>May 15, 2015</td>
-              //           </tr>';
             $html .=  '</tbody>
                     </table>
                   </div>';
   $html .=      plus_pagination($searchreq->start, $searchreq->limit, $searchreq->total, "user");
   $html .=      '</div>
               </div>
-            </div>
-';
+            </div>';
+
   $html .=  '</div>
             </div>
-          </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script></div>';
-  echo $html;
+           </div>';
+  return $html;
 }

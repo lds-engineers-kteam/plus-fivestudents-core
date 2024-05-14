@@ -1,6 +1,6 @@
 <?php
 function plus_view_notifications(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
 
@@ -61,10 +61,10 @@ function plus_view_notifications(){
                   </div>';
   $html .=      '</div>
               </div>
-            </div>
-          ';
+            </div>';
+            
   $html .=  '</div>
             </div>
           </div>';
-  echo $html;
+  return $html;
 }

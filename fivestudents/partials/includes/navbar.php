@@ -12,11 +12,12 @@ function navbar(){
     return $MOODLESESSION;
   }
 
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
   // $totalnotifications = $MOODLESESSION->data->totalnotifications;
   $userlang = "FR";
   if(isset($_GET['changelang'])){
     $userlang = $_GET['changelang'];
-    plus_updateuserlang($userlang);
+    plus_updateuserlang($userlang, $current_url);
   }
   if(isset($_GET['changeinstitution'])){
     $newinstitution = $_GET['changeinstitution'];
@@ -25,7 +26,7 @@ function navbar(){
   $notificationshtml = '';
   foreach ($MOODLESESSION->data->notifications as $key => $notification) {
     $notificationshtml .= '<div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item" href="/notifications/?id='.$notification->id.'">
+              <a class="dropdown-item preview-item" href="'.$CFG->wwwroot.'/notifications/?id='.$notification->id.'">
                 <div class="preview-item-content">
                   <h6 class="preview-subject font-weight-normal">'.plus_get_string("event", "calendar").' '.plus_get_string("status_{$notification->status}", "calendar").' - '.plus_dateToFrench($notification->timestart).'</h6>
                   <p class="font-weight-light small-text mb-0 text-muted">
@@ -46,7 +47,7 @@ function navbar(){
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">';
             foreach ($alllang as $key => $lang) {
               if($userlang == $key){continue;}
-              $langdropdown .= '<a class="dropdown-item" href="'.plus_generatelangurl($key).'">'.(isset($alllang[$lang])?$alllang[$lang]:$lang).'</a>';
+              $langdropdown .= '<a class="dropdown-item" href="'.plus_generatelangurl($key, $current_url).'">'.(isset($alllang[$lang])?$alllang[$lang]:$lang).'</a>';
             }
   $langdropdown .= ' </div>
           </li>';
@@ -97,7 +98,7 @@ $html = '<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
               <p class="mb-0 font-weight-normal dropdown-header">'.plus_get_string("title", "notification").'</p>
               '.$notificationshtml.'
               <div class="dropdown-divider"></div>
-              <a href="/notifications/"><h6 class="p-3 mb-0 text-center">'.plus_get_string("seeall", "notification").'</h6></a>
+              <a href="'.$CFG->wwwroot.'/notifications/"><h6 class="p-3 mb-0 text-center">'.plus_get_string("seeall", "notification").'</h6></a>
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">
