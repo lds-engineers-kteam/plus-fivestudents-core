@@ -461,5 +461,5 @@ function plus_assessment_report2(){
   </table>
   ';
   // $html .=  '</div>'; 'Non atteint<div class="me-3" style="width:20px; height:20px; border-radius: 50%; background-color: #FF0000"></div>';
-  echo $html;
+  return $html;
 }

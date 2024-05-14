@@ -217,5 +217,5 @@ function plus_view_homework(){
           ';
  
 
-  echo $html;
+  return $html;
 }

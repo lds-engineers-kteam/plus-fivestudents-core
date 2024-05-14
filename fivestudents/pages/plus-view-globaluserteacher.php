@@ -2,10 +2,6 @@
 function plus_view_globaluserteacher(){
   global $wp,$CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-
-  if ( !is_user_logged_in() || !current_user_can('view_pluseditglobaluserteacher')) {
-    return plus_view_noaccess();
-  }
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -100,7 +96,7 @@ $html .=  '<div class="col-lg-12 grid-margin stretch-card">
           </div>
         </div>
       </div>';
-  echo $html;
+  return $html;
 }
 
 

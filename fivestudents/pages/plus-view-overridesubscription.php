@@ -351,5 +351,5 @@ function plus_override_subscription(){
                 expiryelement[0].min = today;
               }
 });</script>';
-  echo $html;
+  return $html;
 }

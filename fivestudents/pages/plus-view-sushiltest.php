@@ -893,5 +893,5 @@ $html .= '
   });
   </script>';
 
-    echo $html;
+    return $html;
   }

@@ -2,10 +2,6 @@
 function plus_view_globalusers(){
   global $wp,$CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-
-  if ( !is_user_logged_in() || !current_user_can('view_plusglobalusers')) {
-    return plus_view_noaccess();
-  }
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
@@ -70,7 +66,7 @@ function plus_view_globalusers(){
   $html .=  '</div>
             </div>
           </div>';
-  echo $html;
+  return $html;
 }
 
 

@@ -91,5 +91,5 @@ function plus_view_dashboardstatus_report(){
   $htmlhead = "";
   $html .= $htmlhead.$htmldata;
   $html .='</table></div>';
-  echo $html;
+  return $html;
 }

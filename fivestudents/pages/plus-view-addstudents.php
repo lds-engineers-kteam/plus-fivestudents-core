@@ -103,5 +103,5 @@ function plus_add_students(){
   $html .=  '</div>
             </div>
           </div>';
-  echo $html;
+  return $html;
 }

@@ -116,5 +116,5 @@ function plus_view_teachers(){
   $html .=  '</div>
             </div>
           </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script>';
-  echo $html;
+  return $html;
 }

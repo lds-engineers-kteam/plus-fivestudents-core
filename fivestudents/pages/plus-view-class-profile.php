@@ -535,5 +535,5 @@ $html .='<script>
   });
 </script>';
   
-    echo $html;
+    return $html;
   }

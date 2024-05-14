@@ -197,5 +197,5 @@ $html.= ' <script> $(function(){
            
             });
 });</script>';
-  echo $html;
+  return $html;
 }

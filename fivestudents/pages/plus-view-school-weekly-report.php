@@ -258,5 +258,5 @@ function plus_school_weekly_report(){
            
             });
 });</script>';
-   echo $html;
+   return $html;
 }

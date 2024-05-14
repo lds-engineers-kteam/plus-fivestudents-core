@@ -203,5 +203,5 @@ $(document).ready(function(){
   });
 });
 </script>';
-  echo $html;
+  return $html;
 }

@@ -4,9 +4,7 @@ function plus_view_claims(){
   require_once($CFG->dirroot . '/api/moodlecall.php');
 
   return plus_view_noaccess();
-  if ( !is_user_logged_in() || !current_user_can('view_plusclaims')) {
-    return plus_view_noaccess();
-  }
+
   $current_user = wp_get_current_user();
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
@@ -208,6 +206,6 @@ function plus_view_claims(){
     });
   });
   </script>';
-  echo $html;
+  return $html;
 }
 

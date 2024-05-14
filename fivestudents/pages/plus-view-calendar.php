@@ -2,9 +2,6 @@
 function plus_view_calendar(){
   global $wp,$CFG,$MOODLESESSION;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-  if ( !is_user_logged_in() || !current_user_can('plus_viewcalendar') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
-    return plus_view_noaccess();
-  }
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -621,5 +618,5 @@ function plus_view_calendar(){
     });
     </script>";
 
-  echo $html;
+  return $html;
 }

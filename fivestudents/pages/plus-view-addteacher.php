@@ -161,5 +161,5 @@ function plus_add_teacher(){
   $html .=  '</div>
             </div>
           </div>';
-  echo $html;
+  return $html;
 }

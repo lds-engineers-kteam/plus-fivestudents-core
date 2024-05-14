@@ -125,5 +125,5 @@ if(isset($res1->data)){
   $html .=  '</div>
             </div>
           </div>';
-  echo $html;
+  return $html;
 }
