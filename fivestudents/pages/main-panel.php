@@ -14,13 +14,13 @@ function main_panel(){
   $formdata->attempt = plus_get_request_parameter("attempt", 1);
 
   $current_user = wp_get_current_user();
-  $MOODLE = new MoodleManager($current_user);
-  $APIRES = $MOODLE->get("Dashboard", null, $formdata);
-  
   // echo "<pre>";
-  // print_r($MOODLESESSION);
+  // print_r($current_user);
   // echo "</pre>";
   // die;
+  
+  $MOODLE = new MoodleManager($current_user);
+  $APIRES = $MOODLE->get("Dashboard", null, $formdata);
   
   // $html =  '<div class="row">'.(is_string($APIRES)?$APIRES:json_encode($APIRES)).'</div>';
   $html =  '<div class="row">';
@@ -179,7 +179,7 @@ function main_panel(){
                           <div class="input-group-prepend">
                             <span class="input-group-text">'.plus_get_string("level", "form").'</span>
                           </div>
-                          <select name="categoryid" class="form-control" id="categoryid" required="required">'.$catcourses.'</select>
+                          <select title="category" name="categoryid" class="form-control" id="categoryid" required="required">'.$catcourses.'</select>
                         </div>
                       </div>
                       <div class="form-group">

@@ -5,14 +5,9 @@ function home_url($optionalparam) {
 	return $CFG->wwwroot . $optionalparam;
 }
 
-function get_avatar_url($token) {
-    global $CFG;
-    $profileurl = $CFG->wwwroot."/webservice/pluginfile.php/89/user/icon/f1?token=".$token;
-    return $profileurl;
-}
-
 function wp_logout_url() {
-    return "#";
+    global $CFG;
+    return $CFG->wwwroot . '/login/logout.php';
 }
 
 function wp_set_current_user($tokenObj) {
@@ -27,17 +22,18 @@ function wp_set_current_user($tokenObj) {
 	$newUserObj->user_status = 0;
     $newUserObj->ID = $WPUSER->data->ID;
     $newUserObj->display_name = $WPUSER->data->display_name;
-
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
-
+    
     return isset($WPUSER)?true:false;
 }
 
 
 function wp_get_current_user() {
     global $CURRENTUSERSESSION;
-    $CURRENTUSERSESSION = $_SESSION['CURRENTUSERSESSION'];
-    return $CURRENTUSERSESSION;
+    if(isset($_SESSION['CURRENTUSERSESSION'])){
+        $CURRENTUSERSESSION = $_SESSION['CURRENTUSERSESSION'];
+        return $CURRENTUSERSESSION;
+    }
 }
 
 
@@ -50,19 +46,13 @@ function wp_get_moodle_session() {
 
 function get_user_meta(int $user_id, string $key = "", bool $single = false) {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
-        // Session data not available
         return $single ? null : [];
     }
 
     $userObj = $_SESSION['CURRENTUSERSESSION'];
-
-    // Check if the provided user ID matches the user object's ID
     if ($userObj->ID !== $user_id) {
-        // User ID mismatch
         return $single ? null : [];
     }
-
-    // Check for valid metadata key
     switch ($key) {
         case 'token':
             return $single ? $userObj->token : [$userObj->token];
@@ -91,7 +81,6 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
         case 'lang':
             return $single ? $userObj->lang : [$userObj->lang];
             break;
-        // Add other cases for metadata keys here
         default:
             return $single ? null : [];
     }
@@ -99,19 +88,12 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
 
 function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mixed $prev_value = "") {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
-        // Session data not available
         return false;
     }
-
     $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
-
-    // Check if the provided user ID matches the user object's ID
     if ($newUserObj->ID !== $user_id) {
-        // User ID mismatch
         return false;
     }
-
-    // Update metadata based on the provided key
     switch($meta_key) {
         case 'token':
             $newUserObj->token = $meta_value;
@@ -174,13 +156,9 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
             $newUserObj->lang = $meta_value;
             break;
         default:
-            // Invalid meta key
             return false;
     }
-
-    // Update session with the modified user object
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
-    
     return true;
 }
 
@@ -305,11 +283,6 @@ function plus_get_qsparameter($allparams) {
 }
 
 function plus_redirect($url){
-	// if ( ! headers_sent() ) {
-	//     header_remove();
-	// }
-	// wp_redirect($url);
-	// exit;
 	$string = '<script>'; 
 	$string .= 'window.location = "' . $url . '"';
 	$string .= '</script>'; 
@@ -387,7 +360,7 @@ function plus_getuserformoodle($userid){
 }
 
 function plus_is_admin_user() {
-    return current_user_can( 'manage_options' );
+    return current_user_can('manage_options');
 }
 
 function plus_startMoodleSession($tokenObj) {
@@ -1093,7 +1066,12 @@ function timestamp_to_date($date, $format="d F Y H:i A") {
 }
 
 function base_init() {
-	global $WPUSER, $MOODLESESSION;
+	global $CFG;
+    if(!wp_get_current_user()) {
+        if(strpos($_SERVER['PHP_SELF'], '/login/index.php') === false){
+            redirect($CFG->wwwroot . '/login/');
+        }
+    }
 }
 
 
@@ -2019,9 +1997,8 @@ function prepareOfflineContent($html="")
 
 function logout()
 {
-	global $FILES;
-	$FILES->cleartempdir();
-	session_destroy();
-
+    unset($_SESSION['CURRENTUSERSESSION']);
+    unset($_SESSION['MOODLESESSION']);
+    session_destroy();
 }
 

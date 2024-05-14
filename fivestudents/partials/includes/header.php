@@ -8,6 +8,7 @@ function main_header() {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <title>Fivestudents Admin</title>
+            <link rel="shortcut icon" href="'.$CFG->wwwroot.'/images/logo-mini.png" />
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/feather/feather.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/ti-icons/css/themify-icons.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/css/vendor.bundle.base.css">
@@ -19,13 +20,12 @@ function main_header() {
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/calendar/calender_script/jquery-ui.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/calendar/calender_script/fullcalendar.min.css" />
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/css/style.css">
-            <link rel="shortcut icon" href="'.$CFG->wwwroot.'/images/logo-mini.png" />
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/select2/select2.min.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/tinyPlayer/tinyPlayer.min.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/plusplayer/css/stylised.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/css/el-dashboard-public.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+            
           </head>
         <body>
       ';

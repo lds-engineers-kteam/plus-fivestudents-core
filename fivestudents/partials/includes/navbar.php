@@ -1,15 +1,9 @@
 <?php
 function navbar(){
   global $CFG;
+  
   $CURRENTUSERSESSION = wp_get_current_user();
   $MOODLESESSION = wp_get_moodle_session();
-
-  // echo "<pre>5552";
-  // print_r($CURRENTUSERSESSION);
-  // print_r($MOODLESESSION);
-  // echo "</pre>";
-  // die;
-
   $current_user = wp_get_current_user();
   $current_user->teachid = $MOODLESESSION->INSTITUTION->member->userid;
   $current_user = (object)$current_user;
@@ -43,7 +37,7 @@ function navbar(){
   }
   $userlang = plus_setuserlang();
   $alllang = array("FR"=>"French", "EN"=>"English");
-  $userimg = get_avatar_url($current_user->ID);
+  $userimg = $current_user->data->profileurl;
   $langdropdown = '';
   $langdropdown .= '<li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="langDropdown" data-toggle="dropdown">
@@ -54,7 +48,7 @@ function navbar(){
               if($userlang == $key){continue;}
               $langdropdown .= '<a class="dropdown-item" href="'.plus_generatelangurl($key).'">'.(isset($alllang[$lang])?$alllang[$lang]:$lang).'</a>';
             }
-  $langdropdown .= '            </div>
+  $langdropdown .= ' </div>
           </li>';
   if(isset($MOODLESESSION->allinstitutions) && is_array($MOODLESESSION->allinstitutions) && !empty($MOODLESESSION->allinstitutions)){
     $userinstitution = plus_getuserinstitution();
@@ -73,8 +67,8 @@ function navbar(){
   }
 $html = '<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="/"><img src="'. $CFG->wwwroot . '/images/Five-Students-Logo_big-1.webp" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="/"><img src="'. $CFG->wwwroot . '/images/fivestudents.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="'. $CFG->wwwroot . '/dashboard/"><img src="'. $CFG->wwwroot . '/images/Five-Students-Logo_big-1.webp" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="'. $CFG->wwwroot . '/dashboard/"><img src="'. $CFG->wwwroot . '/images/fivestudents.png" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

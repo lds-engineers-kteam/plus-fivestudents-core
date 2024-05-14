@@ -20,5 +20,5 @@ function plus_checkerror(){
       $html = '<div class="alert alert-danger" role="alert">'.$MOODLESESSION->error->message.'</div>';
     }
   }
-  echo $html;
+  return $html;
 }

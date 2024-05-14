@@ -8,29 +8,22 @@ require_once($CFG->dirroot . '/partials/includes/footer.php');
 require_once($CFG->dirroot . '/pages/main-panel.php');
 require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
 
-$header_el = main_header();
-$navbar_el = navbar();
-$settings_panel_el = settings_panel();
-$sidebar_el = sidebar();
-$main_panel_el = main_panel();
-$footer_el = main_footer();
-
 echo '
-	   '.$header_el.'
+	   '.main_header().'
 	 	 <div class="container-scroller">
-			'.$navbar_el.'   
+			'.navbar().'   
 				<!-- Navbar partial end -->
 					<div class="container-fluid page-body-wrapper">
 						<!-- partial:settings-panel.php -->
-						'.$settings_panel_el.'
+						'.settings_panel().'
 						<!-- partial -->
 						<!-- partial:sidebar.php -->
-						'.$sidebar_el.'
+						'.sidebar().'
 						<!-- partial -->
 						<div class="main-panel">
 						<div class="content-wrapper">
 						'.plus_checkerror().'
-						'.$main_panel_el.'
+						'.main_panel().'
 						</div> 
 						<!-- content-wrapper ends -->
 						<!-- partial:footer.php -->
@@ -47,5 +40,5 @@ echo '
 		<!-- page-body-wrapper ends -->
 	  </div>
 	  <!-- container-scroller -->
-	'.$footer_el.'
+	'.main_footer().'
 ';
