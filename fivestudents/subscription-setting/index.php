@@ -34,7 +34,7 @@ echo '
 						<div class="pageloading"><img src="'.$CFG->wwwroot.'/images/ajax-loader-white.gif"></div>
 				        <footer class="footer">
 				          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-				            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block"> © '.date("Y").'.  <a href="https://plus.fivestudents.com/" target="_blank">fivestudents.com</a></span>
+				            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block"> © '.date("Y").'.  <a href="'.$CFG->wwwroot.'" target="_blank">fivestudents.com</a></span>
 				          </div>
 				        </footer>
 						<!-- partial -->

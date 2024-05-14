@@ -10,6 +10,7 @@ function wp_logout_url() {
     return $CFG->wwwroot . '/login/logout.php';
 }
 
+// Main fucntion to set user session in the core
 function wp_set_current_user($tokenObj) {
     global $WPUSER;
     plus_startMoodleSession($tokenObj);
@@ -22,6 +23,33 @@ function wp_set_current_user($tokenObj) {
 	$newUserObj->user_status = 0;
     $newUserObj->ID = $WPUSER->data->ID;
     $newUserObj->display_name = $WPUSER->data->display_name;
+    
+    $capabilities = [];
+    if ($WPUSER->data->metadata->accounttype == 'schooladmin') {
+        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
+        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
+        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+        ];  
+    } elseif ($WPUSER->data->metadata->accounttype == 'internaladmin') {
+        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
+        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
+        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+        ];
+    } elseif ($WPUSER->data->metadata->accounttype == 'consultant') {
+        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
+        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
+        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+        ];
+    } else {
+        $capabilities = [];
+    }
+
+    // $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
+    // 'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
+    // 'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+    // ];
+
+    $newUserObj->capabilities = $capabilities;
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
     
     return isset($WPUSER)?true:false;
@@ -48,9 +76,8 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
         return $single ? null : [];
     }
-
     $userObj = $_SESSION['CURRENTUSERSESSION'];
-    if ($userObj->ID !== $user_id) {
+    if ($userObj->ID != $user_id) {
         return $single ? null : [];
     }
     switch ($key) {
@@ -59,17 +86,17 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
         case 'privatetoken':
             return $single ? $userObj->privatetoken : [$userObj->privatetoken];
         case 'currentinstitution':
-            return $single ? $userObj->metadata->currentinstitution : [$userObj->metadata->currentinstitution];
+            return $single ? $userObj->data->metadata->currentinstitution : [$userObj->data->metadata->currentinstitution];
         case 'INSTITUTION':
-            return $single ? $userObj->metadata->institution : [$userObj->metadata->institution];
+            return $single ? $userObj->data->metadata->institution : [$userObj->data->metadata->institution];
         case 'display_name':
             return $single ? $userObj->display_name : [$userObj->display_name];
         case 'nickname':
             return $single ? $userObj->nickname : [$userObj->nickname];
         case 'first_name':
-            return $single ? $userObj->metadata->first_name : [$userObj->metadata->first_name];
+            return $single ? $userObj->data->metadata->first_name : [$userObj->data->metadata->first_name];
         case 'last_name':
-            return $single ? $userObj->metadata->last_name : [$userObj->metadata->last_name];
+            return $single ? $userObj->data->metadata->last_name : [$userObj->data->metadata->last_name];
         case 'description':
             return $single ? $userObj->description : [$userObj->description];
         case 'user_login':
@@ -91,7 +118,7 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
         return false;
     }
     $newUserObj = $_SESSION['CURRENTUSERSESSION']; 
-    if ($newUserObj->ID !== $user_id) {
+    if ($newUserObj->ID != $user_id) {
         return false;
     }
     switch($meta_key) {
@@ -102,10 +129,10 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
             $newUserObj->privatetoken = $meta_value;
             break;
         case 'currentinstitution':
-            $newUserObj->metadata->currentinstitution = $meta_value;
+            $newUserObj->data->metadata->currentinstitution = $meta_value;
             break;
         case 'INSTITUTION':
-            $newUserObj->metadata->institution = $meta_value;
+            $newUserObj->data->metadata->institution = $meta_value;
             break;
         case 'display_name':
             $newUserObj->display_name = $meta_value;
@@ -114,10 +141,10 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
             $newUserObj->nickname = $meta_value;
             break;
         case 'first_name':
-            $newUserObj->metadata->first_name = $meta_value;
+            $newUserObj->data->metadata->first_name = $meta_value;
             break;
         case 'last_name':
-            $newUserObj->metadata->last_name = $meta_value;
+            $newUserObj->data->metadata->last_name = $meta_value;
             break;
         case 'description':
             $newUserObj->description = $meta_value;
@@ -164,7 +191,7 @@ function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mix
 
 
 function authenticate_user_login($args) {
-    global $DB, $CFG, $USER;
+    global $CFG;
     $logintype = "normal";     
     $username = $args['username'];     
     $password = $args['password'];     
@@ -206,64 +233,11 @@ function authenticate_user_login($args) {
 }
 
 function current_user_can($string) {
-    
-    $permissions = [
-        'manage_options',
-        'plus_viewdashboardkpi',
-        'plus_viewsubscriptionkpi',
-        'plus_editevents',
-        'plus_editownevents',
-        'view_plusaddglobaluser',
-        'view_plusaddsurvey',
-        'plus_viewcalendar',
-        'plus_viewteachersevent',
-        'plus_calendarmyevent',
-        'view_plusresources',
-        'view_plusclaims',
-        'manage_plususers',
-        'view_plusclaimedevent',
-        'view_plusinprogressedevent',
-        'view_pluscencllededevent',
-        'plus_eventotherviewcompletions',
-        'plus_eventothereditdate',
-        'plus_eventothercancel',
-        'plus_eventotherinprogress',
-        'plus_eventothercomplete',
-        'view_plusmanageevents',
-        'view_pluseditevent',
-        'view_plusglobalusers',
-        'view_pluseditglobaluserteacher',
-        'plus_viewusersubscription',
-        'plus_editstudents',
-        'plus_generatemonthlyreport',
-        'plus_addgroups',
-        'plus_viewtobeapproved',
-        'plus_viewgroupdetails',
-        'plus_generategrouplink',
-        'plus_generategroupcode',
-        'plus_notification_viewallcolumns',
-        'plus_notification_eventview',
-        'view_plussurveys',
-        'view_pluseditsurvey',
-        'plus_addteacher',
-        'view_plusdevicelist',
-        'plus_cansubmitsurvey',
-        'manage_plushomework',
-        'plus_viewgroups',
-        'manage_plusgroups',
-        'override_plussubscription',
-        'manage_plusscorecard',
-        'manage_plusstudentscorecard',
-        'manage_plusstudentprofile',
-        'manage_plusclassprofile',
-        'manage_plusclassprofilecompetency',
-        'manage_plusteacher',
-        'plus_viewteachers',
-        'manage_plustransections',
-        'view_plustraining'
-    ];
-
-    return in_array($string, $permissions);
+    $current_user = wp_get_current_user();
+    $capabilities = $current_user->capabilities;
+    if(isset($capabilities)){
+        return in_array($string, $capabilities);
+    }     
 }
 
 function plus_get_qsparameter($allparams) {
@@ -304,7 +278,7 @@ function plus_getpageurl($pageurl = null, $args = null){
 function plus_pagination($start, $limit, $total, $page="page", $displayto = true){
 
   $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-  $pageurl = home_url($current_url);
+  $pageurl = $current_url;
   $displaycount = ($start+$limit < $total)?$start+$limit:$total;
   $prevcount = ($start-$limit > 0)?$start-$limit:0;
   $allparams = plus_get_allparameter();
@@ -473,23 +447,7 @@ function plus_updateuserlang($lang, $current_url) {
 	$current_user = wp_get_current_user();
 	if(!empty($lang) && !empty($current_user)){
 		$userlang = get_user_meta( $current_user->ID, 'lang', true);
-        
-        echo "<pre>";
-        print_r($lang);
-        echo "</pre>";
-        echo "<pre>";
-        print_r($current_url);
-        echo "</pre>";
-
-        echo "<br>lang<br>";
-        echo $userlang;
-        die;
-
-        if(get_user_meta( $current_user->ID, 'lang', true) == null){
-		  update_user_meta( $current_user->ID, 'lang', $lang, $userlang );		
-        }
-
-		$pageurl = home_url();
+		update_user_meta( $current_user->ID, 'lang', $lang, $userlang );		
 		$allparams = plus_get_allparameter();
 		unset($allparams['changelang']);
 		plus_redirect($current_url);

@@ -5,8 +5,8 @@ require_once($CFG->dirroot . '/partials/includes/navbar.php');
 require_once($CFG->dirroot . '/partials/includes/settings-panel.php');
 require_once($CFG->dirroot . '/partials/includes/sidebar.php');
 require_once($CFG->dirroot . '/partials/includes/footer.php');
+require_once($CFG->dirroot . '/pages/plus-view-addevent.php');
 require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
-require_once($CFG->dirroot . '/pages/plus-view-student-profile.php');
 
 echo '
 	   '.main_header().'
@@ -23,7 +23,7 @@ echo '
 						<div class="main-panel">
 						<div class="content-wrapper">
 						'.plus_checkerror().'
-						'.plus_studentProfile().'
+						'.plus_view_addevent().'
 						</div> 
 						<!-- content-wrapper ends -->
 						<!-- partial:footer.php -->
@@ -42,6 +42,3 @@ echo '
 	  <!-- container-scroller -->
 	'.main_footer().'
 ';
-
-
-

@@ -1,10 +1,11 @@
 <?php
 function plus_newaccountant_users(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
 
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->firstname = plus_get_request_parameter("firstname", "");
@@ -15,7 +16,7 @@ function plus_newaccountant_users(){
 
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url( $wp->request ));
+    plus_redirect(home_url($current_url));
     exit;
   }
   $institutionData = $MOODLE->get("institutionData", null,'');
