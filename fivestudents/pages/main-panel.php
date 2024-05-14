@@ -22,7 +22,7 @@ function main_panel(){
   // echo "</pre>";
   // die;
   
-  $html =  '<div class="row">'.(is_string($APIRES)?$APIRES:json_encode($APIRES)).'</div>';
+  // $html =  '<div class="row">'.(is_string($APIRES)?$APIRES:json_encode($APIRES)).'</div>';
   $html =  '<div class="row">';
   $html .=  '<div class="col-md-12 grid-margin">
               <div class="row">
@@ -361,5 +361,5 @@ function main_panel(){
     }
   }
 
-  echo $html;
+  return $html;
 }

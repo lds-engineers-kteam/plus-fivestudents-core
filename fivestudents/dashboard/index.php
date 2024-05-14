@@ -46,6 +46,6 @@ echo '
 			</div>
 		<!-- page-body-wrapper ends -->
 	  </div>
-	 <!-- container-scroller -->
+	  <!-- container-scroller -->
 	'.$footer_el.'
 ';

@@ -182,5 +182,5 @@ if(plus_is_admin_user()){
 // var_dump(is_admin());
 // die;
   $html .= '</ul></nav>';
-      echo $html;
+      return $html;
     }
