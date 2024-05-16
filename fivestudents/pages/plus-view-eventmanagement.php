@@ -37,10 +37,7 @@ function plus_view_eventmanagement(){
   }
   $html= '';
   // $html .= '<pre>'.print_r($active, true).'</pre>';
-  $html .= '
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  ';
+
   $html .=  '
     <div class="row">
       <div class="col-md-12 grid-margin stretch-card">

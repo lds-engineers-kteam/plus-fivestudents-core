@@ -1,9 +1,8 @@
 <?php
 function plus_classProfileFilter(){
-  global $wp,$CLASSPROFILEAVGDATA,$CFG;
+  global $CLASSPROFILEAVGDATA, $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
-
   $CLASSPROFILEAVGDATA = array();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -188,7 +187,7 @@ function plus_classProfileFilter(){
                     </div>
                     <button type="submit" name="showreport" id="showreport" value="show" class="btn btn-primary mr-2">'.plus_get_string("search", "form").'</button>
                     <a href="/sushiltest" class="btn btn-warning">'.plus_get_string("cancel", "form").'</a>
-                    <a href="'.$CFG->wwwroot.'.(empty($formdata->groupid)?'/class-profile':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="' . $CFG->wwwroot . (empty($formdata->groupid) ? '/class-profile' : '/group-details/?id=' . $formdata->groupid) . '" class="btn btn-warning">' . plus_get_string("return", "form") . '</a>
                   </form>
                 </div>
               </div>

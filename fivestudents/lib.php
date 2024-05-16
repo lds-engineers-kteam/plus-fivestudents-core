@@ -10,6 +10,12 @@ function wp_logout_url() {
     return $CFG->wwwroot . '/login/logout.php';
 }
 
+
+
+function plus_translatelogs($param) {
+
+return true;
+} 
 // Main fucntion to set user session in the core
 function wp_set_current_user($tokenObj) {
     global $WPUSER;
@@ -25,33 +31,33 @@ function wp_set_current_user($tokenObj) {
     $newUserObj->display_name = $WPUSER->data->display_name;
     
     $capabilities = [];
-    if ($WPUSER->data->metadata->accounttype == 'schooladmin') {
-        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
-        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
-        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
-        ];  
+    if ($WPUSER->data->is_siteadmin == 1) {
+        // siteadmin
+        $capabilities = ["plus_calendarmyevent", "plus_cancancelevents", "plus_cancompleteevents", "plus_candeleteevents", "plus_canstartevents", "plus_canstarteventsanytime", "plus_cansubmitsurvey", "plus_canvisitevents", "plus_editownevents", "plus_eventothercancel", "plus_eventothercomplete", "plus_eventothereditdate", "plus_isconsultant", "plus_notification_eventview", "plus_notification_viewallcolumns", "plus_viewcalendar", "plus_viewdashboardkpi", "plus_viewgroupdetails", "plus_viewgroups", "plus_viewteachers", "plus_viewteachersevent", "view_pluscencllededevent", "view_plusinprogressedevent", "manage_plusdevicelist", "manage_plususers", "override_plussubscription", "plus_viewsubscriptionkpi", "view_plusaddglobaluser", "view_plusaddsurvey", "view_plusdevicelist", "view_pluseditevent", "view_pluseditglobaluserteacher", "view_pluseditsurvey", "view_plusevents", "view_plusglobalusers", "view_plusmanageevents", "view_plussurveys", "view_plusviewsurvey", "manage_plushomework", "manage_plusscorecard", "manage_plusstudentprofile", "manage_plusstudentscorecard", "manage_plusteacher", "plus_addgroups", "plus_addteacher", "plus_editevents", "plus_editstudents", "plus_eventotherinprogress", "plus_eventotherviewcompletions", "plus_generategroupcode", "plus_generategrouplink", "plus_generatemonthlyreport", "plus_isschooladmin", "plus_viewtobeapproved", "plus_viewusersubscription", "view_plusclaimedevent", "view_plusclaims", "view_plustraining", "manage_options", "manage_plusclassprofile", "manage_plusgroups", "plus_istutor", "view_plusresources"
+        ];        
+    } else if ($WPUSER->data->metadata->accounttype == 'schooladmin') {
+        // school admin
+        $capabilities = ["manage_plusclassprofile", "manage_plusdevicelist", "manage_plusgroups", "manage_plushomework", "manage_plusscorecard", "manage_plusstudentprofile", "manage_plusstudentscorecard", "manage_plusteacher", "plus_addgroups", "plus_addteacher", "plus_cancancelevents", "plus_candeleteevents", "plus_cansubmitsurvey", "plus_editevents", "plus_editstudents", "plus_eventotherinprogress", "plus_eventotherviewcompletions", "plus_generategroupcode", "plus_generategrouplink", "plus_generatemonthlyreport", "plus_isschooladmin", "plus_notification_eventview", "plus_notification_viewallcolumns", "plus_viewcalendar", "plus_viewdashboardkpi", "plus_viewgroupdetails", "plus_viewgroups", "plus_viewteachers", "plus_viewteachersevent", "plus_viewtobeapproved", "plus_viewusersubscription", "view_plusaddglobaluser", "view_plusaddsurvey", "view_plusclaimedevent", "view_plusclaims", "view_plusdevicelist", "view_plusinprogressedevent", "view_plusresources", "view_plussurveys", "view_plustraining", "view_plusviewsurvey"
+        ];
     } elseif ($WPUSER->data->metadata->accounttype == 'internaladmin') {
-        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
-        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
-        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+        // internal admin
+        $capabilities= ["manage_plusdevicelist", "manage_plususers", "override_plussubscription", "plus_cansubmitsurvey", "plus_viewsubscriptionkpi", "view_plusaddglobaluser", "view_plusaddsurvey", "view_plusdevicelist", "view_pluseditevent", "view_pluseditglobaluserteacher", "view_pluseditsurvey", "view_plusevents", "view_plusglobalusers", "view_plusmanageevents", "view_plussurveys", "view_plusviewsurvey"
         ];
     } elseif ($WPUSER->data->metadata->accounttype == 'consultant') {
-        $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
-        'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
-        'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
+        // principal
+        $capabilities = ["plus_calendarmyevent", "plus_cancancelevents", "plus_cancompleteevents", "plus_candeleteevents", "plus_canstartevents", "plus_canstarteventsanytime", "plus_cansubmitsurvey", "plus_canvisitevents", "plus_editownevents", "plus_eventothercancel", "plus_eventothercomplete", "plus_eventothereditdate", "plus_isconsultant", "plus_notification_eventview", "plus_notification_viewallcolumns", "plus_viewcalendar", "plus_viewdashboardkpi", "plus_viewgroupdetails", "plus_viewgroups", "plus_viewteachers", "plus_viewteachersevent", "view_pluscencllededevent", "view_plusinprogressedevent"
+        ];
+    }  elseif ($WPUSER->data->metadata->accounttype == 'tutor') {
+        // tutor
+        $capabilities = ["manage_plusclassprofile", "manage_plusgroups", "manage_plushomework", "manage_plusstudentprofile",
+        "plus_cancancelevents", "plus_cansubmitsurvey", "plus_editstudents", "plus_istutor", "plus_viewcalendar", "plus_viewdashboardkpi", "plus_viewgroupdetails", "plus_viewgroups", "view_plusresources", "view_plustraining"
         ];
     } else {
         $capabilities = [];
     }
 
-    // $capabilities = ['manage_options','plus_viewdashboardkpi','plus_viewsubscriptionkpi','plus_editevents','plus_editownevents','view_plusaddglobaluser','view_plusaddsurvey','plus_viewcalendar','plus_viewteachersevent','plus_calendarmyevent','view_plusresources','view_plusclaims','manage_plususers','view_plusclaimedevent','view_plusinprogressedevent','view_pluscencllededevent','plus_eventotherviewcompletions','plus_eventothereditdate','plus_eventothercancel','plus_eventotherinprogress','plus_eventothercomplete','view_plusmanageevents','view_pluseditevent','view_plusglobalusers',
-    // 'view_pluseditglobaluserteacher','plus_viewusersubscription','plus_editstudents','plus_generatemonthlyreport','plus_addgroups','plus_viewtobeapproved','plus_viewgroupdetails','plus_generategrouplink','plus_generategroupcode','plus_notification_viewallcolumns','plus_notification_eventview','view_plussurveys','view_pluseditsurvey','plus_addteacher','view_plusdevicelist','plus_cansubmitsurvey','manage_plushomework','plus_viewgroups','manage_plusgroups','override_plussubscription','manage_plusscorecard','manage_plusstudentscorecard','manage_plusstudentprofile',
-    // 'manage_plusclassprofile','manage_plusclassprofilecompetency','manage_plusteacher','plus_viewteachers','manage_plustransections','view_plustraining'
-    // ];
-
     $newUserObj->capabilities = $capabilities;
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
-    
     return isset($WPUSER)?true:false;
 }
 

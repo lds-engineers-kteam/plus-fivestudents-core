@@ -1,7 +1,8 @@
 <?php
 function plus_view_calendar(){
-  global $wp,$CFG,$MOODLESESSION;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -9,8 +10,6 @@ function plus_view_calendar(){
   $formdata->teacherid = plus_get_request_parameter("teacherid", 0);
   $formdata->eventfor = plus_get_request_parameter("eventfor", 0);
 
-  $current_user = wp_get_current_user();
-  $current_user = wp_get_current_user();
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
   $html ="";
@@ -101,15 +100,14 @@ function plus_view_calendar(){
     $currentlang = plus_getuserlang();
   $html .="
   <div id='calendar'></div>
-  <link rel='stylesheet' href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' />
-  <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
-  <script src='/wp-content/plugins/el-dashboard/public/vendors/calender_script/jquery-ui.js'></script>
-  ".($currentlang == "EN"?"<script src='/wp-content/plugins/el-dashboard/public/vendors/calender_script/moment.js'></script>":"<script src='/wp-content/plugins/el-dashboard/public/vendors/calender_script/momentfr.js'></script>")."
-  <script src='/wp-content/plugins/el-dashboard/public/vendors/calender_script/fullcalendar.min.js'></script>
-  <script src='/wp-content/plugins/el-dashboard/public/vendors/calender_script/locale/fr.js'></script>
+
+  <script src='".$CFG->wwwroot."/vendors/calender_script/jquery-ui.js'></script>
+  ".($currentlang == "EN"?"<script src='".$CFG->wwwroot."/vendors/calender_script/moment.js'></script>":"<script src='".$CFG->wwwroot."/vendors/calender_script/momentfr.js'></script>")."
+  <script src='".$CFG->wwwroot."/vendors/calender_script/fullcalendar.min.js'></script>
+  <script src='".$CFG->wwwroot."/vendors/calender_script/locale/fr.js'></script>
   <script>
   var institutions = ".json_encode($institutions).";
+  console.log(institutions);
   var selectedinstitution = ".json_encode($selectedinstitution).";
     $(document).on('change', '#institutionid', function(){
       var institutionid = $(this).val();
@@ -156,6 +154,8 @@ function plus_view_calendar(){
         return eventdate;
     }
     $(document).ready(function() {
+        var url = '".$CFG->wwwroot."/calendar/calendarevents.php';
+        console.log('url:', url );
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -163,7 +163,7 @@ function plus_view_calendar(){
                 right: 'month,agendaWeek,agendaDay".($canadd?",addEventButton":"")."'
             },
             events: {
-                url: '/api/calendarevents.php',
+                url: url,
                 type: 'GET',
                 data: {
                     institutionid: $('#institutionid').val(),

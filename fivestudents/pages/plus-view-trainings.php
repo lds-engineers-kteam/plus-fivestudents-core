@@ -1,7 +1,7 @@
 <?php
 function plus_view_trainings()
 {
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -271,7 +271,7 @@ function plus_view_trainings()
                <div class="container-fluid nopaddingmobile">
                 <div class="left-col col-lg-9" >
                     <div id="activitydetails" data-page="0" data-resource="0">
-                    <img src="/wp-content/plugins/el-dashboard/public/images/traningmain.png" style="max-width: 100%; margin: 0px;"/>
+                    <img src="'.$CFG->wwwroot.'/images/traningmain.png" style="max-width: 100%; margin: 0px;"/>
                     <div class="coursedescription">'.$course->summary.'</div>
                     </div>
                 </div>

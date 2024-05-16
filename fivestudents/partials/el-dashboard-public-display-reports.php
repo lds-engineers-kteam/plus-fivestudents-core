@@ -51,12 +51,3 @@ function plus_view_reports_page(){
 	 ';
 }
 
-function loggedin_check_plus_view_reports(){
-
-	if ( is_user_logged_in() && current_user_can('manage_plusgroups')) {
-		return plus_view_reports_page();
-	}else{
-		// return plus_redirect(site_url().'/');
-		// return '<script> location.href="'. site_url().'/"; </script>';
-	}
-}

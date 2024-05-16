@@ -9,10 +9,6 @@ require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
 require_once($CFG->dirroot . '/pages/plus-view-trainings.php');
 
 
-
-
-
-
 echo '
 	   '.main_header().'
 	 	 <div class="container-scroller">
