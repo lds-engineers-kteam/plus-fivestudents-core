@@ -25,6 +25,7 @@ function main_header() {
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/tinyPlayer/tinyPlayer.min.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/vendors/plusplayer/css/stylised.css">
             <link rel="stylesheet" href="'.$CFG->wwwroot.'/css/el-dashboard-public.css">
+            <link rel="stylesheet" href="'.$CFG->wwwroot.'/css/style.min.css">
             
           </head>
         <body>

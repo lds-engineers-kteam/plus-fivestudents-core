@@ -30,6 +30,11 @@ function wp_set_current_user($tokenObj) {
     $newUserObj->ID = $WPUSER->data->ID;
     $newUserObj->display_name = $WPUSER->data->display_name;
     
+
+
+    // echo "<pre>";
+    // print_r($WPUSER);
+    // echo "</pre>";
     $capabilities = [];
     if ($WPUSER->data->is_siteadmin == 1) {
         // siteadmin
@@ -43,7 +48,7 @@ function wp_set_current_user($tokenObj) {
         // internal admin
         $capabilities= ["manage_plusdevicelist", "manage_plususers", "override_plussubscription", "plus_cansubmitsurvey", "plus_viewsubscriptionkpi", "view_plusaddglobaluser", "view_plusaddsurvey", "view_plusdevicelist", "view_pluseditevent", "view_pluseditglobaluserteacher", "view_pluseditsurvey", "view_plusevents", "view_plusglobalusers", "view_plusmanageevents", "view_plussurveys", "view_plusviewsurvey"
         ];
-    } elseif ($WPUSER->data->metadata->accounttype == 'consultant') {
+    } elseif ($WPUSER->data->metadata->accounttype == 'principal') {
         // principal
         $capabilities = ["plus_calendarmyevent", "plus_cancancelevents", "plus_cancompleteevents", "plus_candeleteevents", "plus_canstartevents", "plus_canstarteventsanytime", "plus_cansubmitsurvey", "plus_canvisitevents", "plus_editownevents", "plus_eventothercancel", "plus_eventothercomplete", "plus_eventothereditdate", "plus_isconsultant", "plus_notification_eventview", "plus_notification_viewallcolumns", "plus_viewcalendar", "plus_viewdashboardkpi", "plus_viewgroupdetails", "plus_viewgroups", "plus_viewteachers", "plus_viewteachersevent", "view_pluscencllededevent", "view_plusinprogressedevent"
         ];
