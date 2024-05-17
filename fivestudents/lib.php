@@ -1,6 +1,6 @@
 <?php
 
-function home_url($optionalparam) {
+function home_url($optionalparam ='') {
 	global $CFG;
 	return $CFG->wwwroot . $optionalparam;
 }

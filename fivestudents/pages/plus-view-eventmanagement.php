@@ -204,7 +204,10 @@ function plus_view_eventmanagement(){
   if(current_user_can('plus_eventothercancel')){$statuspermission++;}
   if(current_user_can('plus_eventotherinprogress')){$statuspermission++;}
   if(current_user_can('plus_eventothercomplete')){$statuspermission++;}
-  $html .= '<script>
+  $html .= '
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
   var eventstatus = '.json_encode($eventstatus).';
   $(document).on("click", "[eventupdate]", function(){
     var eventid = $(this).data("id");

@@ -60,8 +60,8 @@ function plus_view_groupdetails(){
                     <h4 class="card-title">'.plus_get_string("students", "form").'</h4>
                     <div class="card-body-action">
                     '.(current_user_can('plus_viewusersubscription')?'
-                      <a class="btn btn-primary" href="/student-restriction/?groupid='.$group->id.'">Restrict Module</a>
-                      <a class="btn btn-primary" href="/add-students/?id='.$group->id.'"><i class="mdi mdi-plus"></i></a>
+                      <a class="btn btn-primary" href="'.$CFG->wwwroot.'/student-restriction/?groupid='.$group->id.'">Restrict Module</a>
+                      <a class="btn btn-primary" href="'.$CFG->wwwroot.'/add-students/?id='.$group->id.'"><i class="mdi mdi-plus"></i></a>
                       <span class="btn btn-primary copyLink" data-id="'.$group->id.'"><i class="mdi mdi-content-copy"></i></span>
                       <span data-id="'.$group->id.'" class="btn btn-primary copyCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copycode", "form").'</span>
                       <span data-id="'.$group->id.'" class="btn btn-primary copyExamCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copyexamcode", "form").'</span>
@@ -95,7 +95,7 @@ function plus_view_groupdetails(){
                         <tbody>';
                         if(is_array($group->users) && !empty($group->users)){
                           foreach ($group->users as $key => $user) {
-                            $edit_btn='<a href="/add-students/?id='.$groupid.'&userid='.$user->userid.'">'.plus_get_string("edit", "form").'</a>';
+                            $edit_btn='<a href="'.$CFG->wwwroot.'/add-students/?id='.$groupid.'&userid='.$user->userid.'">'.plus_get_string("edit", "form").'</a>';
                             $html .=              '<tr>
                             <td>'.$user->lastname.'</td>
                             <td>'.$user->firstname.'</td>
@@ -114,12 +114,12 @@ function plus_view_groupdetails(){
                               ';
                               $html .=              '<td>';
                               if($user->status == 0){
-                                $html .=              '<a href="/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=1">'.plus_get_string("accept", "form").'</a> / ';
-                                $html .=              '<a href="/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=2">'.plus_get_string("reject", "form").'</a>';
+                                $html .=              '<a href="'.$CFG->wwwroot.'/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=1">'.plus_get_string("accept", "form").'</a> / ';
+                                $html .=              '<a href="'.$CFG->wwwroot.'/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=2">'.plus_get_string("reject", "form").'</a>';
                               } else {
                                 if($user->status == 1){
                                   $html .=              plus_get_string("accepted", "form");
-                                  $html .=              '&nbsp; &nbsp;<a href="/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=3">'.plus_get_string("remove", "form").'</a>';
+                                  $html .=              '&nbsp; &nbsp;<a href="'.$CFG->wwwroot.'/group-details/?id='.$groupid.'&userid='.$user->userid.'&status=3">'.plus_get_string("remove", "form").'</a>';
                                 } else {
                                   $html .=              plus_get_string("rejected", "form");
                                 }
@@ -127,12 +127,12 @@ function plus_view_groupdetails(){
                               $html .=              '</td>';
                               $html .=              '
                               
-                                  '.($APIRES->INSTITUTION->paymenttype?'<td><a href="/student-subscription/?id='.$groupid.'&userid='.$user->userid.' " >Payment details</a></td>':'<td><a href="/student-date-subscription/?id='.$groupid.'&userid='.$user->userid.' " >Subscritption details</a></td>').'
+                                  '.($APIRES->INSTITUTION->paymenttype?'<td><a href="/student-subscription/?id='.$groupid.'&userid='.$user->userid.' " >Payment details</a></td>':'<td><a href="'.$CFG->wwwroot.'/student-date-subscription/?id='.$groupid.'&userid='.$user->userid.' " >Subscritption details</a></td>').'
                               <td><span class="btn btn-primary copyMigrationCode" data-id="'.$user->userid.'"><i class="mdi mdi-content-copy"></i></span></td>';
                             }
                             $html .=              '
                             '.(current_user_can('plus_editstudents')?'<td>'.$edit_btn.'</td>':'').'
-                            <td><a href="/monthly-report/?groupid='.$groupid.'&userid='.$user->userid.'"> '.plus_get_string("heading", "report").' </a></td>
+                            <td><a href="'.$CFG->wwwroot.'/monthly-report/?groupid='.$groupid.'&userid='.$user->userid.'"> '.plus_get_string("heading", "report").' </a></td>
                                 </tr>';
                           }
                         } else {
@@ -150,7 +150,7 @@ function plus_view_groupdetails(){
                 <div class="card">
                   <div class="card-body haveaction">
                     <h4 class="card-title">'.plus_get_string("homeworks", "site").'</h4>
-                    <a class="btn btn-primary card-body-action" href="/add-homework?groupid='.$group->id.'"><i class="mdi mdi-plus"></i></a>
+                    <a class="btn btn-primary card-body-action" href="'.$CFG->wwwroot.'/add-homework?groupid='.$group->id.'"><i class="mdi mdi-plus"></i></a>
                     <div class="table-responsive">
                       <table class="table table-striped plus_local_datatable nosort" id="himeworklist">
                         <thead>
@@ -174,7 +174,7 @@ function plus_view_groupdetails(){
                           foreach ($group->homeworks as $key => $homework) {
                               if(!empty($new_array) && !in_array($homework->courseid, $new_array)){continue;}else{
                               // echo "<pre>"; print_r($homework);die;
-                              $html .= '<tr class="'.$homework->courseid.'"><td class="p-1 text-center"><a class="p-1 m-1" style="font-size:32px;" href="/add-homework?groupid='.$homework->groupid.'&id='.$homework->id.'"><i class="mdi mdi-lead-pencil"></i></a> &nbsp; <a class="p-1 m-1" style="font-size:32px;" href="/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'"><i class="mdi mdi-library-books"></i></a></td><td>'.plus_dateToFrench($homework->duedate).'</td><td>'.plus_dateToFrench($homework->homeworkdate).'</td><td>'.$homework->name.'</td><td>'.$homework->grade.'</td><td>'.$homework->coursename.'</td><td>'.$homework->topicname.'</td><td>'.$homework->subtopicname.'</td><td>'.$homework->quizname.'</td><td>'.($homework->status?plus_get_string("statuspublish", "form"):plus_get_string("statusplanned", "form")).'</td><td>'.plus_dateToFrench($homework->createddate, "d F Y h:i A").'</td><td><a href="/add-homework?groupid='.$homework->groupid.'&id='.$homework->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a> &nbsp; &nbsp; &nbsp; <a href="/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'"><i class="mdi mdi-library-books"></i> '.plus_get_string("report", "form").'</a></td></tr>';
+                              $html .= '<tr class="'.$homework->courseid.'"><td class="p-1 text-center"><a class="p-1 m-1" style="font-size:32px;" href="'.$CFG->wwwroot.'/add-homework?groupid='.$homework->groupid.'&id='.$homework->id.'"><i class="mdi mdi-lead-pencil"></i></a> &nbsp; <a class="p-1 m-1" style="font-size:32px;" href="'.$CFG->wwwroot.'/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'"><i class="mdi mdi-library-books"></i></a></td><td>'.plus_dateToFrench($homework->duedate).'</td><td>'.plus_dateToFrench($homework->homeworkdate).'</td><td>'.$homework->name.'</td><td>'.$homework->grade.'</td><td>'.$homework->coursename.'</td><td>'.$homework->topicname.'</td><td>'.$homework->subtopicname.'</td><td>'.$homework->quizname.'</td><td>'.($homework->status?plus_get_string("statuspublish", "form"):plus_get_string("statusplanned", "form")).'</td><td>'.plus_dateToFrench($homework->createddate, "d F Y h:i A").'</td><td><a href="'.$CFG->wwwroot.'/add-homework?groupid='.$homework->groupid.'&id='.$homework->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a> &nbsp; &nbsp; &nbsp; <a href="'.$CFG->wwwroot.'/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'"><i class="mdi mdi-library-books"></i> '.plus_get_string("report", "form").'</a></td></tr>';
                           }
                          }
                         } else {
