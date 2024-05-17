@@ -162,7 +162,7 @@ function plus_view_homework(){
                         <td>'.$homework->quizname.'</td>
                         <td>'.($homework->status?plus_get_string("statuspublish", "form"):plus_get_string("statusplanned", "form")).'</td>
                         <td>'.plus_dateToFrench($homework->createddate, "d F Y h:i A").'</td>
-                        <td><a href="/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'&schoolyear='.$homework->schoolyear.'"><i class="mdi mdi-library-books"></i> '.plus_get_string("report", "form").'</a></td></tr>';  
+                        <td><a href="'.$CFG->wwwroot.'/homework-report/?groupid='.$homework->groupid.'&homeworkid='.$homework->id.'&schoolyear='.$homework->schoolyear.'"><i class="mdi mdi-library-books"></i> '.plus_get_string("report", "form").'</a></td></tr>';  
                   }                
                 }
                 $searchreq->total = $APIRES->data->total; 

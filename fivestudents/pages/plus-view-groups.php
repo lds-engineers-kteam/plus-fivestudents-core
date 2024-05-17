@@ -90,7 +90,7 @@ function plus_view_groups(){
                                 '.(current_user_can('plus_generategroupcode')?'<span data-id="'.$group->id.'" class="btn copyCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copycode", "form").'</span> &nbsp; &nbsp;<span data-id="'.$group->id.'" class="btn copyOneTimeCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copyOneTimeCode", "form").'</span> &nbsp; &nbsp; <span data-id="'.$group->id.'" class="btn copyExamCode"><i class="mdi mdi-content-copy"></i>'.plus_get_string("copyexamcode", "form").'</span> &nbsp; &nbsp;':'').'
                                 '.(current_user_can('plus_addgroups')?'<a href="'.$CFG->wwwroot.'/add-group?id='.$group->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>&nbsp; &nbsp;':'').'
                                 '.(current_user_can('plus_viewgroupdetails')?'<a href="'.$CFG->wwwroot.'/group-details?id='.$group->id.'"> '.plus_get_string("details", "form").' </a> &nbsp; &nbsp;':'').'
-                                '.(current_user_can('plus_generatemonthlyreport')?'<a href="/groups/?generatemonthlyreport=1&groupid='.$group->id.'"> '.plus_get_string("generatemonthlyreport", "form").' </a>':'').'
+                                '.(current_user_can('plus_generatemonthlyreport')?'<a href="'.$CFG->wwwroot.'/groups/?generatemonthlyreport=1&groupid='.$group->id.'"> '.plus_get_string("generatemonthlyreport", "form").' </a>':'').'
                                 </td>
                               </tr>';
                 }

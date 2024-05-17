@@ -5,9 +5,8 @@ require_once($CFG->dirroot . '/partials/includes/navbar.php');
 require_once($CFG->dirroot . '/partials/includes/settings-panel.php');
 require_once($CFG->dirroot . '/partials/includes/sidebar.php');
 require_once($CFG->dirroot . '/partials/includes/footer.php');
+require_once($CFG->dirroot . '/pages/plus-view-monthlyreport.php');
 require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
-require_once($CFG->dirroot . '/pages/plus-view-eventmanagement.php');
-
 
 echo '
 	   '.main_header().'
@@ -24,7 +23,7 @@ echo '
 						<div class="main-panel">
 						<div class="content-wrapper">
 						'.plus_checkerror().'
-						'.plus_view_eventmanagement().'
+						'.plus_view_monthlyreport().'
 						</div> 
 						<!-- content-wrapper ends -->
 						<!-- partial:footer.php -->
@@ -43,6 +42,3 @@ echo '
 	  <!-- container-scroller -->
 	'.main_footer().'
 ';
-echo "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js?ver=4.6.1' id='bootstrap-js'></script>";
-
-

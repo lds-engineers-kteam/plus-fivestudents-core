@@ -7,6 +7,7 @@ function plus_classProfileFilter(){
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
+  $filtereddataJson = "";
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->schoolyear = plus_get_request_parameter("schoolyear", $MOODLESESSION->currentschoolyear);
   $formdata->categoryid = plus_get_request_parameter("categoryid", 0);
@@ -57,7 +58,6 @@ function plus_classProfileFilter(){
       }
   }
   echo "<script>console.log(" . json_encode($new_array) . ");</script>";
-
   $html .= '<style type="text/css">
   .datareport .smalldot {
     width: 15px;
@@ -195,6 +195,7 @@ function plus_classProfileFilter(){
 if($formdata->showreport){
   $html .=  '<br/><hr/><br/>';
   if($filtereddata->data){
+     $filtereddataJson = $filtereddata->data->topicdata;
     // $html .= '<pre>'.print_r($filtereddata->data->topicdata, true).'</pre>'; 
     $html .=  '<br/><hr/><br/>';
     $html .=  '<div class="col-md-12 grid-margin stretch-card">
@@ -761,7 +762,7 @@ if($formdata->showreport){
 
   $html .=  '
   <script>
-  var topicdata='.json_encode($filtereddata->data->topicdata).';
+  var topicdata='.json_encode($filtereddataJson).';
   var newarray = '.json_encode($new_array).';
   $(function(){
     var allGrades='.json_encode($allGrades).';

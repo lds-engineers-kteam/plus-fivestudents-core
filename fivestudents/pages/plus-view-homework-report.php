@@ -204,7 +204,7 @@ $headoptionshtml = "";
         <div class="homeworkreport-card">
           <div class="card-body haveaction">
             <h4 class="card-title"></h4>
-            <button  class="btn btn-primary card-body-action hide" onclick="imageexportData(\'print_homeworkreport\')"> '.plus_get_string("print", "form").'</button>
+            <button  class="btn btn-primary d-none card-body-action hide" onclick="imageexportData(\'print_homeworkreport\')"> '.plus_get_string("print", "form").'</button>
             ';
   $html .=  ' 
   <div id="print_homeworkreport">    
