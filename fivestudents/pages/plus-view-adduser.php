@@ -1,6 +1,6 @@
 <?php
 function plus_add_user(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -327,6 +327,7 @@ function plus_add_user(){
             </div>
           </div>';
 $html .='<script>
+setTimeout(function() {
   $(document).ready(function(){
     var selectedregion = null;    
     var allregionsdata = '.json_encode($allregionsdata).';
@@ -345,6 +346,7 @@ $html .='<script>
     });
     $("#region").trigger("change");
   })
+  }, 6000);
   </script>';
 
   return $html;
