@@ -29,7 +29,9 @@ function plus_view_groupdetails(){
   if($enabledcourse){
       $new_array = [];
       foreach ($enabledcourse as $inner_array) {
+        if(is_array($inner_array)){
           $new_array = array_merge($new_array, $inner_array);
+        }
       }
   }
 

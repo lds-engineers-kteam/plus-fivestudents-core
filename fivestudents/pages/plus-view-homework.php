@@ -27,13 +27,16 @@ function plus_view_homework(){
   $selectedgroup=null;  
 
   $enabledcourse = $APIRES22->INSTITUTION->enablecourses;
-  // echo "<script>console.log(" . json_encode($APIRES) . ");</script>";
-  if($enabledcourse){
-      $new_array = [];
-      foreach ($enabledcourse as $inner_array) {
-          $new_array = array_merge($new_array, $inner_array);
-      }
-  }
+  if (!empty($enabledcourse)) {
+    $new_array = [];
+    foreach ($enabledcourse as $inner_array) {
+        // Check if $inner_array is an array before merging
+        if (is_array($inner_array)) {
+            $new_array = array_merge($new_array, $inner_array);
+        }
+    }
+}
+
   // echo "<script>console.log(" . json_encode($new_array) . ");</script>";
 
   $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">

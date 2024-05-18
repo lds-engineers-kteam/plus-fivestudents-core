@@ -71,9 +71,9 @@ function plus_view_monthlyreport(){
                               <td class=""><button class="btn btn-primary" onclick="showmonthlyreport('.$key.')">'.plus_get_string("btnviewreport", "report").'</button></td>
                             </tr>';
                 }
-                $searchreq->total = $APIRES->data->total;
-                $searchreq->start = $APIRES->data->start;
-                $searchreq->limit = $APIRES->data->limit;
+                $searchreq->total = isset($APIRES->data->total) ? $APIRES->data->total : null;
+                $searchreq->start = isset($APIRES->data->start) ? $APIRES->data->start : null;
+                $searchreq->limit = isset($APIRES->data->limit) ? $APIRES->data->limit : null;
               } else {
     $html .=              '<tr><td colspan="6" class="text-center">'.plus_get_string("norecordfound", "form").'</td></tr>';
               }        
