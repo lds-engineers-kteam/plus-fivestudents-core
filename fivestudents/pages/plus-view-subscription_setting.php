@@ -1,12 +1,11 @@
 <?php
 function plus_view_subscript(){
-  global $wp, $DB, $CFG;
-  
+  global $DB, $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  
   $tem='';
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
-
 
   $formdata = new stdClass();
   if(isset($_REQUEST['cancel'])){
@@ -14,11 +13,11 @@ function plus_view_subscript(){
     exit;
   }
 
-
   $formdata->grade = plus_get_request_parameter("grade", 0);
   $formdata->institutionid = plus_get_request_parameter("id", 0);
   $formdata->schoolsubscriptamt = plus_get_request_parameter("schoolsubscriptamt", 0);
   $formdata->parentsubscriptamt = plus_get_request_parameter("parentsubscriptamt", 0);
+  
   /*Save starts*/
   if(isset($_POST['savesubscription'])){
     $res1 = $MOODLE->get("SaveSubscription",'', $formdata);
@@ -36,7 +35,7 @@ if(isset($res1->data)){
     <td>'.(empty($row->name)?"all":$row->name).'</td>
     <td>'.$row->schoolsubscriptamt.'</td>
     <td>'.$row->parentsubscriptamt.'</td>
-    <td class="">'.(empty($row->name)?"":'<a href="/subscription-setting/?id='.$row->institutionid.'&grade='.$row->grade.'">Edit</a>').'</td>
+    <td class="">'.(empty($row->name)?"":'<a href="'.$CFG->wwwroot.'/subscription-setting/?id='.$row->institutionid.'&grade='.$row->grade.'">Edit</a>').'</td>
     </tr>';
   }
 }

@@ -1,13 +1,13 @@
 <?php
 function plus_view_teachers(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
 
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url( $wp->request ));
+    plus_redirect(home_url());
     exit;
   }
   $searchreq->type = plus_get_request_parameter("type", "");
@@ -20,9 +20,7 @@ function plus_view_teachers(){
   $searchreq->total = 0;
   $APIRES = $MOODLE->get("BrowseTeachers", null, $searchreq);
 
-  $html='<link rel="stylesheet" href="'.__FILE__ .'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
+  $html='';
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
@@ -115,6 +113,6 @@ function plus_view_teachers(){
 ';
   $html .=  '</div>
             </div>
-          </div><script src="'. __FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script>';
+          </div>';
   return $html;
 }

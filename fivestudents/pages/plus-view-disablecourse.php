@@ -1,9 +1,11 @@
 <?php
 function plus_view_disablecourse(){
-  global $CFG, $wp;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  
   $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
+  
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
   $formdata->institutionid = plus_get_request_parameter("id", 0);
@@ -11,8 +13,7 @@ function plus_view_disablecourse(){
   $formdata->disablecourses = plus_get_request_parameter("courses", array());
   $html ='';
   $Allsubjects = '';
-
-
+  $allgrades = array();
 
   if(!current_user_can('manage_plususers')){
     plus_redirect(home_url()."/users");
@@ -21,9 +22,6 @@ function plus_view_disablecourse(){
 
 
   if(isset($_POST['save'])){
-    // echo "<pre>";
-    // print_r($formdata);
-    // die;
     $APIRES = $MOODLE->get("disableCourseForInstitution", null, $formdata);
     if($APIRES->code == 200){
       plus_redirect(home_url()."/users");
@@ -31,12 +29,6 @@ function plus_view_disablecourse(){
     }
   }
 
-
-
-  echo "<pre>";
-  print_r($formdata);
-  echo "</pre>";
-  die;
   
   if(!empty($formdata->institutionid)){
     $APIRES = $MOODLE->get("getInstitutionById", null, array("id"=>$formdata->institutionid));
@@ -50,12 +42,10 @@ function plus_view_disablecourse(){
   }
 
 
-
-
-
   $APIRESgrades = $MOODLE->get("GetGrades", null, array());
   if(isset($APIRESgrades) && $APIRESgrades->data && $APIRESgrades->data->grades){
     foreach ($APIRESgrades->data->grades as $key => $grades) {
+      array_push($allgrades, $grades);
       if($grades->visible != 1 || $grades->pvisible != 1){continue;}
       if(is_array($grades->courses) && sizeof($grades->courses) > 0){
         $gradeid = $grades->id;
@@ -71,6 +61,7 @@ function plus_view_disablecourse(){
       }
     }
   }
+
   $html =  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
@@ -93,7 +84,7 @@ function plus_view_disablecourse(){
                     </div>
                     <input type="hidden" name="id" value="'.$formdata->institutionid.'"/>
                     <button type="submit" name="save" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

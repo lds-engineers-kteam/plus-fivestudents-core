@@ -8,6 +8,7 @@ require_once($CFG->dirroot . '/partials/includes/footer.php');
 require_once($CFG->dirroot . '/pages/plus-view-addevent.php');
 require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
 
+
 echo '
 	   '.main_header().'
 	 	 <div class="container-scroller">

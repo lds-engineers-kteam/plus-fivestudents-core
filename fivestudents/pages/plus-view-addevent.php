@@ -1,7 +1,7 @@
 <?php
 function plus_view_addevent(){
-  global $wp,$CFG;
-  require_once($CFG->dirroot . '/api/moodlecall.php');s
+  global $CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -96,11 +96,14 @@ function plus_view_addevent(){
   //   return plus_view_noaccess();
   // }
   $institutionData = $MOODLE->get("institutionWithTeacher", null,array());
- 
+
+
+
   $institutions = array();
   $selectedinstitution = null;
   $selectedteacher = null;
   $selectedgroup = null;
+  $selectedcourse = null;
   if($institutionData && !empty($institutionData->data)){
     if(is_array($institutionData->data)){
       $institutions = $institutionData->data;
@@ -108,6 +111,9 @@ function plus_view_addevent(){
       $institutions = array($institutionData->data);
     }
   }
+
+
+
   $institutionoptions = '<option value="" >'.plus_get_string("select", "form").' '.plus_get_string("school", "site").' </option>';
   if(is_array($institutions)){
     foreach ($institutions as $key => $institution) {
@@ -119,6 +125,12 @@ function plus_view_addevent(){
       $institutionoptions .= '<option '.$sel.' value="'.$institution->id.'" '.($formdata->institutionid == $institution->id?'selected':'').' >'.$institution->institution.' </option>';
     }
   }
+
+  // echo "<pre>";
+  // print_r($selectedinstitution);
+  // echo "</pre>";
+  // die;
+  
   $teachersoption = '<option value="0" >My Event</option>';
   if($selectedinstitution && !empty($selectedinstitution->teachers)){
     foreach ($selectedinstitution->teachers as $teacher) {
@@ -131,6 +143,9 @@ function plus_view_addevent(){
     }
   }
   $groupsoption = '<option value="0" >'.plus_get_string("all", "site").' '.plus_get_string("group", "form").' </option>';
+
+  
+
   if($selectedteacher && !empty($selectedteacher->groups)){
     // echo '<pre>';
     // print_r($selectedteacher->groups);

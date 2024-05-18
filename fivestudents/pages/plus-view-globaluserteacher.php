@@ -1,6 +1,6 @@
 <?php
 function plus_view_globaluserteacher(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -82,7 +82,7 @@ $html .=  '<div class="col-lg-12 grid-margin stretch-card">
                               <td class="py-1">'.$user->lastname.'</td>
                               <td class="py-1">'.$user->email.'</td>
                               <td class="py-1">'.$user->institution.'</td>
-                              <td class="py-1">'.$user->roles.'</td>
+                              <td class="py-1">'.$user->role.'</td>
                               </tr>';
                 }
               }

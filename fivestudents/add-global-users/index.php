@@ -5,8 +5,10 @@ require_once($CFG->dirroot . '/partials/includes/navbar.php');
 require_once($CFG->dirroot . '/partials/includes/settings-panel.php');
 require_once($CFG->dirroot . '/partials/includes/sidebar.php');
 require_once($CFG->dirroot . '/partials/includes/footer.php');
-require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
 require_once($CFG->dirroot . '/pages/plus-view-addglobaluser.php');
+require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
+
+
 echo '
 	   '.main_header().'
 	 	 <div class="container-scroller">

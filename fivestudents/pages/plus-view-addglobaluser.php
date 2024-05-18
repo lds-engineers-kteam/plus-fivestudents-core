@@ -1,7 +1,9 @@
 <?php
 function plus_view_addglobaluser(){
+
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-  global $wp,$CFG;
+  
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -15,9 +17,10 @@ function plus_view_addglobaluser(){
 
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url( $wp->request ));
+    plus_redirect(home_url());
     exit;
   }
+  
   if(isset($_POST['saveglobaluser'])){
     $user_data = array(
      'user_pass' =>$formdata->password,
@@ -87,7 +90,6 @@ function plus_view_addglobaluser(){
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("edituser", "form").'</h4>
                   <form method="post" class="forms-sample" autocomplete="off">
-
                     <div class="form-group row">
                       <label for="institutes" class="col-sm-2 col-form-label">'.plus_get_string("schools", "site").'</label>
                       <div class="col-sm-10">
@@ -96,7 +98,6 @@ function plus_view_addglobaluser(){
                         </select>
                       </div>
                     </div>
-
                     <div class="form-group row">
                       <label for="firstname" class="col-sm-2 col-form-label">'.plus_get_string("firstname", "form").' *</label>
                       <div class="col-sm-10">
@@ -130,16 +131,10 @@ function plus_view_addglobaluser(){
                         <input  autocomplete="off" type="password" '.(empty($formdata->id)?'required="required"':'').' name="password" class="form-control" id="password" placeholder="'.plus_get_string("password", "form").'" value="'.$formdata->password.'">
                       </div>
                     </div>
-                    
-                    
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <button type="submit" name="saveglobaluser" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
                     <a href="'.$CFG->wwwroot.'/global-users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
-
-                 
-
-
                 </div>
               </div>
             </div>';

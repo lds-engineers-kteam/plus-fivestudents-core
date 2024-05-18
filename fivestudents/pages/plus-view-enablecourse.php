@@ -1,31 +1,33 @@
 <?php
 function plus_view_enablecourse(){
-  global $wp,$CFG;
+  global $CFG;
+
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+  
   $formdata = new stdClass();
   $formdata->institutionid = plus_get_request_parameter("id", 0);
   $formdata->name = "";
   $formdata->enablecourses = plus_get_request_parameter("courses", array());
   $html ='';
   $Allsubjects = '';
+  $allgrades = array();
+
   if(!current_user_can('manage_plususers')){
     plus_redirect(home_url()."/users");
     exit;
   }
+
   if(isset($_POST['save'])){
-    // echo "<pre>";
-    // print_r($formdata);
-    // echo "</pre>";
-    // die;
     $APIRES = $MOODLE->get("enableCourseForInstitution", null, $formdata);
     if($APIRES->code == 200){
       plus_redirect(home_url()."/users");
       exit;
     }
   }
+
   if(!empty($formdata->institutionid)){
     $APIRES = $MOODLE->get("getInstitutionById", null, array("id"=>$formdata->institutionid));
     if($APIRES->code == 200 and $APIRES->data->id == $formdata->institutionid){
@@ -36,15 +38,11 @@ function plus_view_enablecourse(){
     plus_redirect(home_url()."/users");
     exit;
   }
-
-  // echo "<pre>";
-  // print_r($APIRES);
-  // echo "</pre>";
-  // die;
   
   $APIRESgrades = $MOODLE->get("GetGrades", null, array());
   if(isset($APIRESgrades) && $APIRESgrades->data && $APIRESgrades->data->grades){
     foreach ($APIRESgrades->data->grades as $key => $grades) {
+      array_push($allgrades, $grades);
       if($grades->visible != 1 || $grades->pvisible != 1){continue;}
       if(is_array($grades->courses) && sizeof($grades->courses) > 0){
         $gradeid = $grades->id;
@@ -82,7 +80,7 @@ function plus_view_enablecourse(){
                     </div>
                     <input type="hidden" name="id" value="'.$formdata->institutionid.'"/>
                     <button type="submit" name="save" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-                    <a href="/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.$CFG->wwwroot.'/users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
                 </div>
               </div>

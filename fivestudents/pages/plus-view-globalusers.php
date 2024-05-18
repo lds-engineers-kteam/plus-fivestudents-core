@@ -52,7 +52,7 @@ function plus_view_globalusers(){
                               <td class="py-1">'.$user->email.'</td>
                               <td class="py-1">'.$user->institution.'</td>
                               <td class="py-1">'.$user->roles.'</td>
-                              <td class="">'.(current_user_can('view_plusaddglobaluser')?'<a href="/add-global-users?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').' '.(current_user_can('view_pluseditglobaluserteacher')?'<a href="/users-teacher/?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("teachers", "site").'</a>':'').'</td>
+                              <td class="">'.(current_user_can('view_plusaddglobaluser')?'<a href="'.$CFG->wwwroot.'/add-global-users?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("edit", "form").'</a>':'').' '.(current_user_can('view_pluseditglobaluserteacher')?'<a href="'.$CFG->wwwroot.'/users-teacher/?id='.$user->id.'"><i class="mdi mdi-lead-pencil"></i> '.plus_get_string("teachers", "site").'</a>':'').'</td>
                               </tr>';
                 }
               }
