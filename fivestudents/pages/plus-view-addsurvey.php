@@ -163,7 +163,7 @@ function plus_view_addsurvey(){
 
     });
   </script>';
-  echo  $html;
+  return $html;
 }
 
 

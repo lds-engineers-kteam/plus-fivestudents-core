@@ -604,8 +604,8 @@ function plus_view_calendar(){
                     width: 400,
                     buttons: {
                         '".plus_get_string("addevent", 'calendar')."': function() {
-                            selectedOption2 = $(#event_date).val();
-                            selectedOption3 = $(#event_enddate).val();
+                            selectedOption2 = $('#event_date').val();
+                            selectedOption3 = $('#event_enddate').val();
                             var url = window.location.origin+'/add-event?startdate='+selectedOption2+'&enddate='+selectedOption3+'&returnto=calendar';
                             window.location.href = url ;
                         },
