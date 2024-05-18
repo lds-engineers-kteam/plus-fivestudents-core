@@ -54,7 +54,9 @@ function plus_classProfileFilter(){
   if($enabledcourse){
       $new_array = [];
       foreach ($enabledcourse as $inner_array) {
+        if(is_array($inner_array)){
           $new_array = array_merge($new_array, $inner_array);
+        }
       }
   }
   echo "<script>console.log(" . json_encode($new_array) . ");</script>";
