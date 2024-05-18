@@ -1,0 +1,72 @@
+.dot {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 5px;
+}
+.smalldot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 5px;
+	background-color: #ffebf9;
+}
+.purple{
+	background-color: purple !important;
+}
+.yellow{
+	background-color: #ffbc42 !important;
+	color: #ffffff;
+}
+.green{
+	background-color: #99d78e !important;
+	color: #ffffff;
+}
+.lightgreen{
+	background-color: #00FF33 !important;
+}
+.orange{
+	background-color: orange !important;
+}
+.red{
+	background-color: red !important;
+}
+.blue{
+	background-color: #426bc7 !important;
+	color: #ffffff;
+}
+.lightblue{
+	background-color: #00b0f4 !important;
+	color: #ffffff;
+}
+.gray{
+	background-color: #afabaa !important;
+	color: #ffffff;
+}
+.white{
+	background-color: #ffffff !important;
+}
+.text-center {
+	text-align: center;
+}
+table {
+	border: 1;
+	border-spacing: 0px;
+	display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+}
+table td, table th {
+    border: 1px solid;
+    padding: 10px;
+}
+.onlyprint {
+	display: block;
+}
+.print-password-data span{
+	font-size: 14px;
+	line-height: 1em;
+}

@@ -1,15 +1,15 @@
 <?php
+require_once(__DIR__ . "/../config.php");
+require_once($CFG->dirroot . '/api/moodlecall.php');
 
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 header("HTTP/1.0 200 Successfull operation");
+
+$args =$_GET;
 $events = array();
-require_once(__DIR__ . "/../config.php");
-global $CFG;
-require_once($CFG->dirroot . '/api/moodlecall.php');
 $current_user = wp_get_current_user();
 $MOODLE = new MoodleManager($current_user);
-$args =$_GET;
 $APIRES = $MOODLE->get("getCalendarEvents", null, $args);
 if($APIRES->code == 200 && isset($APIRES->data->events)){
 if(is_array($APIRES->data->events)){
@@ -131,7 +131,7 @@ if(is_array($APIRES->data->events)){
         array_push($events, array(
             "start"=>date("Y-m-d\TH:i:s", $event->timestart),
             "end"=>date("Y-m-d\TH:i:s", $event->timeend),
-            "duration"=>$event->duration,
+            "duration"=>$event->timeduration,
             "title"=>$eventname,
             "description"=>$event->description,
             "fulldata"=>$event,
@@ -140,11 +140,5 @@ if(is_array($APIRES->data->events)){
     }
 }
 }
-// $demodata = new stdClass();
-// $demodata->start = date("Y-m-d", time());
-// $demodata->title = '('.date("h:i", time()).'-'.date("h:i", time()).')';
-// $demodata = new stdClass();
-// $demodata->start = date("Y-m-d", time());
-// $demodata->title = '('.date("h:i", time()).'-'.date("h:i", time()).')';
-// array_push($events, $demodata);
+
 echo json_encode($events);

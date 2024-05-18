@@ -100,49 +100,15 @@ function plus_view_calendar(){
     $currentlang = plus_getuserlang();
   $html .="
   <div id='calendar'></div>
-
-  <script src='".$CFG->wwwroot."/vendors/calender_script/jquery-ui.js'></script>
-  ".($currentlang == "EN"?"<script src='".$CFG->wwwroot."/vendors/calender_script/moment.js'></script>":"<script src='".$CFG->wwwroot."/vendors/calender_script/momentfr.js'></script>")."
-  <script src='".$CFG->wwwroot."/vendors/calender_script/fullcalendar.min.js'></script>
-  <script src='".$CFG->wwwroot."/vendors/calender_script/locale/fr.js'></script>
+  <script type='text/javascript' src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+  <script type='text/javascript' src='".$CFG->wwwroot."/vendors/calender_script/jquery-ui.js'></script>
+  ".($currentlang == "EN"
+  ?"<script type='text/javascript' src='".$CFG->wwwroot."/vendors/calender_script/moment.js'></script>"
+  :"<script type='text/javascript' src='".$CFG->wwwroot."/vendors/calender_script/momentfr.js'></script>")."
+  <script type='text/javascript' src='".$CFG->wwwroot."/vendors/calender_script/fullcalendar.min.js'></script>
+  <script type='text/javascript' src='".$CFG->wwwroot."/vendors/calender_script/locale/fr.js'></script>
   <script>
-  var institutions = ".json_encode($institutions).";
-  console.log(institutions);
-  var selectedinstitution = ".json_encode($selectedinstitution).";
-    $(document).on('change', '#institutionid', function(){
-      var institutionid = $(this).val();
-      var url = window.location.origin+'/calendar?institutionid='+institutionid;
-        window.location.href = url ;
-      /*selectedinstitution = institutions.find(x => x.id === institutionid);
-      var newoptions = '<option value=\"0\" >My Events</option>';
-      if(selectedinstitution && Array.isArray(selectedinstitution.teachers)){
-        var allteacher = selectedinstitution.teachers;
-        $.each( allteacher, function( key, teacher ) {
-          newoptions += `<option value='\${teacher.id}'>\${teacher.firstname} \${teacher.lastname}</option>`
-        });
-      }
-      $('#teacherid').html(newoptions);
-      $('#teacherid').trigger('change');
-      */
-    });
-    $(document).on('change', '#teacherid', function(){
-      var institutionid = $('#institutionid').val();
-      var teacherid = $(this).val();
-      var url = window.location.origin+'/calendar?institutionid='+institutionid+'&teacherid='+teacherid+'&eventfor=0';
-        window.location.href = url ;
-    });
-    $(document).on('change', '[name=\"eventfor\"]', function(){
-      var eventfor = $(this).val();
-      var institutionid = $('#institutionid').val();
-      var teacherid = $('#teacherid').val();
-      var url = window.location.origin+'/calendar?institutionid='+institutionid+'&teacherid='+teacherid+'&eventfor='+eventfor;
-        window.location.href = url ;
-    });
-    $(document).on('change', '#teacherid', function(){
-        $('#calendar').fullCalendar('refetchEvents');
-    });
-
-  function myfunction(dtime){
+    function myfunction(dtime){
      const d = new Date(dtime);
         var year = d.getFullYear();
         var monthint = String(d.getMonth()).padStart(2, '0');
@@ -153,17 +119,48 @@ function plus_view_calendar(){
         var eventdate = year+'-'+mon+'-'+dat+'T'+hr+':'+min;
         return eventdate;
     }
+
+    var institutions = ".json_encode($institutions).";
+    console.log(institutions);
+    var selectedinstitution = ".json_encode($selectedinstitution).";
+    console.log(selectedinstitution);
+
+    $(document).on('change', '#institutionid', function(){
+        var institutionid = $(this).val();
+        var url = '".$CFG->wwwroot."/calendar?institutionid='+institutionid;
+        window.location.href = url;
+    });
+
+    $(document).on('change', '#teacherid', function(){
+        var institutionid = $('#institutionid').val();
+        var teacherid = $(this).val();
+        var url = '".$CFG->wwwroot."/calendar?institutionid='+institutionid+'&teacherid='+teacherid+'&eventfor=0';
+        window.location.href = url ;
+    });
+
+    $(document).on('change', '[name=\"eventfor\"]', function(){
+        var eventfor = $(this).val();
+        var institutionid = $('#institutionid').val();
+        var teacherid = $('#teacherid').val();
+        var url = '".$CFG->wwwroot."/calendar?institutionid='+institutionid+'&teacherid='+teacherid+'&eventfor='+eventfor;
+        window.location.href = url ;
+    });
+  
+    $(document).on('change', '#teacherid', function(){
+        $('#calendar').fullCalendar('refetchEvents');
+    });
+
     $(document).ready(function() {
         var url = '".$CFG->wwwroot."/calendar/calendarevents.php';
-        console.log('url:', url );
         $('#calendar').fullCalendar({
+
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay".($canadd?",addEventButton":"")."'
             },
             events: {
-                url: url,
+                url: '".$CFG->wwwroot."/api/calendarevents.php',
                 type: 'GET',
                 data: {
                     institutionid: $('#institutionid').val(),
@@ -183,7 +180,7 @@ function plus_view_calendar(){
                     text: '".plus_get_string("addevent", "calendar")."',
                     click: function() {
                         console.log('clicked add event');
-                        var url = window.location.origin+'/add-event?returnto=calendar';
+                        var url = '".$CFG->wwwroot."/add-event?returnto=calendar';
                         window.location.href = url ;
                     }
                 },":"")."
@@ -213,23 +210,31 @@ function plus_view_calendar(){
                 var dialogbuttons = {};
                 if(prevent.canedit){
                     dialogbuttons['".plus_get_string("edit", 'form')."']=function() {
-                        var eventid = prevent.id;
+                        if(prevent.id){
+                            var eventid = prevent.id;
+                            var start_time = 'start_time' + eventid;
+                            var end_time = 'end_time' + eventid;
+                        }else{
+                            var eventid = 0;
+                            var start_time = 'start_time' + eventid;
+                            var end_time = 'end_time' + eventid;
+                        }
                         console.log('Edit event',eventid);
                         $(this).dialog('close');
                         var label = $('<label>').addClass('col-sm-12').html(`<h5>".plus_get_string("editeventdate", 'calendar').":</h5>`);
                         var dialog = $('<div class= row > ').append(
                             label,
                             \$('<h6>').addClass('col-sm-4').text('".plus_get_string("starttime", 'calendar').": '),
-                            \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', `start_time${eventid}`).attr('value',sttime),
+                            \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', start_time).attr('value',sttime),
                             \$('<h6>').addClass('col-sm-4').text('".plus_get_string("endtime", 'calendar').": '),
-                            \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', `end_time${eventid}`).attr('value',edtime),
+                            \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', end_time).attr('value',edtime),
                         ).dialog({
                             modal: true,
                             width: 600,
                             buttons: {
                                 '".plus_get_string("save", 'form')."': function() {
-                                    var stime = $(`#start_time${eventid}`).val();
-                                    var etime = $(`#end_time${eventid}`).val();
+                                    var stime = $('#start_time').val();
+                                    var etime = $('#end_time').val();
                                     var reqargs = {
                                         'eventid': prevent.id,
                                         'srttime': stime,
@@ -240,7 +245,7 @@ function plus_view_calendar(){
                                     var that = this;
                                     console.log('tetttt',reqargs);
                                     \$.ajax({
-                                        'url': '/api/index.php',
+                                        'url': '".$CFG->wwwroot."/api/index.php',
                                         'method': 'POST',
                                         'timeout': 0,
                                         'headers': {'Content-Type': 'application/json',},
@@ -259,8 +264,6 @@ function plus_view_calendar(){
                                 }
                             }
                         });
-                        // var url = window.location.origin+'/add-event?returnto=calendar&id='+eventid;
-                        // window.location.href = url ;
                     }
                 }
                 if(prevent.canstart){
@@ -272,7 +275,7 @@ function plus_view_calendar(){
                         };
                         var that = this;
                         \$.ajax({
-                            'url': '/api/index.php',
+                            'url': '".$CFG->wwwroot."/api/index.php',
                             'method': 'POST',
                             'timeout': 0,
                             'headers': {
@@ -297,7 +300,7 @@ function plus_view_calendar(){
                         };
                         var that = this;
                         \$.ajax({
-                            'url': '/api/index.php',
+                            'url': '".$CFG->wwwroot."/api/index.php',
                             'method': 'POST',
                             'timeout': 0,
                             'headers': {
@@ -327,7 +330,7 @@ function plus_view_calendar(){
                             };
                             var that = this;
                             \$.ajax({
-                                'url': '/api/index.php',
+                                'url': '".$CFG->wwwroot."/api/index.php',
                                 'method': 'POST',
                                 'timeout': 0,
                                 'headers': {'Content-Type': 'application/json',},
@@ -349,7 +352,7 @@ function plus_view_calendar(){
                                 };
                                 var that = this;
                                 \$.ajax({
-                                    'url': '/api/index.php',
+                                    'url': '".$CFG->wwwroot."/api/index.php',
                                     'method': 'POST',
                                     'timeout': 0,
                                     'headers': {'Content-Type': 'application/json',},
@@ -385,7 +388,7 @@ function plus_view_calendar(){
                         };
                         var that = this;
                         \$.ajax({
-                            'url': '/api/index.php',
+                            'url': '".$CFG->wwwroot."/api/index.php',
                             'method': 'POST',
                             'timeout': 0,
                             'headers': {
@@ -442,7 +445,7 @@ function plus_view_calendar(){
                         };
                         var that = this;
                         \$.ajax({
-                            'url': '/api/index.php',
+                            'url': '".$CFG->wwwroot."/api/index.php',
                             'method': 'POST',
                             'timeout': 0,
                             'headers': {
@@ -461,8 +464,15 @@ function plus_view_calendar(){
                 if(prevent.canclaim){
                     dialogbuttons['".plus_get_string("claim", 'calendar')."']=function() {
                         $(this).dialog('close');
+                        
+                        if(prevent.id){
+                            var confirm_claim = 'confirm_claim' + prevent.id;
+                        }else{
+                            var confirm_claim = 'confirm_claim';
+                        }
+
                         var label = $('<label>').text(`".plus_get_string("claimreson", 'calendar').":`);
-                        var input = $('<textarea>').attr('cols', '10').attr('rows', '10').attr('id', `confirm_claim${prevent.id}`);
+                        var input = $('<textarea>').attr('cols', '10').attr('rows', '10').attr('id', confirm_claim);
                         var dialog = $('<div>').addClass('dialogbody').append(
                             label,
                             input
@@ -471,20 +481,19 @@ function plus_view_calendar(){
                             width: 400,
                             buttons: {
                                 '".plus_get_string("confirmclaim", 'calendar')."': function() {
-                                    var confirm_claim = $(`#confirm_claim${prevent.id}`).val();
+                                    var confirm_claim = $('#confirm_claim').val();
                                     var reqargs = {
                                         'eventid': prevent.id,
                                         'status': 5,
-                                        'message':confirm_claim
+                                        'message':'confirm_claim'
                                     };
-                                    // console.log('reqargs---- ', reqargs);
                                     var that = this;
                                     if(confirm_claim == ''){
                                         alert('".plus_get_string("addclaimreson", 'calendar')."');
                                         return;
                                     }
                                     \$.ajax({
-                                        'url': '/api/index.php',
+                                        'url': '".$CFG->wwwroot."/api/index.php',
                                         'method': 'POST',
                                         'timeout': 0,
                                         'headers': {
@@ -511,8 +520,11 @@ function plus_view_calendar(){
                 if(prevent.cancancel){
                     dialogbuttons['".plus_get_string("cancel", 'calendar')."']=function() {
                         $(this).dialog('close');
+                        
+                        var cancelmessage = 'cancelmessage' + prevent.id;
+
                         var label = $('<label>').text(`".plus_get_string("cancelreson", 'calendar').":`);
-                        var input = $('<textarea>').attr('cols', '10').attr('rows', '10').attr('id', `cancelmessage${prevent.id}`);
+                        var input = $('<textarea>').attr('cols', '10').attr('rows', '10').attr('id', cancelmessage);
                         var dialog = $('<div>').append(
                             label,
                             input
@@ -521,11 +533,11 @@ function plus_view_calendar(){
                             width: 400,
                             buttons: {
                                 '".plus_get_string("confirmcancel", 'calendar')."': function() {
-                                    var cancelmessage = $(`#cancelmessage${prevent.id}`).val();
+                                    var cancelmessage = $('#cancelmessage').val();
                                     var reqargs = {
                                         'eventid': prevent.id,
                                         'status': 2,
-                                        'message':cancelmessage
+                                        'message':'cancelmessage'
                                     };
                                     if(cancelmessage == ''){
                                         alert('".plus_get_string("addconfirmcancel", 'calendar')."');
@@ -533,7 +545,7 @@ function plus_view_calendar(){
                                     }
                                     var that = this;
                                     \$.ajax({
-                                        'url': '/api/index.php',
+                                        'url': '".$CFG->wwwroot."/api/index.php',
                                         'method': 'POST',
                                         'timeout': 0,
                                         'headers': {
@@ -576,20 +588,24 @@ function plus_view_calendar(){
                 var endevt = myfunction(endevt33);
                 var titlelabel =  \$('<h6>').addClass('col-sm-4').text(' Start date: ');
                 var title =  \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local');
-                title.attr('id', `event_date${prevent.id}`);
+                var event_date = 'event_date' + prevent.id;
+                title.attr('id', event_date);
+
                 title.attr('value', eventdat);
                 var selectedOption;
+                var event_date = 'event_date' + prevent.id;
+                var event_enddate = 'event_enddate' + prevent.id;
                 var dialog = \$('<div class=row >').append(
                     \$('<h6>').addClass('col-sm-4').text(' End date: '),
-                    \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', `event_enddate${prevent.id}`).attr('value', endevt),
+                    \$('<input>').addClass('col-sm-8').attr('type', 'datetime-local').attr('id', event_enddate).attr('value', endevt),
                     \$('<br><br>')
                 ).dialog({
                     modal: true,
                     width: 400,
                     buttons: {
                         '".plus_get_string("addevent", 'calendar')."': function() {
-                            selectedOption2 = $(`#event_date${prevent.id}`).val();
-                            selectedOption3 = $(`#event_enddate${prevent.id}`).val();
+                            selectedOption2 = $(#event_date).val();
+                            selectedOption3 = $(#event_enddate).val();
                             var url = window.location.origin+'/add-event?startdate='+selectedOption2+'&enddate='+selectedOption3+'&returnto=calendar';
                             window.location.href = url ;
                         },
@@ -612,11 +628,12 @@ function plus_view_calendar(){
                 console.log(`dayClick date: `, date)
                 console.log(`dayClick jsEvent: `, jsEvent)
                 console.log(`dayClick view: `, view)":'')."
-                
             }
+
         });
     });
-    </script>";
+
+ </script>";
 
   return $html;
 }
