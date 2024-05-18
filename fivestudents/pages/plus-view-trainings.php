@@ -5,6 +5,11 @@ function plus_view_trainings()
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('view_plusresources')) {
+     return plus_view_noaccess();
+  }
+  
   $searchreq = new stdClass();
   $searchreq->t = plus_get_request_parameter("t", "");
   $APIRES = $MOODLE->get("Browsetrainings", null, $searchreq);

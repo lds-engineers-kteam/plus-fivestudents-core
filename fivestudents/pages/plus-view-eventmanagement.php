@@ -1,10 +1,16 @@
 <?php
 function plus_view_eventmanagement(){
-  global $wp,$API,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  
   $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+  
+  if ((current_user_can('view_plusclaimedevent') && current_user_can('view_plusinprogressedevent') && current_user_can('view_pluscencllededevent')) || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
+      return plus_view_noaccess();
+  }
+
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
   $searchreq->eventid = plus_get_request_parameter("eventid", 0);
@@ -35,9 +41,9 @@ function plus_view_eventmanagement(){
     $INPROCESSAPIRES = $MOODLE->get("getCalendarEvents", null, $args);
     if(empty($active)){ $active = 'inprogressevents'; }
   }
-  $html= '';
   // $html .= '<pre>'.print_r($active, true).'</pre>';
 
+  $html= '';
   $html .=  '
     <div class="row">
       <div class="col-md-12 grid-margin stretch-card">
@@ -266,7 +272,7 @@ function plus_view_eventmanagement(){
         return;
       }
       $.ajax({
-        "url": "/api/index.php",
+        "url": "'.$CFG->wwwroot.'/api/index.php",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -330,7 +336,7 @@ function plus_view_eventmanagement(){
                     var that = this;
                     console.log("tetttt",reqargs);
                     $.ajax({
-                        "url": "/api/index.php",
+                        "url": "'.$CFG->wwwroot.'/api/index.php",
                         "method": "POST",
                         "timeout": 0,
                         "headers": {"Content-Type": "application/json",},

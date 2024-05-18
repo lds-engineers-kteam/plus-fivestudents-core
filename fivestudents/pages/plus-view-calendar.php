@@ -4,7 +4,13 @@ function plus_view_calendar(){
   require_once($CFG->dirroot . '/api/moodlecall.php');
   
   $current_user = wp_get_current_user();
+  $MOODLESESSION = wp_get_moodle_session();
   $MOODLE = new MoodleManager($current_user);
+  if (!current_user_can('plus_viewcalendar') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
+        return plus_view_noaccess();
+  }
+
+
   $formdata = new stdClass();
   $formdata->institutionid = plus_get_request_parameter("institutionid", 0);
   $formdata->teacherid = plus_get_request_parameter("teacherid", 0);

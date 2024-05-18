@@ -4,6 +4,11 @@ function plus_view_globaluserteacher(){
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+  
+  if (!current_user_can('view_pluseditglobaluserteacher')) {
+    return plus_view_noaccess();
+  }
+
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->teachers = plus_get_request_parameter("teachers", array());
@@ -11,11 +16,8 @@ function plus_view_globaluserteacher(){
     plus_redirect("/global-users");
     exit;
   }
-  // if(isset($_POST['saveglobaluserteacher'])){
-  //   $MOODLE->get("UpdateGlobalUserTeacher", "internaladmin", $formdata);
-  //   plus_redirect(home_url()."/users-teacher/?id=".$formdata->id);
-  //   exit;
-  // }
+
+
   $html='';
   $allteachers = array();
   $teacherids = array();
@@ -36,26 +38,7 @@ function plus_view_globaluserteacher(){
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
-  // $html .=  '<div class="col-md-12 grid-margin stretch-card">
-  //             <div class="card">
-  //               <div class="card-body">
-  //                 <form method="post" class="forms-sample" autocomplete="off">
-  //                   <div class="form-group row">
-  //                     <label for="teachers" class="col-sm-2 col-form-label">'.plus_get_string("teachers", "site").'</label>
-  //                     <div class="col-sm-10">
-  //                       <select  autocomplete="off" name="teachers[]" id="teachers" multiple required="required" class="form-control">
-  //                             '.$strallteachers.'
-  //                       </select>
-  //                     </div>
-  //                   </div>
-  //                   <input type="hidden" name="id" value="'.$formdata->id.'"/>
-  //                   <button type="submit" name="saveglobaluserteacher" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
-  //                   <a href="/global-users" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
-  //                 </form>
-  //               </div>
-  //             </div>
-  //           </div>';
-$html .=  '<div class="col-lg-12 grid-margin stretch-card">
+  $html .=  '<div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("teachers", "site").'</h4>

@@ -1,9 +1,15 @@
 <?php
 function plus_view_globalusers(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
+  
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('view_plusglobalusers')) {
+    return plus_view_noaccess();
+  }
+
   $searchreq = new stdClass();
   $searchreq->name = plus_get_request_parameter("groupname", "");
   $APIRES = $MOODLE->get("BrowseGlobalUsers", null, $searchreq);

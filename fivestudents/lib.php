@@ -522,12 +522,11 @@ function wp_insert_user( array|object $userdata ) {
 }
 
 function plus_login_failed($userid) {
-	global $wpdb;
 	wp_redirect("/login?loginfailed=1");
 }
 
 function plus_view_noaccess($url="") {
-	global $wpdb;
+	
 	return '<div class="alert alert-warning"><h3>You don\'t have access to this page</h3>'.($url?'<a href="'.$url.' class="btn btn-primary">Continue</a>':'').'</div>';
 }
 

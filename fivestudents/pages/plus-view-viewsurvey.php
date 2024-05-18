@@ -1,9 +1,14 @@
 <?php
 function plus_view_viewsurvey(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('plus_cansubmitsurvey')) {
+    return plus_view_noaccess();
+  }
+
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", "");
   $formdata->returnto = plus_get_request_parameter("returnto", "");

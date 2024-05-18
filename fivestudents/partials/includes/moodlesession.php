@@ -8,7 +8,7 @@ function plus_checkerror(){
   $MOODLESESSION->allmyroles = $plus_allUserRoles;
 
   // echo "<pre>";
-  // print_r($plus_allUserRoles);
+  // print_r($current_user);
   // echo "</pre>";
   // die;
 

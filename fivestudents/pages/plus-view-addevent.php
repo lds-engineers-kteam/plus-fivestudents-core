@@ -1,10 +1,16 @@
 <?php
 function plus_view_addevent(){
   global $CFG;
+
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('plus_editevents') || ( $MOODLESESSION->INSTITUTION && $MOODLESESSION->INSTITUTION->disablecalendar == 1)) {
+     return plus_view_noaccess();
+  }
+
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->name = plus_get_request_parameter("title", "");
@@ -31,37 +37,7 @@ function plus_view_addevent(){
   $formdata->returnto = plus_get_request_parameter("returnto", "events");
 
   if(isset($_POST['saveevents'])){
-  //   if(($_POST['id'] > 0) && (!empty($_POST['id']))){ 
-  //     $postdata = new stdClass();
-  //     $postdata->id = $_POST['id'];
-  //     $postdata->name = '';
-  //     $postdata->description = '';
-  //     $postdata->institutionid = $_POST['institutionid'];
-  //     $postdata->teacherid = $_POST['teacherid'];
-  //     $postdata->groupid = $_POST['groupid'];
-  //     $postdata->courseid = $_POST['courseid'];
-  //     $postdata->startdate = $_POST['startdate'];
-  //     $postdata->enddate = $_POST['enddate'];
-  //     $postdata->repeatevent = (!empty($_POST['repeatevent'])?$_POST['repeatevent']:0);
-  //     $postdata->repeatdata = (object)array(
-  //       "repeatstart"=> $_POST['repeatstart'],
-  //       "repeatend"=> $_POST['repeatend'],
-  //       "repeatevery"=> $_POST['repeatevery'],
-  //       "repeatdays"=> (!empty($_POST['repeatdays'])?$_POST['repeatdays']:array()),
-  //     );
-  //     $postdata->repeatstart = $_POST['repeatstart'];
-  //     $postdata->repeatend = $_POST['repeatend'];
-  //     $postdata->repeatevery = $_POST['repeatevery']; 
-  //     $postdata->repeatdays = (!empty($_POST['repeatdays'])?$_POST['repeatdays']:array());
-  //     $postdata->startsurvey = 0;
-  //     $postdata->endsurvey = 0;
-  //     $postdata->returnto = $_POST['returnto'];
-      
-  //     $se = $MOODLE->get("editEvents", null, $postdata);
-  // }else{
     $se = $MOODLE->get("saveEvents", null, $formdata);
-  // }
-  // die;
     if($formdata->returnto == "calendar"){
       plus_redirect(home_url().'/calendar/');
     } else {
@@ -89,16 +65,10 @@ function plus_view_addevent(){
       if($repeatdata){
         $formdata->repeatdata = $repeatdata;
       }
-      // $html  .='<pre>'.print_r($formdata, true).'</pre>';
     }
   }
-  // if ( !empty($formdata->id) || !current_user_can('plus_editownevents')) {
-  //   return plus_view_noaccess();
-  // }
+
   $institutionData = $MOODLE->get("institutionWithTeacher", null,array());
-
-
-
   $institutions = array();
   $selectedinstitution = null;
   $selectedteacher = null;
@@ -112,8 +82,6 @@ function plus_view_addevent(){
     }
   }
 
-
-
   $institutionoptions = '<option value="" >'.plus_get_string("select", "form").' '.plus_get_string("school", "site").' </option>';
   if(is_array($institutions)){
     foreach ($institutions as $key => $institution) {
@@ -125,11 +93,6 @@ function plus_view_addevent(){
       $institutionoptions .= '<option '.$sel.' value="'.$institution->id.'" '.($formdata->institutionid == $institution->id?'selected':'').' >'.$institution->institution.' </option>';
     }
   }
-
-  // echo "<pre>";
-  // print_r($selectedinstitution);
-  // echo "</pre>";
-  // die;
   
   $teachersoption = '<option value="0" >My Event</option>';
   if($selectedinstitution && !empty($selectedinstitution->teachers)){
@@ -147,10 +110,6 @@ function plus_view_addevent(){
   
 
   if($selectedteacher && !empty($selectedteacher->groups)){
-    // echo '<pre>';
-    // print_r($selectedteacher->groups);
-    // echo '</pre>';
-    // die;
     foreach ($selectedteacher->groups as $group) {
       $sel = '';
       if($formdata->groupid == $group->id){
@@ -171,7 +130,6 @@ function plus_view_addevent(){
       $coursesoption .= '<option value="'.$course->id.'" '.$sel.'>'.$course->fullname.'</option>';
     }
   }
-  // $html .= '<pre>'.print_r($institutionData, true).'</pre>';
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';

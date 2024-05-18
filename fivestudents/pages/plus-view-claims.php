@@ -1,17 +1,19 @@
 <?php
 function plus_view_claims(){
-  global $wp,$API,$CFG ;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-
-  return plus_view_noaccess();
-
   $current_user = wp_get_current_user();
+  $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('view_plusclaims')) {
+    return plus_view_noaccess();
+  }
+
   $searchreq = new stdClass();
   $searchreq->id = plus_get_request_parameter("id", "");
   $args = new stdClass();
   $eventstatus = array("none", "started", "cancelled", "completed", "past", "claim", "inprogress");
   $args->status = 5; 
-  $MOODLE = new MoodleManager($current_user);
 
   $CLAIMEDAPIRES = $MOODLE->get("getCalendarEvents", null, $args);
   $args->status = 6; 

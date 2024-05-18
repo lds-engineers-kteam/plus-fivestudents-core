@@ -6,6 +6,11 @@ function plus_view_addglobaluser(){
   
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
+
+  if (!current_user_can('view_plusaddglobaluser')) {
+    return plus_view_noaccess();
+  }
+
   $formdata = new stdClass();
   $formdata->id = plus_get_request_parameter("id", 0);
   $formdata->firstname = plus_get_request_parameter("firstname", "");
