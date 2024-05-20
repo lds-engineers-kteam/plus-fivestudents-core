@@ -6,8 +6,11 @@ function plus_view_teachers(){
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
+
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url());
+    plus_redirect($current_url);
     exit;
   }
   $searchreq->type = plus_get_request_parameter("type", "");

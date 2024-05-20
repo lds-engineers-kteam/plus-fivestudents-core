@@ -570,7 +570,8 @@ $html .= '<script src="https://getfirebug.com/firebug-lite-debug.js"></script>
     $(".viewtask").click(function(){
       var quizid = $("#quiz").val();
       var reqargs = {
-        "quizid": quizid
+        "quizid": quizid,
+        "baseUrl": "'.$CFG->wwwroot.'"
       };
       var getquestionssetting = getAPIRequest("getQuizes",reqargs);
       $.ajax(getquestionssetting).done(function (response) {

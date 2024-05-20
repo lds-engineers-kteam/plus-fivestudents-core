@@ -1,8 +1,9 @@
 <?php
 function plus_view_homework_report(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
 
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -444,7 +445,7 @@ $html .='<script>
       var attempt = $(this).val();
       var groupid = $("#groupid").val();
       var homeworkid = $("#homeworkid").val();
-      location.href = "'.home_url( $wp->request ).'?groupid="+groupid+"&homeworkid="+homeworkid+"&attempt="+attempt;
+      location.href = "'.home_url($current_url).'?groupid="+groupid+"&homeworkid="+homeworkid+"&attempt="+attempt;
     });
     $(".viewquestion").click(function(){
       var questioncounter = $(this).data("counter");

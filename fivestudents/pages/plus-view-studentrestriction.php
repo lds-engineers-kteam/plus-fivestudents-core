@@ -1,6 +1,6 @@
 <?php
 function plus_view_studentrestriction(){
- global $wp,$CFG;
+ global $CFG;
  require_once($CFG->dirroot . '/api/moodlecall.php');
 
  $current_user = wp_get_current_user();
@@ -439,7 +439,8 @@ $html .= '<div id="questionViewer" class="modal fade" tabindex="-1">
   $(".viewtask").click(function(){
   var quizid = $("#quiz").val();
     var reqargs = {
-      "quizid": quizid
+      "quizid": quizid,
+      "baseUrl": "'.$CFG->wwwroot.'"
     };
     var getquestionssetting = getAPIRequest("getQuizes",reqargs);
     $.ajax(getquestionssetting).done(function (response) {

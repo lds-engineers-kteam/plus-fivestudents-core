@@ -1,6 +1,6 @@
 <?php
 function plus_add_teacher(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
@@ -13,6 +13,7 @@ function plus_add_teacher(){
   $formdata->isadmin = plus_get_request_parameter("isadmin", 0);
   $formdata->subjects = plus_get_request_parameter("subjects", array());
   
+  $errormessage = "";
   if(isset($_POST['saveteacher'])){
     $user_data = array(
      'user_pass' =>$formdata->password,
@@ -43,7 +44,6 @@ function plus_add_teacher(){
       'isadmin' => $formdata->isadmin,
       'subjects' => $formdata->subjects,
     );
-    $errormessage = "";
     if($existinguser = get_user_by( 'email', $formdata->email )){
       if(empty($formdata->id)){
         $errormessage = '<div class="alert alert-danger">'.plus_get_string("useralreadyexist", "form").'</div>';

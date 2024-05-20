@@ -129,7 +129,8 @@ $(document).ready(function(){
   $(".copyLink").click(function(){
     var groupid = $(this).data("id");
     var reqargs = {
-        "groupid": groupid
+        "groupid": groupid,
+        "baseUrl": "'.$CFG->wwwroot.'"
     };
     var shortlinksetting = getAPIRequest("getGroupLinkID",reqargs);
     $.ajax(shortlinksetting).done(function (response) {
@@ -144,7 +145,8 @@ $(document).ready(function(){
   $(".copyCode").click(function(){
     var groupid = $(this).data("id");
     var reqargs = {
-        "groupid": groupid
+        "groupid": groupid,
+        "baseUrl": "'.$CFG->wwwroot.'"
     };
     navigator.clipboard.writeText(groupid);
     var shortlinksetting = getAPIRequest("getGroupCode",reqargs);
@@ -160,7 +162,8 @@ $(document).ready(function(){
   $(".copyOneTimeCode").click(function(){
     var groupid = $(this).data("id");
     var reqargs = {
-        "groupid": groupid
+        "groupid": groupid,
+        "baseUrl": "'.$CFG->wwwroot.'"
     };
     navigator.clipboard.writeText(groupid);
     var shortlinksetting = getAPIRequest("getGroupOnetimeCode",reqargs);
@@ -176,7 +179,8 @@ $(document).ready(function(){
   $(".copyExamCode").click(function(){
     var groupid = $(this).data("id");
     var reqargs = {
-        "groupid": groupid
+        "groupid": groupid,
+        "baseUrl": "'.$CFG->wwwroot.'"
     };
     navigator.clipboard.writeText(groupid);
     var shortlinksetting = getAPIRequest("getGroupExamCode",reqargs);

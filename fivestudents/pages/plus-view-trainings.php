@@ -399,7 +399,7 @@ function plus_view_trainings()
         loadNextResourceDetails("'.$CFG->wwwroot.'");
       });
       $(document).on("click", ".preresporce", function(){
-        loadpreResourceDetails();
+        loadpreResourceDetails("'.$CFG->wwwroot.'");
       });
       $(".mod_activity").click(function() {
         var id = $(this).attr("modid");
@@ -409,7 +409,7 @@ function plus_view_trainings()
         $("#activitydetails").find("audio").attr("src", "");
         $("#activitydetails").find("audio").remove();
         $("#activitydetails").find(".plusplayer").remove();
-        setTimeout(loadResourceDetails,5);
+        setTimeout(loadResourceDetails("'.$CFG->wwwroot.'"),5);
         
         $(".right-col" ).removeClass("slidshow");
       });

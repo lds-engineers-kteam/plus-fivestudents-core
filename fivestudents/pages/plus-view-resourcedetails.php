@@ -57,11 +57,11 @@ $(document).ready(function(){
   loadResourceDetails("'.$CFG->wwwroot.'");
 });
 $(document).on("click", ".nextresporce", function(){
-  loadNextResourceDetails();
+  loadNextResourceDetails("'.$CFG->wwwroot.'");
 });
 $(document).on("click", ".preresporce", function(){
   console.log("ok------");
-  loadpreResourceDetails();
+  loadpreResourceDetails("'.$CFG->wwwroot.'");
 });
 </script>
 ';
