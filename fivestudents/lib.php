@@ -10,13 +10,11 @@ function wp_logout_url() {
     return $CFG->wwwroot . '/login/logout.php';
 }
 
-
-
 function plus_translatelogs($param) {
-
-return true;
+    global $CFG;
+    return true;
 } 
-// Main fucntion to set user session in the core
+
 function wp_set_current_user($tokenObj) {
     global $WPUSER;
     plus_startMoodleSession($tokenObj);
@@ -29,12 +27,6 @@ function wp_set_current_user($tokenObj) {
 	$newUserObj->user_status = 0;
     $newUserObj->ID = $WPUSER->data->ID;
     $newUserObj->display_name = $WPUSER->data->display_name;
-    
-
-
-    // echo "<pre>";
-    // print_r($WPUSER);
-    // echo "</pre>";
     $capabilities = [];
     if ($WPUSER->data->is_siteadmin == 1) {
         // siteadmin
@@ -66,7 +58,6 @@ function wp_set_current_user($tokenObj) {
     return isset($WPUSER)?true:false;
 }
 
-
 function wp_get_current_user() {
     global $CURRENTUSERSESSION;
     if(isset($_SESSION['CURRENTUSERSESSION'])){
@@ -75,13 +66,11 @@ function wp_get_current_user() {
     }
 }
 
-
 function wp_get_moodle_session() {
     global $MOODLESESSION;
     $MOODLESESSION = $_SESSION['MOODLESESSION'];
     return $MOODLESESSION;
 }
-
 
 function get_user_meta(int $user_id, string $key = "", bool $single = false) {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
@@ -124,7 +113,7 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
     }
 }
 
-function update_user_meta(int $user_id, string $meta_key, mixed $meta_value, mixed $prev_value = "") {
+function update_user_meta(int $user_id, string $meta_key, $meta_value, $prev_value = "") {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
         return false;
     }
@@ -323,7 +312,6 @@ function plus_pagination($start, $limit, $total, $page="page", $displayto = true
   return $html;
 }
 
-
 function plus_getuserformoodle($userid){
 	$returndata = new stdClass();
     if($user = get_userdata($userid)){
@@ -379,7 +367,6 @@ function wp_unslash($value) {
     }
 }
 
-
 function plus_get_request_parameter($key, $default = '') {
     // If not request set
     if ( ! isset( $_REQUEST[ $key ] ) ||( empty( $_REQUEST[ $key ] ) && $_REQUEST[ $key ] !== 0  && $_REQUEST[ $key ] !== "0" )) {
@@ -397,9 +384,7 @@ function plus_get_allparameter() {
     return $_GET;
 }
 
-
-function plus_dateToFrench($date, $format = 'd F Y H:i') 
-{
+function plus_dateToFrench($date, $format = 'd F Y H:i') {
 	global $USERLANG;
 	$lang = $USERLANG;
 	if (empty($date)) { return '';}
@@ -417,8 +402,6 @@ function plus_dateToFrench($date, $format = 'd F Y H:i')
     }
     return $finaldate;
 }
-
-
 
 function plus_setuserlang() {
 	global $USERLANG;
@@ -481,8 +464,7 @@ function plus_get_string($key, $page=""){
 	}
 }
 
-
-function wp_update_user( array|object $userdata ) {
+function wp_update_user( $userdata ) {
     $newUserObj = $_SESSION['CURRENTUSERSESSION'];
     if (is_array($userdata)) {
         $userdata = (object) $userdata;
@@ -495,7 +477,7 @@ function wp_update_user( array|object $userdata ) {
     $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
 }
 
-function get_user_by( string $field, int|string $value ) {
+function get_user_by( string $field, $value ) {
     $newUserObj = $_SESSION['CURRENTUSERSESSION'];
     if (property_exists($newUserObj, $field) && $newUserObj->$field == $value) {
         return $newUserObj;
@@ -504,7 +486,7 @@ function get_user_by( string $field, int|string $value ) {
     }
 }
 
-function wp_insert_user( array|object $userdata ) {
+function wp_insert_user( $userdata ) {
     $newUserObj = $_SESSION['CURRENTUSERSESSION'];
     if (is_array($userdata)) {
         $userdata = (object) $userdata;
@@ -616,10 +598,6 @@ function optional_param($parname, $default=null) {
     return $param;
 }
 
-
-
-
-
 function syncAllUsers() {
 	global $API, $USER, $CFG;
 	if(has_internet()){
@@ -652,8 +630,7 @@ function my_decrypt($data) {
     return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
 }
 
-function getdirpath($region)
-{
+function getdirpath($region) {
 	global $CFG, $USER, $INSTITUTION;
 	$finalpath = $CFG->dataroot;
 	switch ($region) {
@@ -845,8 +822,7 @@ function redirect($url, $message="", $type="info") {
 	}
 }
 
-
-function get_localdashdata($args){
+function get_localdashdata($args) {
 	global $CFG;
 	$dashdata = new stdClass();
 	$dashdata->grades = array();
@@ -958,7 +934,6 @@ function get_localdashdata($args){
 	return $dashdata;
 }
 
-
 function get_dashdata($args) {
 	global $CFG, $API;
 	if(has_internet()){
@@ -1037,7 +1012,6 @@ function get_logintoken() {
 	return isset($_SESSION['logintoken'])?$_SESSION['logintoken']:null;
 }
 
-
 function timestamp_to_date($date, $format="d F Y H:i A") {
 	if(intval($date) !=0 ){
 		$datetext = date($format,$date);
@@ -1054,7 +1028,6 @@ function base_init() {
         }
     }
 }
-
 
 function get_localdata() {
 	global $USER, $CFG, $LOCAL, $INSTITUTION;
@@ -1102,7 +1075,6 @@ function fullname($user=null){
 	if(!empty($user->lastname)){array_push($name, $user->lastname);}
 	return implode(" ", $name);
 }
-
 
 function get_alllocaldata() {
 	global $CFG, $LOCAL, $FILES;
@@ -1178,8 +1150,7 @@ function getpageurl($pageurl = null, $args = null) {
   return $pageurl.'?'. get_qsparameter($args);
 }
 
-function get_current_pageurl()
-{
+function get_current_pageurl() {
 	global $CFG;
 	return (isset($_SERVER['SCRIPT_NAME']) && !empty($_SERVER['SCRIPT_NAME']))?$_SERVER['SCRIPT_NAME']:$CFG->wwwroot;
 } 
@@ -1238,7 +1209,6 @@ function get_homeworkreport($homeworkid) {
 	}
 	return $homeowrk;
 }
-
 
 function syncAlluserdata($syncnow) {
 	global $API, $USER, $CFG;
@@ -1352,8 +1322,7 @@ function getquestionblockingstatus() {
 	return $data;
 }
 
-function get_group($groupid)
-{
+function get_group($groupid) {
 	global $USER;
 	$groupdata = get_allgroups();
 	$group_key = array_search($groupid, array_column($groupdata->groups, 'id'));
@@ -1403,8 +1372,7 @@ function online_GetHomeWorkById($id) {
 	return null;
 }
 
-function online_SaveHomeWork($formdata)
-{
+function online_SaveHomeWork($formdata) {
 	global $API;
 
 	$APIRES = $API->call("SaveHomeWork", $formdata);
@@ -1414,8 +1382,7 @@ function online_SaveHomeWork($formdata)
 	return null;
 }
 
-function online_getAllSchoolyear()
-{
+function online_getAllSchoolyear() {
 	global $API;
 	$APIRES = $API->call("getAllSchoolyear", array());
 	if($APIRES->code == 200){
@@ -1424,8 +1391,7 @@ function online_getAllSchoolyear()
 	return null;
 }
 
-function online_getclassProfileFilter($formdata)
-{
+function online_getclassProfileFilter($formdata) {
 	global $API;
 	$APIRES = $API->call("getclassProfileFilter", $formdata);
 	if($APIRES->code == 200){
@@ -1434,8 +1400,7 @@ function online_getclassProfileFilter($formdata)
 	return null;
 }
 
-function online_getclassProfileReport($formdata)
-{
+function online_getclassProfileReport($formdata) {
 	global $API;
 	$APIRES = $API->call("getclassProfileReport1", $formdata);
 	if($APIRES->code == 200){
@@ -1444,7 +1409,7 @@ function online_getclassProfileReport($formdata)
 	return null;
 }
 
-function local_getapilog(){
+function local_getapilog() {
 	global $CFG;
 	$filedata = getFileFrom("dataroot", "/", $CFG->apilogdata);
 	if($filedata){
@@ -1455,7 +1420,7 @@ function local_getapilog(){
 	return $filedata;
 }
 
-function local_saveapilog($request){
+function local_saveapilog($request) {
 	global $API, $USER, $CFG;
 	$request = (array)$request;
 	$logdata = local_getapilog();
@@ -1468,8 +1433,7 @@ function local_saveapilog($request){
 	return true;	
 }
 
-function get_syncedfiledata($fileid)
-{
+function get_syncedfiledata($fileid) {
 	return getFileFrom("dataroot", "/syncdata/", md5("data_{$fileid}").".tmp");
 }
 
@@ -1628,8 +1592,7 @@ function get_allevents() {
 	return $alldata;
 }
 
-function get_calendarevents($args)
-{
+function get_calendarevents($args) {
 	global $USER;
 	$eventdata = get_allevents();
 	$surveydatalocal = get_surveyresponsedatalocal();
@@ -1695,8 +1658,7 @@ function sync_eventUpdate() {
 	}
 }
 
-function sync_SurveyResponse()
-{
+function sync_SurveyResponse() {
 	global $CFG, $API;
 	if(has_internet()){
 		$args = new stdClass();
@@ -1787,8 +1749,7 @@ function get_surveyresponse($userid, $surveyid, $eventid=0) {
 	return $userresponse;
 }
 
-function online_getQuizes($formdata)
-{
+function online_getQuizes($formdata) {
 	global $API;
 	if(has_internet()){
 		$APIRES = $API->call("getQuizes", $formdata);
@@ -1799,7 +1760,7 @@ function online_getQuizes($formdata)
 	return null;
 }
 
-function classprofilereport_tr($topics, $addtitle = true){
+function classprofilereport_tr($topics, $addtitle = true) {
   $html = '';
   $nextrowhtml = '';
   $allsubtopics = array();
@@ -1822,7 +1783,7 @@ function classprofilereport_tr($topics, $addtitle = true){
   return $html;
 }
 
-function classprofilereport_td($topics, $scoredata, $xpsetting){
+function classprofilereport_td($topics, $scoredata, $xpsetting) {
   global $CLASSPROFILEAVGDATA;
   $html = '';
   $allsubtopics = array();
@@ -1886,7 +1847,7 @@ function classprofilereport_td($topics, $scoredata, $xpsetting){
   return $html;
 }
 
-function classprofilereport_avg($topics, $xpsetting){
+function classprofilereport_avg($topics, $xpsetting) {
   global $CLASSPROFILEAVGDATA;
   $html = '';
   $allsubtopics = array();
@@ -1939,13 +1900,9 @@ function classprofilereport_avg($topics, $xpsetting){
   return $html;
 }
 
-function offline_getQuizes($quizid){
+function offline_getQuizes($quizid) {
 	global $CFG, $FILES;
 	$synceddata = get_awaitingsynceddata($CFG->syncedsynceddata);	
-	// echo "<pre>";
-	// print_r($quizid);
-	// print_r($synceddata);
-	// die;
 	if(is_array($synceddata->data)){
 		$found_key = array_search($quizid, array_column($synceddata->data, 'module'));
 		// var_dump($found_key);
@@ -1967,8 +1924,7 @@ function offline_getQuizes($quizid){
 	return null; 
 }
 
-function prepareOfflineContent($html="")
-{
+function prepareOfflineContent($html="") {
 	global $FILES;
 	if(empty($html)){
 		return $html;
@@ -1976,13 +1932,10 @@ function prepareOfflineContent($html="")
 	return $FILES->prepareOfflineContent($html);
 }
 
-function logout()
-{
+function logout() {
     unset($_SESSION['CURRENTUSERSESSION']);
     unset($_SESSION['MOODLESESSION']);
     session_destroy();
 }
 
-
-
-
+?>
