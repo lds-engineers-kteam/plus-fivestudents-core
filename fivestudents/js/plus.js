@@ -1625,8 +1625,9 @@
     return settings;
   }
   getAPIRequest = function(fname, args){
+    console.log(args);
     var settings = {
-      "url": "/api/index.php",
+      "url": args.baseUrl + "/api/index.php",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -1725,12 +1726,13 @@
     }
     e.preventDefault();
   }
-  loadResourceDetails=function(){
+  loadResourceDetails=function(param = null){
     console.log("tinyPlayer: ", tinyPlayer);
     var reqargs = {
         "id": $("#activitydetails").data("id"),
         "page": $("#activitydetails").data("page"),
         "resource": $("#activitydetails").data("resource"),
+        "baseUrl": param
     };
     $("#activitydetails").find(".plusplayer").remove();
     var APIREQ = getAPIRequest("getResourceDetails",reqargs);
@@ -1745,7 +1747,7 @@
           breadcrumbs+= `<ol class="breadcrumb">`;
           for (var i = 0; i < response.data.breadcrumbs.length; i++) {
             var belement = response.data.breadcrumbs[i];
-            breadcrumbs+= `<li class="breadcrumb-item"><a href="/resources?t=${belement.id}">${belement.name}</a></li>`;
+            breadcrumbs+= `<li class="breadcrumb-item"><a href="${param}/resources?t=${belement.id}">${belement.name}</a></li>`;
           }
           breadcrumbs+= `</ol>`;
         }

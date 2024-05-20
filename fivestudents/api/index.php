@@ -457,24 +457,38 @@ class APIManager {
 
     public function getResourceDetails($args) {
         global $CFG;
+
         if(!isset($_SESSION["resourcedetails"])){$_SESSION["resourcedetails"] = array();}
         require_once($CFG->dirroot . '/api/moodlecall.php');
         $current_user = wp_get_current_user();
         $MOODLE = new MoodleManager($current_user);
         $args = (object)$args;
-        if($args && $args->id && $_SESSION["resourcedetails"][$args->id]){
-            $APIRES->code == 200;
-            $APIRES->data == $_SESSION["resourcedetails"][$args->id];
+        // print_r($args);
+        
+        if ($args && $args->id && isset($_SESSION["resourcedetails"][$args->id]) && isset($_SESSION["resourcedetails"])) {
+            $APIRES = new stdClass(); // Define $APIRES if it's not already defined
+            $APIRES->code = 200; // Use assignment operator '=' instead of '=='
+            $APIRES->data = $_SESSION["resourcedetails"][$args->id]; // Use assignment operator '=' instead of '=='
         } else {
             $APIRES = $MOODLE->get("getResourceDetails", null, $args);
         }
+
+        
+
+        // print_r($_SESSION["resourcedetails"][$apiresourceid]);
+        // print_r($apiresource);
+        // print_r($apiresourceid);
+
         if(!isset($_SESSION["resources"])){$_SESSION["resources"] = array();}
         if(!isset($_SESSION["fileaccesskey"])){$_SESSION["fileaccesskey"] = array();}
         if(!isset($_SESSION["activity"])){$_SESSION["activity"] = array();}
         if($APIRES->code == 200){
             $apiresource = $APIRES->data;
             $apiresourceid = $apiresource->id;
-            $_SESSION["resourcedetails"][$apiresourceid] == $apiresource;
+
+            $_SESSION["resourcedetails"][$apiresourceid] = $apiresource;
+
+
             $reqresource = $args->resource;
             $reqpage = $args->page;
             $finalreturn = new stdClass();
@@ -491,6 +505,9 @@ class APIManager {
             $finalreturn->currentres = $reqpage;
             $this->reqresource = $reqresource;
             array_push($_SESSION["activity"], $apiresource);
+
+
+
             switch ($apiresource->mod) {
                 case 'resource':
                     if(isset($apiresource->files[$reqresource])){
@@ -552,6 +569,8 @@ class APIManager {
                     break;
             }
 
+
+
         } else {
             $this->sendError($APIRES->error->title, $APIRES->error->message, $APIRES->error->code);
         }
@@ -563,7 +582,6 @@ class APIManager {
         $current_user = wp_get_current_user();
         $MOODLE = new MoodleManager($current_user);
 
-        $baseurl = $MOODLE->get_baseurl();
         $basepath = "/var/www/plusdata";        
         foreach ($files as $key => $file) {
             $link = "https://portal.fivestudents.com/local/designer/file.php?id={$file->pathnamehash}&filename={$file->filename}";

@@ -21,7 +21,7 @@ function plus_view_trainings()
     $course = $APIRES->data;
   }
   $reshtml .= '
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
   <style>
     .zoom-live-parent {
       width: 100%;
@@ -396,7 +396,7 @@ function plus_view_trainings()
   <script>
     $(document).ready(function() {
       $(document).on("click", ".nextresporce", function(){
-        loadNextResourceDetails();
+        loadNextResourceDetails("'.$CFG->wwwroot.'");
       });
       $(document).on("click", ".preresporce", function(){
         loadpreResourceDetails();
