@@ -58,10 +58,6 @@ function plus_override_subscription(){
     }
   }
 
-
-  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
   // $html .= '<div class="table-responsive">'.is_object($APIRESWeeklyData)?json_encode($APIRESWeeklyData):$APIRESWeeklyData.'</div>';
   $html .=  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
@@ -296,7 +292,7 @@ function plus_override_subscription(){
  
   </div>
             </div>
-          </div><script src="'.__FILE__ .'/public/../../../vendors/select2/select2.min.js"></script><script src="'.__FILE__ .'/public/../../../js/select2.js"></script>';
+          </div>';
           $html.= ' <script> $(function(){
           var all_grade_level = '.json_encode(@$all_grade_level).';
           var allgroup=new Array();
@@ -334,7 +330,7 @@ function plus_override_subscription(){
                 }
                  else if(institutionid !="" ){
                   console.log("institutionid ",institutionid);
-                  window.location.href='.$CFG->wwwroot.'`/override-subscription/?institutionid=${institutionid}`;
+                  window.location.href=`'.$CFG->wwwroot.'/override-subscription/?institutionid=${institutionid}`;
                 }
               });
               function getInstituteId(){
