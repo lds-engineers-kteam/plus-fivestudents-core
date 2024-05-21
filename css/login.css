@@ -1,0 +1,49 @@
+.auth-form-btn {
+    border-radius: 3px;
+    background-color: #61ce70;
+    font-size: 14px;
+    font-weight: bold;
+}
+.auth-form-light, .auth-form-light .form-control, .auth-form-light .auth-form-btn{
+    border-radius: 3px !important;
+}
+.loginpage .content-wrapper {
+	background-color: #0E2A6C;
+	min-height: 642px;
+	padding-top:13%;
+	padding-bottom:13%;
+}
+.login-form {
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 25px;
+}
+.login-form h1 {
+	margin-top: 0;
+	font-size: 36px;
+	color: #003A96;
+	font-weight: 600;
+}
+.login-form .help-block.text-center {
+	margin-bottom: 0;
+	font-weight: bold;
+}
+.login-form .help-block.text-center a{
+	color:#888;
+}
+.login-form .btn.btn-primary.form-control {
+	font-weight: bold;
+	height: 50px;
+	width: 100%;
+	font-size: 14px;
+	color: #fff;
+	background-color: var( --e-global-color-accent );
+	border-color: var( --e-global-color-accent );
+}
+.login-form .btn.btn-primary.form-control:hover {
+	background-color: #F8BB00;
+	border-color: #F8BB00;
+}
+.login-form .form-control{
+	height: 50px;
+}
