@@ -420,9 +420,22 @@ class APIManager {
                                     case 'pdf':
                                         $accesskey = sha1(rand());
                                         $_SESSION["fileaccesskey"][$resource->id]=$accesskey;
+                                        try {
+                                            $imagick = new Imagick();
+                                            $basepath = "/var/www/plusdata";
+                                            $dirpath = "{$basepath}/{$resource->id}";
+                                            $this->checkpath($dirpath);
+                                            $filename = urlencode($this->preparefilename($resource->filename));
+                                            $fileurl = "{$dirpath}/$filename";
+                                            $imagick->readImage($fileurl);
+                                            $totalpage = $imagick->count();
+                                        } catch (Exception $e) {
+                                            
+                                        }
                                         $finalreturn->filename = $resource->filename;
                                         $finalreturn->url = $CFG->wwwroot."/api/file.php?fileid={$resource->id}&filename={$filename}&page={$reqpage}&accesskey={$accesskey}";
-                                        $totalpage = $resource->totalpage;
+                                        $resource->totalpage = $totalpage;
+                                        $_SESSION["resources"][$resource->id]=$resource;
                                         break;
                                     default:
                                         # code...

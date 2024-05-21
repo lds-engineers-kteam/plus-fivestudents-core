@@ -7,7 +7,7 @@ $filename = urldecode($_GET["filename"]);
 $page = urldecode(isset($_GET["page"])?$_GET["page"]:0);
 $accesskey = urldecode($_GET["accesskey"]);
 
-if($allheader['Sec-Fetch-Site'] == "same-origin" && is_array($_SESSION["resources"]) && is_array($_SESSION["fileaccesskey"]) && isset($_SESSION["resources"][$fileid]) && isset($_SESSION["fileaccesskey"][$fileid]) && $_SESSION["fileaccesskey"][$fileid] == $accesskey){
+if($allheader['Sec-Fetch-Site'] = "same-origin" && is_array($_SESSION["resources"]) && is_array($_SESSION["fileaccesskey"]) && isset($_SESSION["resources"][$fileid]) && isset($_SESSION["fileaccesskey"][$fileid]) && $_SESSION["fileaccesskey"][$fileid] == $accesskey){
     $basepath = "/var/www/plusdata/{$fileid}/$filename";
     $resource = $_SESSION["resources"][$fileid];
     if($resource->filetype == 'pdf'){

@@ -1792,12 +1792,13 @@
       displayToast("Error","Please Try Again", "error");
     });
   }
-  updateResourceDetails=function(){
+  updateResourceDetails=function(param){
     console.log("tinyPlayer: ", tinyPlayer);
     var reqargs = {
         "id": $("#activitydetails").data("id"),
         "page": $("#activitydetails").data("page"),
         "resource": $("#activitydetails").data("resource"),
+        "baseUrl": param
     };
     var APIREQ = getAPIRequest("getResourcepdfurl",reqargs);
     $(".pageloading").addClass("active");
@@ -1821,15 +1822,15 @@
       }
     });
   }
-  loadNextResourceDetails = function(){
+  loadNextResourceDetails = function(param){
     var page = $("#activitydetails").data("page");
     $("#activitydetails").data("page", page+1);
-    updateResourceDetails();
+    updateResourceDetails(param);
   }
-  loadpreResourceDetails = function(){
+  loadpreResourceDetails = function(param){
     var page = $("#activitydetails").data("page");
     $("#activitydetails").data("page", page-1);
-    updateResourceDetails();
+    updateResourceDetails(param);
   }
   plus_dateToFrench = function(date){
     if(USERLANG == ""){
