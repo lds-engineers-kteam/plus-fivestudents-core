@@ -1,9 +1,8 @@
 <?php
 function plus_classProfileFilter(){
-  global $CLASSPROFILEAVGDATA, $CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
   $MOODLESESSION = wp_get_moodle_session();
-  $CLASSPROFILEAVGDATA = array();
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $formdata = new stdClass();
@@ -39,12 +38,12 @@ function plus_classProfileFilter(){
   }
   $html ='';
   // $html .='<pre>'.print_r($APIREScompetenciesdata, true).'</pre>';
-  $allGrades=array();
-  $selectedgrade=null;
-  $selectedGroup=null;
-  $selectedcourse=array();
-  $selectedquiz=array();
-  $selectedStudents=array();
+  $allGrades = array();
+  $selectedgrade = null;
+  $selectedGroup = null;
+  $selectedcourse = array();
+  $selectedquiz = array();
+  $selectedStudents = array();
   foreach($APIREScompetenciesdata->data as $competenciesdata){
     array_push($allGrades,$competenciesdata);   
   }
@@ -146,7 +145,7 @@ function plus_classProfileFilter(){
                       <label for="quiz" class="col-sm-2 col-form-label">'.plus_get_string("homework", "form").'</label>
                       <div class="col-sm-10">
                         <select class="form-control" name="quiz" id="quiz">';
-                          if(isset($selectedcourse) && is_array($selectedcourse->quizes)){
+                          if(isset($selectedcourse->quizes) && is_array($selectedcourse->quizes)){
                             $html .='<option value="" '.$selected.'>All</option>';
                             foreach($selectedcourse->quizes as $quiz){
                               $selected='';
@@ -188,8 +187,8 @@ function plus_classProfileFilter(){
                       </div>
                     </div>
                     <button type="submit" name="showreport" id="showreport" value="show" class="btn btn-primary mr-2">'.plus_get_string("search", "form").'</button>
-                    <a href="/sushiltest" class="btn btn-warning">'.plus_get_string("cancel", "form").'</a>
-                    <a href="' . $CFG->wwwroot . (empty($formdata->groupid) ? '/class-profile' : '/group-details/?id=' . $formdata->groupid) . '" class="btn btn-warning">' . plus_get_string("return", "form") . '</a>
+                    <a href="'.$CFG->wwwroot.'/class-profile-filter/" class="btn btn-warning">'.plus_get_string("cancel", "form").'</a>
+                    <a href="'.(empty($formdata->groupid) ? $CFG->wwwroot.'/class-profile' : $CFG->wwwroot.'/group-details/?id=' . $formdata->groupid) . '" class="btn btn-warning">' . plus_get_string("return", "form") . '</a>
                   </form>
                 </div>
               </div>

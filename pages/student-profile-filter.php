@@ -111,7 +111,7 @@ function plus_studentProfileFilter(){
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">'.plus_get_string("title", "studentprofilefilter").'</h4>
-                  <form method="GET" class="forms-sample" autocomplete="off" action="/student-profile">
+                  <form method="GET" class="forms-sample" autocomplete="off" action="'.$CFG->wwwroot.'/student-profile">
                     <div class="form-group row">
                       <label for="homeworkname" class="col-sm-2 col-form-label">'.plus_get_string("gradelevel", "studentprofilefilter").'</label>
                       <div class="col-sm-10">
@@ -191,7 +191,8 @@ function plus_studentProfileFilter(){
                     </div>
                 
                     <button type="submit" name="savehomework" class="btn btn-primary mr-2">'.plus_get_string("filter", "form").'</button>
-                    <a href="'.$CFG->wwwroot.(empty($formdata->groupid)?'/student-profile':'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+                    <a href="'.(empty($formdata->groupid) ? $CFG->wwwroot.'/student-profile' : $CFG->wwwroot.'/group-details/?id='.$formdata->groupid).'" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
+
                   </form>
                 </div>
               </div>
@@ -217,7 +218,6 @@ $html .= '<div id="questionViewer" class="modal fade" tabindex="-1">
     </div>';		  
   ?>
 <script src="https://getfirebug.com/firebug-lite-debug.js"></script>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link href="https://code.jquery.com/ui/1.11.4/themes/south-street/jquery-ui.css" rel="stylesheet"/>

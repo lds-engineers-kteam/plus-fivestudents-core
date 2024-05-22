@@ -1,15 +1,18 @@
 <?php
 function plus_view_print_password(){
- global $wp,$CFG;
- require_once($CFG->dirroot . '/api/moodlecall.php');
+  global $CFG;
+  require_once($CFG->dirroot . '/api/moodlecall.php');
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
- $current_user = wp_get_current_user();
+  $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
   $searchreq = new stdClass();
+
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url( $wp->request ));
+    plus_redirect($current_url);
     exit;
   }
+
   $searchreq->startdate = plus_get_request_parameter("startdate", "");
   $searchreq->enddate = plus_get_request_parameter("enddate", "");
   $searchreq->weekly = plus_get_request_parameter("weekly", date("Y-m-d"));
@@ -49,12 +52,9 @@ function plus_view_print_password(){
       $searchreq->enddate =$sunday;
     }
   }
- //$APIRESWeeklyData=$MOODLE->get("getWeeklySchoolReports",null,$searchreq);
-  $html='<link rel="stylesheet" href="'. __FILE__ .'/public/../../../vendors/select2/select2.min.css">
-  <link rel="stylesheet" href="'.__FILE__ .'/public/../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-';
+  //$APIRESWeeklyData=$MOODLE->get("getWeeklySchoolReports",null,$searchreq);
   // $html .= '<div class="table-responsive">'.is_object($APIRESWeeklyData)?json_encode($APIRESWeeklyData):$APIRESWeeklyData.'</div>';
-  $html .=  '<div class="row">
+  $html =  '<div class="row">
             <div class="col-md-12 grid-margin transparent">
               <div class="row">';
   $html .=  '<div class="col-md-12 grid-margin stretch-card">
@@ -218,7 +218,7 @@ function plus_view_print_password(){
  
   </div>
             </div>
-          </div><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../vendors/select2/select2.min.js"></script><script src="'.plugin_dir_url( __FILE__ ).'/public/../../../js/select2.js"></script>';
+          </div>';
           $html.= ' <script> $(function(){
           var all_grade_level = '.json_encode($all_grade_level).';
           var allgroup=new Array();

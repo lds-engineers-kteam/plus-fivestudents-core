@@ -1,6 +1,6 @@
 <?php
 function plus_studentProfile(){
-  global $wp,$CFG;
+  global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
 
   $current_user = wp_get_current_user();
@@ -35,7 +35,7 @@ function plus_studentProfile(){
         <div class="homeworkreport-card">
           <div class="card-body haveaction">
             <h4 class="card-title"></h4>
-            <button  class="btn btn-primary card-body-action hide" onclick="imageexportData(\'print_homeworkreport\')"> '.plus_get_string("print", "form").'</button>
+            <!-- <button  class="btn btn-primary card-body-action hide" onclick="imageexportData(\'print_homeworkreport\')"> '.plus_get_string("print", "form").'</button> -->
             ';
   $html .=  ' 
   <div id="print_homeworkreport">    
@@ -295,7 +295,7 @@ $html .='<script>
       var attempt = $(this).val();
       var groupid = $("#groupid").val();
       var homeworkid = $("#homeworkid").val();
-      location.href = "'.home_url( $wp->request ).'?groupid="+groupid+"&homeworkid="+homeworkid+"&attempt="+attempt;
+      location.href = "'.$CFG->wwwroot.'/student-profile?groupid="+groupid+"&homeworkid="+homeworkid+"&attempt="+attempt;
     });
     $(".viewquestion").click(function(){
       var questioncounter = $(this).data("counter");

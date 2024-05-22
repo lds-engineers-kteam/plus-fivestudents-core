@@ -5,7 +5,7 @@ require_once($CFG->dirroot . '/partials/includes/navbar.php');
 require_once($CFG->dirroot . '/partials/includes/settings-panel.php');
 require_once($CFG->dirroot . '/partials/includes/sidebar.php');
 require_once($CFG->dirroot . '/partials/includes/footer.php');
-require_once($CFG->dirroot . '/pages/plus-view-print-password.php');
+require_once($CFG->dirroot . '/pages/plus-view-class-profile.php');
 require_once($CFG->dirroot . '/partials/includes/moodlesession.php');
 
 echo '
@@ -23,7 +23,7 @@ echo '
 						<div class="main-panel">
 						<div class="content-wrapper">
 						'.plus_checkerror().'
-						'.plus_view_print_password().'
+						'.plus_classProfile().'
 						</div> 
 						<!-- content-wrapper ends -->
 						<!-- partial:footer.php -->
