@@ -1,5 +1,0 @@
-{
-    "require": {
-        "zendframework/zendpdf": "^2.0"
-    }
-}
