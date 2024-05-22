@@ -113,7 +113,7 @@ function get_user_meta(int $user_id, string $key = "", bool $single = false) {
     }
 }
 
-function update_user_meta(int $user_id, string $meta_key, $meta_value, $prev_value = "") {
+function update_user_meta($user_id = 0, $meta_key, $meta_value, $prev_value = "") {
     if (!isset($_SESSION['CURRENTUSERSESSION'])) {
         return false;
     }
@@ -255,26 +255,34 @@ function plus_pagination($start, $limit, $total, $page="page", $displayto = true
   return $html;
 }
 
-function plus_getuserformoodle($userid){
-	$returndata = new stdClass();
-    if($user = get_userdata($userid)){
-    	// $user = json_decode(json_encode($user));
-	    $meta = get_user_meta($userid);
-	    $metadata = array();
-	    $skippkeys = array("session_tokens");
-	    foreach ($meta as $key => $value) {
-	        if(in_array($key, $skippkeys)){ continue; }
-	        if(is_array($value)){
-	            $value = array_pop($value);
-	        }
-	        if(is_serialized($value)){
-	            $value = unserialize($value);
-	        }
-	        $metadata[$key] = $value;
-	    }
-	    $user->metadata = $metadata;
-    }
-    return $user;
+function plus_getuserformoodle($userdata){
+    $userdata = (object)$userdata;
+    $args = new stdClass();
+    $args->data->user_email = $userdata->user_email;
+    $args->data->user_login = $userdata->user_login;
+    $args->data->user_pass = $userdata->user_pass;
+    $args->data->metadata->first_name = $userdata->first_name;
+    $args->data->metadata->last_name = $userdata->last_name;
+    $args->data->institutionid = $userdata->institutionid;
+    $args->data->metadata->accounttype = $userdata->accounttype;
+    $args->data->metadata->institution = $userdata->institution;
+    $args->data->metadata->address = $userdata->address;
+    $args->data->metadata->phone = $userdata->phone;
+    $args->data->metadata->contactname = $userdata->contactname;
+    $args->data->metadata->jobtitle = $userdata->jobtitle;
+    $args->data->metadata->quantity = $userdata->quantity;
+    $args->data->metadata->startdate = $userdata->startdate;
+    $args->data->metadata->enddate = $userdata->enddate;
+    $args->data->metadata->paymenttype = $userdata->paymenttype;
+    $args->data->metadata->presubscription = $userdata->presubscription;
+    $args->data->metadata->region = $userdata->region;
+    $args->data->metadata->provinces = $userdata->provinces;
+    $args->data->metadata->totalkeys = $userdata->totalkeys;
+    $args->data->metadata->disablecalendar = $userdata->disablecalendar;
+    $args->data->metadata->disableoffline = $userdata->disableoffline;
+    $args->data->metadata->ispublic = $userdata->ispublic;
+    $args->data->metadata->flowtype = $userdata->flowtype;
+    return $args;
 }
 
 function plus_is_admin_user() {
@@ -428,20 +436,7 @@ function get_user_by( string $field, $value ) {
 }
 
 function wp_insert_user($userdata) {
-    $newUserObj = $_SESSION['CURRENTUSERSESSION'];
-    if (is_array($userdata)) {
-        $userdata = (object) $userdata;
-    }
-    foreach ($userdata as $key => $value) {
-        if (property_exists($newUserObj, $key)) {
-            $newUserObj->$key = $value;
-        }
-    }
-    if (property_exists($userdata, 'ID')) {
-        $newUserObj->ID = $userdata->ID;
-    }
-    $_SESSION['CURRENTUSERSESSION'] = $newUserObj;
-    return $newUserObj->ID;
+    return 1;
 }
 
 function plus_login_failed($userid) {

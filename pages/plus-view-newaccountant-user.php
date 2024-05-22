@@ -16,7 +16,7 @@ function plus_newaccountant_users(){
 
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url($current_url));
+    plus_redirect($current_url);
     exit;
   }
   $institutionData = $MOODLE->get("institutionData", null,'');
@@ -24,8 +24,9 @@ function plus_newaccountant_users(){
   foreach ($institutionData->data as $instivalue) {
    $allinstitution.="<option value='".$instivalue->id."'>".$instivalue->institution."</option>";
   }
-  //
+
   if(isset($_POST['savenewaccountant'])){
+
     $user_data = array(
      'user_pass' =>$formdata->password,
      'user_login' => $formdata->email,
@@ -37,12 +38,30 @@ function plus_newaccountant_users(){
      'last_name' => $formdata->lastname,
      'description' => "",
      'user_registered' => "",
-     'role' =>"accountant"
+     'role' =>"accountant",
+     'institutionid' => $formdata->institute,
+     'accounttype' => "accountant",
+     'address' => "",
+     'phone' => "",
+     'contactname' => "",
+     'quantity' => 0,
+     'startdate' => time(),
+     'enddate' => time(),
+     'jobtitle' => "accountant",
+     'paymenttype' => 0,
+     'presubscription' => 0,
+     'region' => "",
+     'provinces' => "",
+     'totalkeys' => 0,
+     'disablecalendar' => 0,
+     'disableoffline' => 0,
+     'ispublic' => 0,
+     'flowtype' => 0
     );
     $usermeta = array(
      'institutionid' => $formdata->institute,
-     'accounttype' => "accountant ",
-     'jobtitle' => "accountant ",
+     'accounttype' => "accountant",
+     'jobtitle' => "accountant",
     );
 
     $moodleuser = array(
@@ -51,26 +70,26 @@ function plus_newaccountant_users(){
 
     $checkUser = $MOODLE->get("GetUserById", "", $moodleuser);
     $existinguser = $checkUser->data;
-  
-    if($existinguser = get_user_by( 'email', $formdata->email )){
-      // print_r($existinguser);
-      $user_id=$existinguser->id;
-      $user_data['ID']=$user_id;
+
+    if($existinguser){
+
+      $user_id = $existinguser->id;
+      $user_data['ID'] = $user_id;
 
       if(empty($user_data['user_pass'])){ unset($user_data['user_pass']); }
-      wp_update_user($user_data);
-      foreach ($usermeta as $metakey => $metadata) {
-        $updated = update_user_meta( $user_id, $metakey, $metadata );
-      }
-      $userdata = plus_getuserformoodle($user_id);
-      $userdata->institutionid = $formdata->institute;
-      $res1 = $MOODLE->get("CreateUser", "internaladmin", $userdata);
+        wp_update_user($user_data);
+        foreach ($usermeta as $metakey => $metadata) {
+          $updated = update_user_meta( $user_id, $metakey, $metadata );
+        }
+        $userdata = plus_getuserformoodle($user_data);
+        $userdata->institutionid = $formdata->institute;
+        $res1 = $MOODLE->get("CreateUser", "internaladmin", $userdata);
     } else {
-      if($user_id = wp_insert_user($user_data)){
+      if(wp_insert_user($user_data)){
         foreach ($usermeta as $metakey => $metadata) {
           $updated = update_user_meta($user_id, $metakey, $metadata );
         }
-        $userdata = plus_getuserformoodle($user_id);
+        $userdata = plus_getuserformoodle($user_data);
         $userdata->institutionid = $formdata->institute;
         $res1 = $MOODLE->get("CreateUser", "internaladmin", $userdata);
       }
@@ -88,8 +107,7 @@ function plus_newaccountant_users(){
                 <div class="card-body haveaction">
                   <h4 class="card-title">'.plus_get_string("users", "site").'</h4>
                   <form method="post" class="forms-sample" autocomplete="off">
-
-                  <div class="form-group row">
+                    <div class="form-group row">
                       <label for="accounttype" class="col-sm-2 col-form-label">Institute</label>
                       <div class="col-sm-10">
                         <select name="institute" id="institute" class="form-control">
@@ -97,7 +115,6 @@ function plus_newaccountant_users(){
                         </select>
                       </div>
                     </div>
-
                     <div class="form-group row">
                       <label for="firstname" class="col-sm-2 col-form-label">'.plus_get_string("firstname", "form").' *</label>
                       <div class="col-sm-10">
@@ -122,16 +139,10 @@ function plus_newaccountant_users(){
                         <input type="password" '.(empty($formdata->id)?'required="required"':'').' name="password" class="form-control" id="password" placeholder="'.plus_get_string("password", "form").'" value="'.$formdata->password.'">
                       </div>
                     </div>
-                    
-                    
                     <input type="hidden" name="id" value="'.$formdata->id.'"/>
                     <button type="submit" name="savenewaccountant" class="btn btn-primary mr-2">'.plus_get_string("save", "form").'</button>
                     <a href="'.$CFG->wwwroot.'/users/" class="btn btn-warning">'.plus_get_string("return", "form").'</a>
                   </form>
-
-                 
-
-
                 </div>
               </div>
             </div>';

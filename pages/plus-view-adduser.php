@@ -40,7 +40,22 @@ function plus_add_user(){
      'last_name' => $formdata->lastname,
      'description' => "",
      'user_registered' => "",
-     'role' => $formdata->role
+     'role' => $formdata->role,
+     'institution' => $formdata->institution,
+     'accounttype' => $formdata->role,
+     'address' => $formdata->address,
+     'phone' => $formdata->phone,
+     'contactname' => $formdata->firstname." ".$formdata->lastname,
+     'jobtitle' => $formdata->jobtitle,
+     'paymenttype' => $formdata->paymenttype,
+     'presubscription' => $formdata->presubscription,
+     'region' => $formdata->region,
+     'provinces' => $formdata->provinces,
+     'totalkeys' => $formdata->totalkeys,
+     'disablecalendar' => $formdata->disablecalendar,
+     'disableoffline' => $formdata->disableoffline,
+     'ispublic' => $formdata->ispublic,
+     'flowtype' => $formdata->flowtype
     );
     $usermeta = array(
      'institution' => $formdata->institution,
@@ -57,7 +72,7 @@ function plus_add_user(){
      'disablecalendar' => $formdata->disablecalendar,
      'disableoffline' => $formdata->disableoffline,
      'ispublic' => $formdata->ispublic,
-     'flowtype' => $formdata->flowtype,
+     'flowtype' => $formdata->flowtype
     );
 
     $moodleuser = array(
@@ -75,19 +90,18 @@ function plus_add_user(){
       if(empty($user_data['user_pass'])){ unset($user_data['user_pass']); }
       wp_update_user($user_data);
       foreach ($usermeta as $metakey => $metadata) {
-        $updated = update_user_meta( $user_id, $metakey, $metadata );
+        $updated = update_user_meta($user_id, $metakey, $metadata);
       }
-      $userdata = plus_getuserformoodle($user_id);
+      $userdata = plus_getuserformoodle($user_data);
       $userdata->institutionid = $formdata->institutionid;
-      // print_r($userdata);
-      // die;
+
       $res1 = $MOODLE->get("CreateUser", "internaladmin", $userdata);
     } else {
-      if($user_id = wp_insert_user($user_data)){
+      if(wp_insert_user($user_data)){
         foreach ($usermeta as $metakey => $metadata) {
-          $updated = update_user_meta( $user_id, $metakey, $metadata );
+          $updated = update_user_meta($user_id, $metakey, $metadata);
         }
-        $userdata = plus_getuserformoodle($user_id);
+        $userdata = plus_getuserformoodle($user_data);
         $res1 = $MOODLE->get("CreateUser", "internaladmin", $userdata);
       }
     }

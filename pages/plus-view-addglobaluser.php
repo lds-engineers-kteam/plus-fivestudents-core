@@ -3,7 +3,7 @@ function plus_view_addglobaluser(){
 
   global $CFG;
   require_once($CFG->dirroot . '/api/moodlecall.php');
-  
+  $current_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
   $current_user = wp_get_current_user();
   $MOODLE = new MoodleManager($current_user);
 
@@ -22,7 +22,7 @@ function plus_view_addglobaluser(){
 
   $searchreq = new stdClass();
   if(isset($_REQUEST['cancel'])){
-    plus_redirect(home_url());
+    plus_redirect($current_url);
     exit;
   }
   
@@ -38,7 +38,25 @@ function plus_view_addglobaluser(){
      'last_name' => $formdata->lastname,
      'description' => "",
      'user_registered' => "",
-     'role' =>$formdata->role
+     'role' =>$formdata->role,
+     'accounttype' => $formdata->role,
+     'address' => "",
+     'phone' => "",
+     'contactname' => "",
+     'quantity' => 0,
+     'startdate' => time(),
+     'enddate' => time(),
+     'jobtitle' => $formdata->role,
+     'paymenttype' => 0,
+     'presubscription' => 0,
+     'region' => "",
+     'provinces' => "",
+     'totalkeys' => 0,
+     'disablecalendar' => 0,
+     'disableoffline' => 0,
+     'ispublic' => 0,
+     'flowtype' => 0,
+     'institutes' => $formdata->institutes
     );
 
     $usermeta = array(
@@ -62,15 +80,15 @@ function plus_view_addglobaluser(){
       foreach ($usermeta as $metakey => $metadata) {
         $updated = update_user_meta( $user_id, $metakey, $metadata );
       }
-      $userdata = plus_getuserformoodle($user_id);
+      $userdata = plus_getuserformoodle($user_data);
       $userdata->institutes = $formdata->institutes;
       $res1 = $MOODLE->get("CreateGlobalUser", "internaladmin", $userdata);
     } else {
-      if($user_id = wp_insert_user($user_data)){
+      if(wp_insert_user($user_data)){
         foreach ($usermeta as $metakey => $metadata) {
           $updated = update_user_meta($user_id, $metakey, $metadata );
         }
-        $userdata = plus_getuserformoodle($user_id);
+        $userdata = plus_getuserformoodle($user_data);
         $userdata->institutes = $formdata->institutes;
         $res1 = $MOODLE->get("CreateGlobalUser", "internaladmin", $userdata);
       }
